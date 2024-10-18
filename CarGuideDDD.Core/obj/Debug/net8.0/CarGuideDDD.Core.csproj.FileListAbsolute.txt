@@ -1,0 +1,6 @@
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.AssemblyInfo.cs
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.sourcelink.json
