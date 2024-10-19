@@ -1,0 +1,16 @@
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Infrastructure.deps.json
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Infrastructure.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Infrastructure.pdb
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Core.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Core.pdb
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.csproj.AssemblyReference.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.AssemblyInfoInputs.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.AssemblyInfo.cs
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.csproj.CoreCompileInputs.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.sourcelink.json
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuide.F7286BC6.Up2Date
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\refint\CarGuideDDD.Infrastructure.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuideDDD.Infrastructure.pdb
+E:\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\ref\CarGuideDDD.Infrastructure.dll

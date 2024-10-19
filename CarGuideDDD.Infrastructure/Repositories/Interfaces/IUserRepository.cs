@@ -7,7 +7,7 @@ namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<UserDto?>> GetAllAsync();
+        Task<IEnumerable<UserDto?>> GetAllAsync();
         Task<UserDto> GetByNameAsync(string name);
         Task<IdentityResult> AddAsync(UserDto user);
         Task<IdentityResult> UpdateAsync(UserDto user);

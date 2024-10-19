@@ -1,15 +1,9 @@
 ﻿using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
-using Domain.Entities;
 using DTOs;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CarGuideDDD.Infrastructure.Repositories
 {
@@ -60,7 +54,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         public async Task<PriorityCarDto?> GetByIdAsync(int id)
         {
-            return ( await _context.Cars.FindAsync(id)).;
+            return Maps.EntityCarToMapPriorityCarDto(  await _context.Cars.FindAsync(id));
         }
 
         public async Task<bool> SetAvailabilityAsync(int id, bool isAvailable)

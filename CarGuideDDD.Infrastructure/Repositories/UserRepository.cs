@@ -1,7 +1,10 @@
-﻿using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+﻿using CarGuideDDD.Core.MapObjects;
+using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using Domain.Entities;
+using DTOs;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace CarGuideDDD.Infrastructure.Repositories
@@ -9,17 +12,15 @@ namespace CarGuideDDD.Infrastructure.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<EntityUser> _userManager;
-        private readonly RoleManager<EntityUser> _roleManager;
 
-        public UserRepository(UserManager<EntityUser> userManager, RoleManager<EntityUser> roleManager)
+        public UserRepository(UserManager<EntityUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
-        public async Task<IdentityResult> AddAsync(User user)
+        public async Task<IdentityResult> AddAsync(UserDto user)
         {
 
-            return await _userManager.CreateAsync(EntityUser.ConwertToEntityUser(user), user.Password);
+            return await _userManager.CreateAsync(Maps.MapUserDtoToEntityUser(user), user.Password);
 
         }
 
@@ -30,17 +31,17 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         }
 
-        public async Task<List<EntityUser>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            return await _userManager.Users.ToListAsync();
+            return (await _userManager.Users.ToListAsync()).Select(Maps.MapEntityUseToUserDto);
         }
 
-        public async Task<EntityUser?> GetByNameAsync(string name)
+        public async Task<UserDto?> GetByNameAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
             if (user != null)
             {
-                return user;
+                return Maps.MapEntityUseToUserDto( user);
             }
             else
             {
@@ -48,11 +49,11 @@ namespace CarGuideDDD.Infrastructure.Repositories
             }
         }
 
-        public async Task<IdentityResult> UpdateAsync(User user)
+        public async Task<IdentityResult> UpdateAsync(UserDto user)
         {
-            var Olduser = await _userManager.FindByNameAsync(user.Name);
+            var Olduser = await _userManager.FindByNameAsync(user.Username);
 
-            return await _userManager.UpdateAsync(EntityUser.ConwertToEntityUser(user));
+            return await _userManager.UpdateAsync(Maps.MapUserDtoToEntityUser(user));
 
         }
     }

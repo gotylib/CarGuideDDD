@@ -5,7 +5,13 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.Core", "CarGuideDDD.Core\CarGuideDDD.Core.csproj", "{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.Infrastructure", "CarGuideDDD.Infrastructure\CarGuideDDD.Infrastructure.csproj", "{E55B3CA0-E360-48F4-BF9F-1792858FE294}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.Infrastructure", "CarGuideDDD.Infrastructure\CarGuideDDD.Infrastructure.csproj", "{E55B3CA0-E360-48F4-BF9F-1792858FE294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.Domain", "CarGuideDDD.Domain\CarGuideDDD.Domain.csproj", "{A68C8250-716E-458D-8C69-C29940DF7DFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.MailService", "CarGuideDDD.MailService\CarGuideDDD.MailService.csproj", "{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{E55B3CA0-E360-48F4-BF9F-1792858FE294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E55B3CA0-E360-48F4-BF9F-1792858FE294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E55B3CA0-E360-48F4-BF9F-1792858FE294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A68C8250-716E-458D-8C69-C29940DF7DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68C8250-716E-458D-8C69-C29940DF7DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68C8250-716E-458D-8C69-C29940DF7DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68C8250-716E-458D-8C69-C29940DF7DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

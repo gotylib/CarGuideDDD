@@ -1,9 +1,5 @@
 ﻿using DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Domain.Entities
 {
@@ -16,7 +12,7 @@ namespace Domain.Entities
         public int StockCount { get; private set; }
         public bool IsAvailable { get; private set; }
 
-        public Car(string make, string model, string color, int stockCount, bool isAvailable)
+        public void Create(string make, string model, string color, int stockCount, bool isAvailable)
         {
             Make = make;
             Model = model;

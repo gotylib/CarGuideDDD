@@ -4,3 +4,16 @@ C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGui
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.AssemblyInfo.cs
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.csproj.CoreCompileInputs.cache
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.sourcelink.json
+E:\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.deps.json
+E:\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.pdb
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.csproj.AssemblyReference.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.AssemblyInfoInputs.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.AssemblyInfo.cs
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.csproj.CoreCompileInputs.cache
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.sourcelink.json
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\refint\CarGuideDDD.Core.dll
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.pdb
+E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\ref\CarGuideDDD.Core.dll
