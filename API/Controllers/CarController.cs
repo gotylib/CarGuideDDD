@@ -72,7 +72,7 @@ namespace API.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
-        [HttpPut("/Quantity")]
+        [HttpPut("Quantity")]
         public async Task<IActionResult> UpdateCarQuantity([FromBody] QuantityDto quantityDto)
         {
             try
@@ -87,7 +87,7 @@ namespace API.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
-        [HttpPut("/Availability")]
+        [HttpPut("Availability")]
         public async Task<IActionResult> SetCarAvailability([FromBody] IsAvailableDto isAvailableDto)
         {
             try
@@ -99,6 +99,13 @@ namespace API.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("BuyCar")]
+        public async Task<IActionResult> Buycar()
+        {
+
         }
     }
 }

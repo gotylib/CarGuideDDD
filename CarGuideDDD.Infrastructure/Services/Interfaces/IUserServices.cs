@@ -26,6 +26,7 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
         // Удаление пользователя
         Task<IActionResult> DeleteUserAsync(string name);
 
+        Task<IActionResult> RegisterOfLogin(RegisterDto model);
         Task<IActionResult> Register(RegisterDto model);
         Task<IActionResult> Login(LoginDto model);
         Task<IActionResult> RefreshToken(RefreshTokenDto model);

@@ -1,4 +1,5 @@
-﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
+﻿using CarGuideDDD.Core.MapObjects;
+using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -48,13 +49,13 @@ namespace API.Controllers
 
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             return await _userService.Register(model);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             return await _userService.Login(model);
@@ -64,6 +65,13 @@ namespace API.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
         {
             return await _userService.RefreshToken(model);
+        }
+
+
+        [HttpPost("RegisterOrLogin")]
+        public async Task<IActionResult> RegisterOrLogin([FromBody] UserDto userDto)
+        {
+            return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
         }
     }
 }

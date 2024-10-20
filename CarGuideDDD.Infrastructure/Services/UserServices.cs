@@ -64,6 +64,7 @@ namespace CarGuideDDD.Infrastructure.Services
             {
                 return new BadRequestObjectResult(result.Errors);
             }
+            
         }
 
         // Обновление существующего пользователя
@@ -99,6 +100,20 @@ namespace CarGuideDDD.Infrastructure.Services
             }
         }
 
+        public async Task<IActionResult> RegisterOfLogin(RegisterDto model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if(user == null)
+            {
+                await Register(model);
+                return await Login(Maps.MapRegisterDtoToLoginDto(model));
+            }
+            else
+            {
+                return await Login(Maps.MapRegisterDtoToLoginDto(model));
+            }
+        }
+
         public async Task<IActionResult> Register(RegisterDto model)
         {
             var user = new EntityUser { UserName = model.Username, Email = model.Email };
@@ -119,7 +134,6 @@ namespace CarGuideDDD.Infrastructure.Services
                         await _userManager.AddToRoleAsync(user, "Manager");
                     }
                 }
-
                 return new OkResult();
             }
 
@@ -165,6 +179,24 @@ namespace CarGuideDDD.Infrastructure.Services
             await _userManager.UpdateAsync(user);
 
             return new OkObjectResult(new { AccessToken = newAccessToken, RefreshToken = newRefreshToken.Token });
+        }
+
+        public async Task<IActionResult> BuyCar(int idCar, UserDto userDto)
+        {
+            var users = _userManager.Users.ToList();
+
+            // Список для хранения пользователей с ролью "Manager"
+            var managers = new List<EntityUser>();
+
+            foreach (var user in users)
+            {
+                // Проверяем, есть ли у пользователя роль "Manager"
+                if (await _userManager.IsInRoleAsync(user, "Manager"))
+                {
+                    managers.Add(user);
+                }
+            }
+
         }
 
     }

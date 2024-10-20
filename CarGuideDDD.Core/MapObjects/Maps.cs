@@ -31,6 +31,13 @@ namespace CarGuideDDD.Core.MapObjects
         [MapProperty(nameof(UserDto.Username), nameof(User.Name))]
         [MapProperty(nameof(UserDto.Email), nameof(User.Email))]
         public static partial User MapUserDtoToUser(UserDto userDto);
+
+        [MapProperty(nameof(RegisterDto.Username), nameof(LoginDto.Name))]
+        [MapProperty(nameof(RegisterDto.Password), nameof(LoginDto.Password))]
+        public static partial LoginDto MapRegisterDtoToLoginDto(RegisterDto registerDto);
+
+        public static partial RegisterDto MapUserDtoToRegistaerDto(UserDto userDto);
     }
+
 
 }

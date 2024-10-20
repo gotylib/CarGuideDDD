@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.Core", "CarGuid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.Infrastructure", "CarGuideDDD.Infrastructure\CarGuideDDD.Infrastructure.csproj", "{E55B3CA0-E360-48F4-BF9F-1792858FE294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.Domain", "CarGuideDDD.Domain\CarGuideDDD.Domain.csproj", "{A68C8250-716E-458D-8C69-C29940DF7DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.Domain", "CarGuideDDD.Domain\CarGuideDDD.Domain.csproj", "{A68C8250-716E-458D-8C69-C29940DF7DFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.MailService", "CarGuideDDD.MailService\CarGuideDDD.MailService.csproj", "{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarGuideDDD.MailService", "CarGuideDDD.MailService\CarGuideDDD.MailService.csproj", "{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGuideDDD.TelegramBot", "CarGuideDDD.TelegramBot\CarGuideDDD.TelegramBot.csproj", "{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8827958C-87A5-4E3B-8C96-3D8EC1FCD8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
