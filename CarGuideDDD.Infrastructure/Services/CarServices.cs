@@ -4,7 +4,10 @@ using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using Domain.Entities;
 using DTOs;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,9 +104,18 @@ namespace CarGuideDDD.Infrastructure.Services
         }
 
         // Сделать автомобиль недоступным
-        public async Task SetCarAvailabilityAsync(int id, bool inAvailable)
+        public async Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable)
         {
-            await _carRepository.SetAvailabilityAsync(id, inAvailable);
+            var car = await _carRepository.GetByIdAsync(id);
+            if(car.StockCount != 0)
+            {
+                return new BadRequestObjectResult("Машину можно сделать недоступной, только если их нет на складе");
+            }
+            else
+            {
+                await _carRepository.SetAvailabilityAsync(id, inAvailable);
+                return new OkResult();
+            }
         }
 
         public async Task<bool> BuyOrInforameAsync(int id, string clientName,bool statis)

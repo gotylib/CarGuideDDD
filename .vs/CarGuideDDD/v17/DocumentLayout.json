@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\carservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\carservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|solutionrelative:api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\interfaces\\icarservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\interfaces\\icarservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.core\\mapobjects\\maps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|solutionrelative:carguideddd.core\\mapobjects\\maps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|solutionrelative:api\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
@@ -34,20 +58,8 @@
       "RelativeMoniker": "D:0:0:{CAF58F9C-DE2B-47B9-8541-E19CD151C450}|UnitTests\\UnitTests.csproj|solutionrelative:unittests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|solutionrelative:api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\carservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\carservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}|CarGuideDDD.TelegramBot\\CarGuideDDD.TelegramBot.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.telegrambot\\processingmethods\\methods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{89A1ABB8-5D2A-4133-9B9A-CC1F2EB63ADB}|CarGuideDDD.TelegramBot\\CarGuideDDD.TelegramBot.csproj|solutionrelative:carguideddd.telegrambot\\processingmethods\\methods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\tokenservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -60,14 +72,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.core\\dtobjects\\buyorinformatecardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|solutionrelative:carguideddd.core\\dtobjects\\buyorinformatecardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\interfaces\\icarservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\interfaces\\icarservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -92,10 +96,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\services\\interfaces\\iuserservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\services\\interfaces\\iuserservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.core\\mapobjects\\maps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|solutionrelative:carguideddd.core\\mapobjects\\maps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{27DCA6A6-1678-4350-81E5-67B41BD5BCE4}|CarGuideDDD.Core\\CarGuideDDD.Core.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.core\\dtobjects\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -185,7 +185,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 15,
           "Children": [
             {
               "$type": "Bookmark",
@@ -193,7 +193,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Dockerfile",
               "RelativeDocumentMoniker": "API\\Dockerfile",
@@ -206,46 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Dockerfile",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.MailService\\Dockerfile",
-              "RelativeDocumentMoniker": "CarGuideDDD.MailService\\Dockerfile",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.MailService\\Dockerfile",
-              "RelativeToolTip": "CarGuideDDD.MailService\\Dockerfile",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-10-21T08:53:58.037Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Microsoft.VisualStudio.Docker.Compose.targets",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
-              "ViewState": "AQIAAI4BAAAAAAAAAAAEwKgBAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2024-10-21T08:53:01.895Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "docker-compose.yml",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\docker-compose.yml",
-              "RelativeDocumentMoniker": "docker-compose.yml",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\docker-compose.yml",
-              "RelativeToolTip": "docker-compose.yml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
-              "WhenOpened": "2024-10-21T08:34:25.094Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.TelegramBot\\Dockerfile",
               "RelativeDocumentMoniker": "CarGuideDDD.TelegramBot\\Dockerfile",
@@ -253,12 +214,11 @@
               "RelativeToolTip": "CarGuideDDD.TelegramBot\\Dockerfile",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-10-21T08:31:34.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T08:31:34.596Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "UnitTest1.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\UnitTests\\UnitTest1.cs",
               "RelativeDocumentMoniker": "UnitTests\\UnitTest1.cs",
@@ -266,12 +226,11 @@
               "RelativeToolTip": "UnitTests\\UnitTest1.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T08:18:40.423Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T08:18:40.423Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "Bot.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.TelegramBot\\Bot.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.TelegramBot\\Bot.cs",
@@ -279,25 +238,24 @@
               "RelativeToolTip": "CarGuideDDD.TelegramBot\\Bot.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAEcAAABjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-20T12:11:04.769Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-20T12:11:04.769Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 5,
               "Title": "Maps.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\MapObjects\\Maps.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Core\\MapObjects\\Maps.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\MapObjects\\Maps.cs",
               "RelativeToolTip": "CarGuideDDD.Core\\MapObjects\\Maps.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAwwCYAAAAdAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-18T12:33:23.824Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\UserController.cs",
@@ -305,12 +263,11 @@
               "RelativeToolTip": "API\\Controllers\\UserController.cs",
               "ViewState": "AQIAAB4AAAAAAAAAAAA5wDcAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T11:20:17.962Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T11:20:17.962Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "UserRepository.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Repositories\\UserRepository.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Repositories\\UserRepository.cs",
@@ -318,12 +275,11 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Repositories\\UserRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T12:31:33.914Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T12:31:33.914Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "IUserServices.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\Interfaces\\IUserServices.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\Interfaces\\IUserServices.cs",
@@ -331,25 +287,24 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\Interfaces\\IUserServices.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAtwBwAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:13:16.494Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T09:13:16.494Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 2,
               "Title": "ICarServices.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\Interfaces\\ICarServices.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\Interfaces\\ICarServices.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\Interfaces\\ICarServices.cs",
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\Interfaces\\ICarServices.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwCcAAAApAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwCUAAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-19T09:11:29.478Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Program.cs",
               "RelativeDocumentMoniker": "API\\Program.cs",
@@ -357,8 +312,7 @@
               "RelativeToolTip": "API\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:29:37.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T09:29:37.163Z"
             },
             {
               "$type": "Document",
@@ -370,12 +324,11 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DtObjects\\RegisterDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-20T16:21:12.263Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-20T16:21:12.263Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.TelegramBot\\Program.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.TelegramBot\\Program.cs",
@@ -383,8 +336,7 @@
               "RelativeToolTip": "CarGuideDDD.TelegramBot\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-20T12:03:19.328Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-20T12:03:19.328Z"
             },
             {
               "$type": "Document",
@@ -396,25 +348,99 @@
               "RelativeToolTip": "API\\Properties\\launchSettings.json",
               "ViewState": "AQIAAAUAAAAAAAAAAMBdwBQAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-19T18:24:44.735Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T18:24:44.735Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 4,
               "Title": "CarRepository.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAIBJwD8AAAANAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAqwD8AAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-18T12:31:18.901Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "CarServices.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
+              "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
+              "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAmwGkAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-19T09:21:21.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CarController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\CarController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
+              "RelativeToolTip": "API\\Controllers\\CarController.cs",
+              "ViewState": "AQIAAD0AAAAAAAAAAAA4wGUAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-19T11:20:03.302Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserServices.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
+              "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
+              "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
+              "ViewState": "AQIAAGUAAAAAAAAAAAAAAIwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-19T09:26:04.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2024-10-21T08:34:25.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Microsoft.VisualStudio.Docker.Compose.targets",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Sdks\\Microsoft.Docker.Sdk\\build\\Microsoft.VisualStudio.Docker.Compose.targets",
+              "ViewState": "AQIAAI4BAAAAAAAAAAAEwKgBAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2024-10-21T08:53:01.895Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.MailService\\Dockerfile",
+              "RelativeDocumentMoniker": "CarGuideDDD.MailService\\Dockerfile",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.MailService\\Dockerfile",
+              "RelativeToolTip": "CarGuideDDD.MailService\\Dockerfile",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-10-21T08:53:58.037Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "CreateRequestCar.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Domain\\Methods\\CreateRequestCar.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Domain\\Methods\\CreateRequestCar.cs",
@@ -422,12 +448,11 @@
               "RelativeToolTip": "CarGuideDDD.Domain\\Methods\\CreateRequestCar.cs",
               "ViewState": "AQIAACUAAAAAAAAAAAAgwDkAAABIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T19:12:07.543Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T19:12:07.543Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "BuyOrInformateCarDto.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\DtObjects\\BuyOrInformateCarDto.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Core\\DtObjects\\BuyOrInformateCarDto.cs",
@@ -435,51 +460,11 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DtObjects\\BuyOrInformateCarDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T07:19:44.754Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T07:19:44.754Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CarServices.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
-              "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
-              "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\CarServices.cs",
-              "ViewState": "AQIAAGUAAAAAAAAAAAAAwIkAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:21:21.358Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CarController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
-              "RelativeDocumentMoniker": "API\\Controllers\\CarController.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
-              "RelativeToolTip": "API\\Controllers\\CarController.cs",
-              "ViewState": "AQIAAE4AAAAAAAAAAAAuwHcAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T11:20:03.302Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "UserServices.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
-              "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
-              "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\UserServices.cs",
-              "ViewState": "AQIAAGIAAAAAAAAAAIBJwHUAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:26:04.405Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "TokenServices.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Services\\TokenServices.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Services\\TokenServices.cs",
@@ -487,12 +472,11 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\TokenServices.cs",
               "ViewState": "AQIAAD8AAAAAAAAAAAAQwE8AAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:21:49.419Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T09:21:49.419Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "Methods.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.TelegramBot\\ProcessingMethods\\Methods.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.TelegramBot\\ProcessingMethods\\Methods.cs",
@@ -500,12 +484,11 @@
               "RelativeToolTip": "CarGuideDDD.TelegramBot\\ProcessingMethods\\Methods.cs",
               "ViewState": "AQIAAAwAAAAAAAAAAADwv3gAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T06:26:59.292Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T06:26:59.292Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "IdDto.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\DtObjects\\IdDto.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Core\\DtObjects\\IdDto.cs",
@@ -513,8 +496,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DtObjects\\IdDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T07:04:09.599Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T07:04:09.599Z"
             },
             {
               "$type": "Document",
@@ -526,12 +508,11 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DtObjects\\UserDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T08:44:36.509Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T08:44:36.509Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "Token.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.TelegramBot\\ProcessingMethods\\Token.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.TelegramBot\\ProcessingMethods\\Token.cs",
@@ -539,8 +520,7 @@
               "RelativeToolTip": "CarGuideDDD.TelegramBot\\ProcessingMethods\\Token.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T06:41:07.503Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-21T06:41:07.503Z"
             },
             {
               "$type": "Document",
@@ -552,8 +532,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DomainObjects\\Car.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAIBJwBQAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T19:15:19.318Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T19:15:19.318Z"
             },
             {
               "$type": "Document",
@@ -565,8 +544,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DomainObjects\\User.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T19:16:06.35Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T19:16:06.35Z"
             },
             {
               "$type": "Document",
@@ -578,8 +556,7 @@
               "RelativeToolTip": "CarGuideDDD.MailService\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-19T18:24:41.196Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T18:24:41.196Z"
             },
             {
               "$type": "Document",
@@ -591,8 +568,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\EntityObjects\\EntityCar.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T19:17:21.973Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T19:17:21.973Z"
             },
             {
               "$type": "Document",
@@ -604,8 +580,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\DtObjects\\PriorityCarDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T19:17:28.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T19:17:28.138Z"
             },
             {
               "$type": "Document",
@@ -617,8 +592,7 @@
               "RelativeToolTip": "CarGuideDDD.MailService\\Controllers\\MailController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T17:36:43.14Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T17:36:43.14Z"
             },
             {
               "$type": "Document",
@@ -630,8 +604,7 @@
               "RelativeToolTip": "CarGuideDDD.MailService\\MessageSender.cs",
               "ViewState": "AQIAAAgAAAAAAAAAAAAxwAsAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T17:30:58.601Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T17:30:58.601Z"
             },
             {
               "$type": "Document",
@@ -643,8 +616,7 @@
               "RelativeToolTip": "CarGuideDDD.MailService\\Message.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T17:20:07.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T17:20:07.828Z"
             },
             {
               "$type": "Document",
@@ -656,8 +628,7 @@
               "RelativeToolTip": "CarGuideDDD.MailService\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T17:03:49.121Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T17:03:49.121Z"
             },
             {
               "$type": "Document",
@@ -669,8 +640,7 @@
               "RelativeToolTip": "API\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-19T11:23:34.597Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T11:23:34.597Z"
             },
             {
               "$type": "Document",
@@ -682,8 +652,7 @@
               "RelativeToolTip": "API\\nlog.config",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-10-19T11:16:57.411Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T11:16:57.411Z"
             },
             {
               "$type": "Document",
@@ -695,8 +664,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\EntityObjects\\EntityUser.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T08:44:20.141Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T08:44:20.141Z"
             },
             {
               "$type": "Document",
@@ -708,8 +676,7 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Repositories\\Interfaces\\IUserRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAqwAkAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T12:28:13.959Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T12:28:13.959Z"
             },
             {
               "$type": "Document",
@@ -721,8 +688,7 @@
               "RelativeToolTip": "CarGuideDDD.Core\\Token\\AuthOptions.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAqwAsAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:36:14.684Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T09:36:14.684Z"
             },
             {
               "$type": "Document",
@@ -734,8 +700,7 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Services\\Interfaces\\ITokenServices.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:34:22.931Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-19T09:34:22.931Z"
             },
             {
               "$type": "Document",
@@ -747,8 +712,7 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Repositories\\Interfaces\\ICarRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T12:27:45.885Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T12:27:45.885Z"
             },
             {
               "$type": "Document",
@@ -760,8 +724,7 @@
               "RelativeToolTip": "CarGuideDDD.Infrastructure\\Data\\ApplicationDbContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T12:24:22.094Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T12:24:22.094Z"
             }
           ]
         }

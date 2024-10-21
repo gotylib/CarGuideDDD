@@ -93,8 +93,8 @@ namespace API.Controllers
         {
             try
             {
-                await _carService.SetCarAvailabilityAsync(isAvailableDto.Id, isAvailableDto.IsAvailable);
-                return NoContent();
+                var result = await _carService.SetCarAvailabilityAsync(isAvailableDto.Id, isAvailableDto.IsAvailable);
+                return result;
             }
             catch (KeyNotFoundException)
             {

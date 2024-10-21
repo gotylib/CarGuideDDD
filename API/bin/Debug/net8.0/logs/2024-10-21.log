@@ -13339,3 +13339,664 @@ WHERE "Id" = @p17 AND "ConcurrencyStamp" = @p18;
 2024-10-21 11:28:24.6874 Debug Connection id "0HN7HL8HD8SIB" sending FIN because: "The Socket transport's send loop completed gracefully." 
 2024-10-21 11:28:24.6874 Debug Connection id "0HN7HL8HD8SIB" disconnecting. 
 2024-10-21 11:28:24.6874 Debug Connection id "0HN7HL8HD8SIB" stopped. 
+2024-10-21 12:53:24.6054 Debug Registered model binder providers, in the following order: Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider 
+2024-10-21 12:53:24.7426 Debug An 'IServiceProvider' was created for internal use by Entity Framework. 
+2024-10-21 12:53:25.0063 Debug The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}. 
+2024-10-21 12:53:25.0063 Debug The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}. 
+2024-10-21 12:53:25.1850 Debug Entity Framework Core 8.0.10 initialized 'ApplicationDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:8.0.10+18d07c54eacaffa5bf8128d47eecdb5255d86376' with options: None 
+2024-10-21 12:53:25.1948 Debug Creating DbConnection. 
+2024-10-21 12:53:25.2268 Debug Created DbConnection. (30ms). 
+2024-10-21 12:53:25.2268 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.3249 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.3259 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.3259 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (3ms). 
+2024-10-21 12:53:25.3259 Debug Creating DbCommand for 'ExecuteScalar'. 
+2024-10-21 12:53:25.3259 Debug Created DbCommand for 'ExecuteScalar' (2ms). 
+2024-10-21 12:53:25.3259 Debug Initialized DbCommand for 'ExecuteScalar' (4ms). 
+2024-10-21 12:53:25.3259 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.3713 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.3713 Debug Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:53:25.4170 Info Executed DbCommand (39ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:53:25.4170 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.4200 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (1ms). 
+2024-10-21 12:53:25.4553 Debug Compiling query expression: 
+'DbSet<IdentityRole>()
+    .FirstOrDefault(r => r.NormalizedName == __normalizedName_0)' 
+2024-10-21 12:53:25.5691 Debug Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<IdentityRole>(
+    asyncEnumerable: new SingleQueryingEnumerable<IdentityRole>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: IdentityRole.Id (string) Required PK AfterSave:Throw, 0], [Property: IdentityRole.ConcurrencyStamp (string) Concurrency, 1], [Property: IdentityRole.Name (string) MaxLength(256), 2], [Property: IdentityRole.NormalizedName (string) Index MaxLength(256), 3] }
+            SELECT TOP(1) a.Id, a.ConcurrencyStamp, a.Name, a.NormalizedName
+            FROM AspNetRoles AS a
+            WHERE a.NormalizedName == @__normalizedName_0), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, IdentityRole>, 
+        CarGuideDDD.Infrastructure.Data.ApplicationDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)' 
+2024-10-21 12:53:25.5883 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.5883 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.5883 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:25.5883 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:25.5883 Debug Initialized DbCommand for 'ExecuteReader' (1ms). 
+2024-10-21 12:53:25.5921 Debug Executing DbCommand [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.5921 Info Executed DbCommand (10ms) [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.6220 Debug Context 'ApplicationDbContext' started tracking 'IdentityRole' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:25.6326 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6326 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 31ms reading results. 
+2024-10-21 12:53:25.6326 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6326 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:25.6326 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:25.6379 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:25.6379 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:25.6379 Debug Executing DbCommand [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.6379 Info Executed DbCommand (6ms) [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.6379 Debug Context 'ApplicationDbContext' started tracking 'IdentityRole' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:25.6379 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 2ms reading results. 
+2024-10-21 12:53:25.6379 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:25.6379 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:25.6379 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:25.6379 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:25.6379 Debug Executing DbCommand [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.6379 Info Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 
+2024-10-21 12:53:25.6379 Debug Context 'ApplicationDbContext' started tracking 'IdentityRole' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:25.6379 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 0ms reading results. 
+2024-10-21 12:53:25.6379 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6379 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:25.6379 Debug 'ApplicationDbContext' disposed. 
+2024-10-21 12:53:25.6529 Debug Disposing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:25.6529 Debug Disposed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:25.6529 Debug Hosting starting 
+2024-10-21 12:53:25.6741 Info User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. 
+2024-10-21 12:53:25.6741 Debug Reading data from file 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys\key-be498580-590c-4763-b9ba-3d3e0377df60.xml'. 
+2024-10-21 12:53:25.6741 Debug Found key {be498580-590c-4763-b9ba-3d3e0377df60}. 
+2024-10-21 12:53:25.6741 Debug Considering key {be498580-590c-4763-b9ba-3d3e0377df60} with expiration date 2025-01-12 10:28:35Z as default key. 
+2024-10-21 12:53:25.6741 Debug Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60 
+2024-10-21 12:53:25.6741 Debug Decrypting secret element using Windows DPAPI. 
+2024-10-21 12:53:25.6741 Debug Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60 
+2024-10-21 12:53:25.6741 Debug Opening CNG algorithm 'AES' from provider '(null)' with chaining mode CBC. 
+2024-10-21 12:53:25.6741 Debug Opening CNG algorithm 'SHA256' from provider '(null)' with HMAC. 
+2024-10-21 12:53:25.6741 Debug Using key {be498580-590c-4763-b9ba-3d3e0377df60} as the default key. 
+2024-10-21 12:53:25.6741 Debug Key ring with default key {be498580-590c-4763-b9ba-3d3e0377df60} was loaded during application startup. 
+2024-10-21 12:53:26.0769 Info Now listening on: https://localhost:7162 
+2024-10-21 12:53:26.0769 Info Now listening on: http://localhost:5234 
+2024-10-21 12:53:26.0769 Debug Loaded hosting startup assembly API 
+2024-10-21 12:53:26.0769 Debug Loaded hosting startup assembly Microsoft.AspNetCore.Watch.BrowserRefresh 
+2024-10-21 12:53:26.0769 Debug Loaded hosting startup assembly Microsoft.WebTools.BrowserLink.Net 
+2024-10-21 12:53:26.0769 Info Application started. Press Ctrl+C to shut down. 
+2024-10-21 12:53:26.0769 Info Hosting environment: Development 
+2024-10-21 12:53:26.0769 Info Content root path: C:\Users\Admin\source\repos\CarGuideDDD\API 
+2024-10-21 12:53:26.0769 Debug Hosting started 
+2024-10-21 12:53:26.0769 Debug Connection id "0HN7HMOQL9B73" received FIN. 
+2024-10-21 12:53:26.0769 Debug Connection id "0HN7HMOQL9B73" accepted. 
+2024-10-21 12:53:26.0769 Debug Connection id "0HN7HMOQL9B73" started. 
+2024-10-21 12:53:26.0947 Debug Failed to authenticate HTTPS connection. System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2024-10-21 12:53:26.0947 Debug Connection id "0HN7HMOQL9B73" stopped. 
+2024-10-21 12:53:26.0947 Debug Connection id "0HN7HMOQL9B73" sending FIN because: "The Socket transport's send loop completed gracefully." 
+2024-10-21 12:53:26.2993 Debug Connection id "0HN7HMOQL9B74" accepted. 
+2024-10-21 12:53:26.2993 Debug Connection id "0HN7HMOQL9B74" started. 
+2024-10-21 12:53:26.3550 Debug Connection 0HN7HMOQL9B74 established using the following protocol: Tls12 
+2024-10-21 12:53:26.3858 Info Request starting HTTP/2 GET https://localhost:7162/swagger/index.html - - - 
+2024-10-21 12:53:26.4515 Debug Wildcard detected, all requests with hosts will be allowed. 
+2024-10-21 12:53:26.4515 Debug No candidates found for the request path '/swagger/index.html' 
+2024-10-21 12:53:26.4515 Debug Request did not match any endpoints 
+2024-10-21 12:53:26.4664 Debug AuthenticationScheme: Identity.Application was not authenticated. 
+2024-10-21 12:53:26.5132 Debug Response markup is scheduled to include Browser Link script injection. 
+2024-10-21 12:53:26.5132 Debug Response markup is scheduled to include browser refresh script injection. 
+2024-10-21 12:53:26.5132 Debug Response markup was updated to include Browser Link script injection. 
+2024-10-21 12:53:26.5132 Debug Response markup was updated to include browser refresh script injection. 
+2024-10-21 12:53:26.5132 Info Request finished HTTP/2 GET https://localhost:7162/swagger/index.html - 200 - text/html;charset=utf-8 144.9094ms 
+2024-10-21 12:53:26.5595 Info Request starting HTTP/2 GET https://localhost:7162/_framework/aspnetcore-browser-refresh.js - - - 
+2024-10-21 12:53:26.5679 Info Request finished HTTP/2 GET https://localhost:7162/_framework/aspnetcore-browser-refresh.js - 200 13742 application/javascript;+charset=utf-8 4.8475ms 
+2024-10-21 12:53:26.9255 Info Request starting HTTP/2 GET https://localhost:7162/_vs/browserLink - - - 
+2024-10-21 12:53:26.9661 Info Request finished HTTP/2 GET https://localhost:7162/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 40.8134ms 
+2024-10-21 12:53:27.0694 Info Request starting HTTP/2 GET https://localhost:7162/swagger/v1/swagger.json - - - 
+2024-10-21 12:53:27.0694 Debug No candidates found for the request path '/swagger/v1/swagger.json' 
+2024-10-21 12:53:27.0694 Debug Request did not match any endpoints 
+2024-10-21 12:53:27.0694 Debug AuthenticationScheme: Identity.Application was not authenticated. 
+2024-10-21 12:53:27.1365 Info Request finished HTTP/2 GET https://localhost:7162/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 67.4123ms 
+2024-10-21 12:53:42.6379 Info Request starting HTTP/2 POST https://localhost:7162/api/Users/Login - application/json 46 
+2024-10-21 12:53:42.6379 Debug 1 candidate(s) found for the request path '/api/Users/Login' 
+2024-10-21 12:53:42.6379 Debug Endpoint 'API.Controllers.UsersController.Login (API)' with route pattern 'api/Users/Login' is valid for the request path '/api/Users/Login' 
+2024-10-21 12:53:42.6379 Debug Request matched endpoint 'API.Controllers.UsersController.Login (API)' 
+2024-10-21 12:53:42.6467 Debug AuthenticationScheme: Identity.Application was not authenticated. 
+2024-10-21 12:53:42.6467 Debug Static files was skipped as the request already matched an endpoint. 
+2024-10-21 12:53:42.6467 Info Executing endpoint 'API.Controllers.UsersController.Login (API)' 
+2024-10-21 12:53:42.6467 Info Route matched with {action = "Login", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(DTOs.LoginDto) on controller API.Controllers.UsersController (API). 
+2024-10-21 12:53:42.6631 Debug Execution plan of authorization filters (in the following order): None 
+2024-10-21 12:53:42.6631 Debug Execution plan of resource filters (in the following order): None 
+2024-10-21 12:53:42.6631 Debug Execution plan of action filters (in the following order): Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000), Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000) 
+2024-10-21 12:53:42.6631 Debug Execution plan of exception filters (in the following order): None 
+2024-10-21 12:53:42.6631 Debug Execution plan of result filters (in the following order): Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000) 
+2024-10-21 12:53:42.6631 Debug Executing controller factory for controller API.Controllers.UsersController (API) 
+2024-10-21 12:53:42.6710 Debug Entity Framework Core 8.0.10 initialized 'ApplicationDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:8.0.10+18d07c54eacaffa5bf8128d47eecdb5255d86376' with options: None 
+2024-10-21 12:53:42.6710 Debug Creating DbConnection. 
+2024-10-21 12:53:42.6710 Debug Created DbConnection. (0ms). 
+2024-10-21 12:53:42.6710 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.6993 Debug Creating DbCommand for 'ExecuteScalar'. 
+2024-10-21 12:53:42.6993 Debug Created DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:53:42.6993 Debug Initialized DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:53:42.6993 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:53:42.6993 Info Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:53:42.6993 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.6993 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.6993 Debug Executed controller factory for controller API.Controllers.UsersController (API) 
+2024-10-21 12:53:42.7126 Debug Attempting to bind parameter 'model' of type 'DTOs.LoginDto' ... 
+2024-10-21 12:53:42.7126 Debug Attempting to bind parameter 'model' of type 'DTOs.LoginDto' using the name '' in request data ... 
+2024-10-21 12:53:42.7126 Debug Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter' for content type 'application/json'. 
+2024-10-21 12:53:42.7188 Debug Connection id "0HN7HMOQL9B74", Request id "0HN7HMOQL9B74:00000009": started reading request body. 
+2024-10-21 12:53:42.7188 Debug Connection id "0HN7HMOQL9B74", Request id "0HN7HMOQL9B74:00000009": done reading request body. 
+2024-10-21 12:53:42.7188 Debug JSON input formatter succeeded, deserializing to type 'DTOs.LoginDto' 
+2024-10-21 12:53:42.7188 Debug Done attempting to bind parameter 'model' of type 'DTOs.LoginDto'. 
+2024-10-21 12:53:42.7188 Debug Done attempting to bind parameter 'model' of type 'DTOs.LoginDto'. 
+2024-10-21 12:53:42.7188 Debug Attempting to validate the bound parameter 'model' of type 'DTOs.LoginDto' ... 
+2024-10-21 12:53:42.7188 Debug Done attempting to validate the bound parameter 'model' of type 'DTOs.LoginDto'. 
+2024-10-21 12:53:42.7188 Debug Compiling query expression: 
+'DbSet<EntityUser>()
+    .FirstOrDefault(u => u.NormalizedUserName == __normalizedUserName_0)' 
+2024-10-21 12:53:42.7348 Debug Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<EntityUser>(
+    asyncEnumerable: new SingleQueryingEnumerable<EntityUser>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: EntityUser.Id (string) Required PK AfterSave:Throw, 0], [Property: EntityUser.AccessFailedCount (int) Required, 1], [Property: EntityUser.ConcurrencyStamp (string) Concurrency, 2], [Property: EntityUser.Email (string) MaxLength(256), 3], [Property: EntityUser.EmailConfirmed (bool) Required, 4], [Property: EntityUser.LockoutEnabled (bool) Required, 5], [Property: EntityUser.LockoutEnd (DateTimeOffset?), 6], [Property: EntityUser.NormalizedEmail (string) Index MaxLength(256), 7], [Property: EntityUser.NormalizedUserName (string) Index MaxLength(256), 8], [Property: EntityUser.Password (string), 9], [Property: EntityUser.PasswordHash (string), 10], [Property: EntityUser.PhoneNumber (string), 11], [Property: EntityUser.PhoneNumberConfirmed (bool) Required, 12], [Property: EntityUser.RefreshToken (string), 13], [Property: EntityUser.RefreshTokenExpiration (DateTime?), 14], [Property: EntityUser.SecurityStamp (string), 15], [Property: EntityUser.TwoFactorEnabled (bool) Required, 16], [Property: EntityUser.UserName (string) MaxLength(256), 17] }
+            SELECT TOP(1) a.Id, a.AccessFailedCount, a.ConcurrencyStamp, a.Email, a.EmailConfirmed, a.LockoutEnabled, a.LockoutEnd, a.NormalizedEmail, a.NormalizedUserName, a.Password, a.PasswordHash, a.PhoneNumber, a.PhoneNumberConfirmed, a.RefreshToken, a.RefreshTokenExpiration, a.SecurityStamp, a.TwoFactorEnabled, a.UserName
+            FROM AspNetUsers AS a
+            WHERE a.NormalizedUserName == @__normalizedUserName_0), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, EntityUser>, 
+        CarGuideDDD.Infrastructure.Data.ApplicationDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)' 
+2024-10-21 12:53:42.7348 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.7348 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.7348 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:42.7348 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.7348 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.7348 Debug Executing DbCommand [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."Password", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiration", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 
+2024-10-21 12:53:42.7348 Info Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."Password", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiration", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 
+2024-10-21 12:53:42.7348 Debug Context 'ApplicationDbContext' started tracking 'EntityUser' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:42.7642 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.7642 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 25ms reading results. 
+2024-10-21 12:53:42.7642 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.7642 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.8409 Debug Compiling query expression: 
+'DbSet<IdentityUserRole<string>>()
+    .Join(
+        inner: DbSet<IdentityRole>(), 
+        outerKeySelector: userRole => userRole.RoleId, 
+        innerKeySelector: role => role.Id, 
+        resultSelector: (userRole, role) => new { 
+            userRole = userRole, 
+            role = role
+         })
+    .Where(<>h__TransparentIdentifier0 => <>h__TransparentIdentifier0.userRole.UserId.Equals(__userId_0))
+    .Select(<>h__TransparentIdentifier0 => <>h__TransparentIdentifier0.role.Name)' 
+2024-10-21 12:53:42.8648 Debug Generated query execution expression: 
+'queryContext => new SingleQueryingEnumerable<string>(
+    (RelationalQueryContext)queryContext, 
+    RelationalCommandCache.QueryExpression(
+        Projection Mapping:
+            EmptyProjectionMember -> 0
+        SELECT a0.Name
+        FROM AspNetUserRoles AS a
+        INNER JOIN AspNetRoles AS a0 ON a.RoleId == a0.Id
+        WHERE a.UserId == @__userId_0), 
+    null, 
+    Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, string>, 
+    CarGuideDDD.Infrastructure.Data.ApplicationDbContext, 
+    False, 
+    False, 
+    True
+)' 
+2024-10-21 12:53:42.8648 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8648 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8648 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:42.8648 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.8648 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.8648 Debug Executing DbCommand [Parameters=[@__userId_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0 
+2024-10-21 12:53:42.8648 Info Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0 
+2024-10-21 12:53:42.8648 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8648 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 1ms reading results. 
+2024-10-21 12:53:42.8648 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8648 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.8994 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8994 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8994 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:42.8994 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.8994 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.8994 Debug Executing DbCommand [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."Password", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiration", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 
+2024-10-21 12:53:42.8994 Info Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."Password", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiration", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 
+2024-10-21 12:53:42.8994 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8994 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 0ms reading results. 
+2024-10-21 12:53:42.8994 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.8994 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.8994 Debug An entity of type 'EntityUser' tracked by 'ApplicationDbContext' changed state from 'Unchanged' to 'Modified'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:42.9144 Debug SaveChanges starting for 'ApplicationDbContext'. 
+2024-10-21 12:53:42.9144 Debug DetectChanges starting for 'ApplicationDbContext'. 
+2024-10-21 12:53:42.9144 Debug DetectChanges completed for 'ApplicationDbContext'. 
+2024-10-21 12:53:42.9566 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.9566 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.9566 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:53:42.9566 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.9566 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:53:42.9566 Debug Executing DbCommand [Parameters=[@p17='?', @p0='?' (DbType = Int32), @p1='?', @p18='?', @p2='?', @p3='?' (DbType = Boolean), @p4='?' (DbType = Boolean), @p5='?' (DbType = DateTime), @p6='?', @p7='?', @p8='?', @p9='?', @p10='?', @p11='?' (DbType = Boolean), @p12='?', @p13='?' (DbType = DateTime), @p14='?', @p15='?' (DbType = Boolean), @p16='?'], CommandType='Text', CommandTimeout='30']
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p0, "ConcurrencyStamp" = @p1, "Email" = @p2, "EmailConfirmed" = @p3, "LockoutEnabled" = @p4, "LockoutEnd" = @p5, "NormalizedEmail" = @p6, "NormalizedUserName" = @p7, "Password" = @p8, "PasswordHash" = @p9, "PhoneNumber" = @p10, "PhoneNumberConfirmed" = @p11, "RefreshToken" = @p12, "RefreshTokenExpiration" = @p13, "SecurityStamp" = @p14, "TwoFactorEnabled" = @p15, "UserName" = @p16
+WHERE "Id" = @p17 AND "ConcurrencyStamp" = @p18; 
+2024-10-21 12:53:42.9707 Info Executed DbCommand (13ms) [Parameters=[@p17='?', @p0='?' (DbType = Int32), @p1='?', @p18='?', @p2='?', @p3='?' (DbType = Boolean), @p4='?' (DbType = Boolean), @p5='?' (DbType = DateTime), @p6='?', @p7='?', @p8='?', @p9='?', @p10='?', @p11='?' (DbType = Boolean), @p12='?', @p13='?' (DbType = DateTime), @p14='?', @p15='?' (DbType = Boolean), @p16='?'], CommandType='Text', CommandTimeout='30']
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p0, "ConcurrencyStamp" = @p1, "Email" = @p2, "EmailConfirmed" = @p3, "LockoutEnabled" = @p4, "LockoutEnd" = @p5, "NormalizedEmail" = @p6, "NormalizedUserName" = @p7, "Password" = @p8, "PasswordHash" = @p9, "PhoneNumber" = @p10, "PhoneNumberConfirmed" = @p11, "RefreshToken" = @p12, "RefreshTokenExpiration" = @p13, "SecurityStamp" = @p14, "TwoFactorEnabled" = @p15, "UserName" = @p16
+WHERE "Id" = @p17 AND "ConcurrencyStamp" = @p18; 
+2024-10-21 12:53:42.9707 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.9707 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 1ms reading results. 
+2024-10-21 12:53:42.9707 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.9707 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.9707 Debug An entity of type 'EntityUser' tracked by 'ApplicationDbContext' changed state from 'Modified' to 'Unchanged'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:53:42.9707 Debug SaveChanges completed for 'ApplicationDbContext' with 1 entities written to the database. 
+2024-10-21 12:53:42.9707 Debug List of registered output formatters, in the following order: Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter 
+2024-10-21 12:53:42.9707 Debug No information found on request to perform content negotiation. 
+2024-10-21 12:53:42.9707 Debug Attempting to select an output formatter without using a content type as no explicit content types were specified for the response. 
+2024-10-21 12:53:42.9707 Debug Attempting to select the first formatter in the output formatters list which can write the result. 
+2024-10-21 12:53:42.9707 Debug Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter' and content type 'application/json' to write the response. 
+2024-10-21 12:53:42.9707 Info Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'. 
+2024-10-21 12:53:42.9707 Info Executed action API.Controllers.UsersController.Login (API) in 318.4121ms 
+2024-10-21 12:53:42.9707 Info Executed endpoint 'API.Controllers.UsersController.Login (API)' 
+2024-10-21 12:53:42.9707 Debug 'ApplicationDbContext' disposed. 
+2024-10-21 12:53:42.9707 Debug Disposing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:53:42.9707 Debug Disposed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:53:42.9707 Info Request finished HTTP/2 POST https://localhost:7162/api/Users/Login - 200 - application/json;+charset=utf-8 350.6827ms 
+2024-10-21 12:54:02.0418 Info Request starting HTTP/2 GET https://localhost:7162/api/Cars/Get - - - 
+2024-10-21 12:54:02.0418 Debug 1 candidate(s) found for the request path '/api/Cars/Get' 
+2024-10-21 12:54:02.0418 Debug Endpoint 'API.Controllers.CarsController.GetCars (API)' with route pattern 'api/Cars/Get' is valid for the request path '/api/Cars/Get' 
+2024-10-21 12:54:02.0418 Debug Request matched endpoint 'API.Controllers.CarsController.GetCars (API)' 
+2024-10-21 12:54:02.0418 Debug AuthenticationScheme: Identity.Application was not authenticated. 
+2024-10-21 12:54:02.0827 Debug Successfully validated the token. 
+2024-10-21 12:54:02.0827 Debug AuthenticationScheme: Bearer was successfully authenticated. 
+2024-10-21 12:54:02.0827 Debug Authorization was successful. 
+2024-10-21 12:54:02.0827 Debug Static files was skipped as the request already matched an endpoint. 
+2024-10-21 12:54:02.0827 Info Executing endpoint 'API.Controllers.CarsController.GetCars (API)' 
+2024-10-21 12:54:02.0827 Info Route matched with {action = "GetCars", controller = "Cars"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCars() on controller API.Controllers.CarsController (API). 
+2024-10-21 12:54:02.0827 Debug Execution plan of authorization filters (in the following order): None 
+2024-10-21 12:54:02.0827 Debug Execution plan of resource filters (in the following order): None 
+2024-10-21 12:54:02.0827 Debug Execution plan of action filters (in the following order): Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000), Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000) 
+2024-10-21 12:54:02.0827 Debug Execution plan of exception filters (in the following order): None 
+2024-10-21 12:54:02.0827 Debug Execution plan of result filters (in the following order): Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000) 
+2024-10-21 12:54:02.0827 Debug Executing controller factory for controller API.Controllers.CarsController (API) 
+2024-10-21 12:54:02.1224 Debug Entity Framework Core 8.0.10 initialized 'ApplicationDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:8.0.10+18d07c54eacaffa5bf8128d47eecdb5255d86376' with options: None 
+2024-10-21 12:54:02.1224 Debug Creating DbConnection. 
+2024-10-21 12:54:02.1224 Debug Created DbConnection. (0ms). 
+2024-10-21 12:54:02.1272 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:02.1526 Debug Creating DbCommand for 'ExecuteScalar'. 
+2024-10-21 12:54:02.1526 Debug Created DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:54:02.1526 Debug Initialized DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:54:02.1526 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:54:02.1526 Info Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:54:02.1526 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1526 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:02.1526 Debug Executed controller factory for controller API.Controllers.CarsController (API) 
+2024-10-21 12:54:02.1526 Debug Compiling query expression: 
+'DbSet<EntityCar>()' 
+2024-10-21 12:54:02.1610 Debug Generated query execution expression: 
+'queryContext => new SingleQueryingEnumerable<EntityCar>(
+    (RelationalQueryContext)queryContext, 
+    RelationalCommandCache.QueryExpression(
+        Projection Mapping:
+            EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: EntityCar.Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: EntityCar.Color (string) Required, 1], [Property: EntityCar.IsAvailable (bool) Required, 2], [Property: EntityCar.Make (string) Required, 3], [Property: EntityCar.Model (string) Required, 4], [Property: EntityCar.StockCount (int) Required, 5] }
+        SELECT c.Id, c.Color, c.IsAvailable, c.Make, c.Model, c.StockCount
+        FROM Cars AS c), 
+    null, 
+    Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, EntityCar>, 
+    CarGuideDDD.Infrastructure.Data.ApplicationDbContext, 
+    False, 
+    False, 
+    True
+)' 
+2024-10-21 12:54:02.1610 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1610 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1610 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:54:02.1610 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:54:02.1610 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:54:02.1610 Debug Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT c."Id", c."Color", c."IsAvailable", c."Make", c."Model", c."StockCount"
+FROM "Cars" AS c 
+2024-10-21 12:54:02.1610 Info Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT c."Id", c."Color", c."IsAvailable", c."Make", c."Model", c."StockCount"
+FROM "Cars" AS c 
+2024-10-21 12:54:02.1610 Debug Context 'ApplicationDbContext' started tracking 'EntityCar' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:54:02.1729 Debug Context 'ApplicationDbContext' started tracking 'EntityCar' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:54:02.1729 Debug Context 'ApplicationDbContext' started tracking 'EntityCar' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:54:02.1729 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1729 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 8ms reading results. 
+2024-10-21 12:54:02.1729 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1729 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:02.1729 Debug List of registered output formatters, in the following order: Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter 
+2024-10-21 12:54:02.1729 Debug No information found on request to perform content negotiation. 
+2024-10-21 12:54:02.1729 Debug Attempting to select an output formatter without using a content type as no explicit content types were specified for the response. 
+2024-10-21 12:54:02.1729 Debug Attempting to select the first formatter in the output formatters list which can write the result. 
+2024-10-21 12:54:02.1729 Debug Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter' and content type 'application/json' to write the response. 
+2024-10-21 12:54:02.1729 Info Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[DTOs.PriorityCarDto, CarGuideDDD.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'. 
+2024-10-21 12:54:02.1729 Info Executed action API.Controllers.CarsController.GetCars (API) in 86.8203ms 
+2024-10-21 12:54:02.1729 Info Executed endpoint 'API.Controllers.CarsController.GetCars (API)' 
+2024-10-21 12:54:02.1729 Debug 'ApplicationDbContext' disposed. 
+2024-10-21 12:54:02.1729 Debug Disposing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:02.1729 Debug Disposed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:02.1729 Info Request finished HTTP/2 GET https://localhost:7162/api/Cars/Get - 200 - application/json;+charset=utf-8 134.7974ms 
+2024-10-21 12:54:26.2457 Info Request starting HTTP/2 PUT https://localhost:7162/api/Cars/Availability - application/json 37 
+2024-10-21 12:54:26.2484 Debug 1 candidate(s) found for the request path '/api/Cars/Availability' 
+2024-10-21 12:54:26.2484 Debug Endpoint 'API.Controllers.CarsController.SetCarAvailability (API)' with route pattern 'api/Cars/Availability' is valid for the request path '/api/Cars/Availability' 
+2024-10-21 12:54:26.2484 Debug Request matched endpoint 'API.Controllers.CarsController.SetCarAvailability (API)' 
+2024-10-21 12:54:26.2484 Debug AuthenticationScheme: Identity.Application was not authenticated. 
+2024-10-21 12:54:26.2484 Debug Successfully validated the token. 
+2024-10-21 12:54:26.2484 Debug AuthenticationScheme: Bearer was successfully authenticated. 
+2024-10-21 12:54:26.2484 Debug Authorization was successful. 
+2024-10-21 12:54:26.2484 Debug Static files was skipped as the request already matched an endpoint. 
+2024-10-21 12:54:26.2484 Info Executing endpoint 'API.Controllers.CarsController.SetCarAvailability (API)' 
+2024-10-21 12:54:26.2484 Info Route matched with {action = "SetCarAvailability", controller = "Cars"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SetCarAvailability(DTOs.IsAvailableDto) on controller API.Controllers.CarsController (API). 
+2024-10-21 12:54:26.2484 Debug Execution plan of authorization filters (in the following order): None 
+2024-10-21 12:54:26.2484 Debug Execution plan of resource filters (in the following order): None 
+2024-10-21 12:54:26.2484 Debug Execution plan of action filters (in the following order): Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000), Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000) 
+2024-10-21 12:54:26.2484 Debug Execution plan of exception filters (in the following order): None 
+2024-10-21 12:54:26.2484 Debug Execution plan of result filters (in the following order): Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000) 
+2024-10-21 12:54:26.2484 Debug Executing controller factory for controller API.Controllers.CarsController (API) 
+2024-10-21 12:54:26.2484 Debug Entity Framework Core 8.0.10 initialized 'ApplicationDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:8.0.10+18d07c54eacaffa5bf8128d47eecdb5255d86376' with options: None 
+2024-10-21 12:54:26.2484 Debug Creating DbConnection. 
+2024-10-21 12:54:26.2484 Debug Created DbConnection. (0ms). 
+2024-10-21 12:54:26.2484 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2805 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2805 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2805 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:26.2810 Debug Creating DbCommand for 'ExecuteScalar'. 
+2024-10-21 12:54:26.2810 Debug Created DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:54:26.2810 Debug Initialized DbCommand for 'ExecuteScalar' (0ms). 
+2024-10-21 12:54:26.2810 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2810 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2810 Debug Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:54:26.2810 Info Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        ) 
+2024-10-21 12:54:26.2810 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2810 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:26.2810 Debug Executed controller factory for controller API.Controllers.CarsController (API) 
+2024-10-21 12:54:26.2810 Debug Attempting to bind parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto' ... 
+2024-10-21 12:54:26.2810 Debug Attempting to bind parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto' using the name '' in request data ... 
+2024-10-21 12:54:26.2810 Debug Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter' for content type 'application/json'. 
+2024-10-21 12:54:26.2810 Debug Connection id "0HN7HMOQL9B74", Request id "0HN7HMOQL9B74:0000000D": started reading request body. 
+2024-10-21 12:54:26.2810 Debug Connection id "0HN7HMOQL9B74", Request id "0HN7HMOQL9B74:0000000D": done reading request body. 
+2024-10-21 12:54:26.2810 Debug JSON input formatter succeeded, deserializing to type 'DTOs.IsAvailableDto' 
+2024-10-21 12:54:26.2810 Debug Done attempting to bind parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto'. 
+2024-10-21 12:54:26.2810 Debug Done attempting to bind parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto'. 
+2024-10-21 12:54:26.2810 Debug Attempting to validate the bound parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto' ... 
+2024-10-21 12:54:26.2810 Debug Done attempting to validate the bound parameter 'isAvailableDto' of type 'DTOs.IsAvailableDto'. 
+2024-10-21 12:54:26.2810 Debug Compiling query expression: 
+'DbSet<EntityCar>()
+    .FirstOrDefault(e => EF.Property<int>(e, "Id") == __p_0)' 
+2024-10-21 12:54:26.2810 Debug Generated query execution expression: 
+'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<EntityCar>(
+    asyncEnumerable: new SingleQueryingEnumerable<EntityCar>(
+        (RelationalQueryContext)queryContext, 
+        RelationalCommandCache.QueryExpression(
+            Projection Mapping:
+                EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: EntityCar.Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: EntityCar.Color (string) Required, 1], [Property: EntityCar.IsAvailable (bool) Required, 2], [Property: EntityCar.Make (string) Required, 3], [Property: EntityCar.Model (string) Required, 4], [Property: EntityCar.StockCount (int) Required, 5] }
+            SELECT TOP(1) c.Id, c.Color, c.IsAvailable, c.Make, c.Model, c.StockCount
+            FROM Cars AS c
+            WHERE c.Id == @__p_0), 
+        null, 
+        Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, EntityCar>, 
+        CarGuideDDD.Infrastructure.Data.ApplicationDbContext, 
+        False, 
+        False, 
+        True
+    ), 
+    cancellationToken: queryContext.CancellationToken)' 
+2024-10-21 12:54:26.2987 Debug Opening connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2987 Debug Opened connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2987 Debug Creating DbCommand for 'ExecuteReader'. 
+2024-10-21 12:54:26.2987 Debug Created DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:54:26.2987 Debug Initialized DbCommand for 'ExecuteReader' (0ms). 
+2024-10-21 12:54:26.2987 Debug Executing DbCommand [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT c."Id", c."Color", c."IsAvailable", c."Make", c."Model", c."StockCount"
+FROM "Cars" AS c
+WHERE c."Id" = @__p_0
+LIMIT 1 
+2024-10-21 12:54:26.2987 Info Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT c."Id", c."Color", c."IsAvailable", c."Make", c."Model", c."StockCount"
+FROM "Cars" AS c
+WHERE c."Id" = @__p_0
+LIMIT 1 
+2024-10-21 12:54:26.2987 Debug Context 'ApplicationDbContext' started tracking 'EntityCar' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values. 
+2024-10-21 12:54:26.2987 Debug Closing data reader to 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2987 Debug A data reader for 'CarInventoryDB' on server 'tcp://localhost:5432' is being disposed after spending 1ms reading results. 
+2024-10-21 12:54:26.2987 Debug Closing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2987 Debug Closed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:26.2987 Debug List of registered output formatters, in the following order: Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter, Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter 
+2024-10-21 12:54:26.2987 Debug No information found on request to perform content negotiation. 
+2024-10-21 12:54:26.2987 Debug Attempting to select an output formatter without using a content type as no explicit content types were specified for the response. 
+2024-10-21 12:54:26.2987 Debug Attempting to select the first formatter in the output formatters list which can write the result. 
+2024-10-21 12:54:26.2987 Debug Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter' and content type 'text/plain' to write the response. 
+2024-10-21 12:54:26.2987 Info Executing BadRequestObjectResult, writing value of type 'System.String'. 
+2024-10-21 12:54:26.2987 Info Executed action API.Controllers.CarsController.SetCarAvailability (API) in 50.2781ms 
+2024-10-21 12:54:26.2987 Info Executed endpoint 'API.Controllers.CarsController.SetCarAvailability (API)' 
+2024-10-21 12:54:26.2987 Debug 'ApplicationDbContext' disposed. 
+2024-10-21 12:54:26.2987 Debug Disposing connection to database 'CarInventoryDB' on server 'tcp://localhost:5432'. 
+2024-10-21 12:54:26.2987 Debug Disposed connection to database 'CarInventoryDB' on server 'tcp://localhost:5432' (0ms). 
+2024-10-21 12:54:26.2987 Info Request finished HTTP/2 PUT https://localhost:7162/api/Cars/Availability - 400 - text/plain;+charset=utf-8 59.9090ms 
