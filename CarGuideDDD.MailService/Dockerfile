@@ -9,7 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CarGuideDDD.MailService/CarGuideDDD.MailService.csproj", "CarGuideDDD.MailService/"]
+COPY ["CarGuideDDD/CarGuideDDD.MailService/CarGuideDDD.MailService.csproj", "CarGuideDDD.MailService/"]
 RUN dotnet restore "./CarGuideDDD.MailService/CarGuideDDD.MailService.csproj"
 COPY . .
 WORKDIR "/src/CarGuideDDD.MailService"

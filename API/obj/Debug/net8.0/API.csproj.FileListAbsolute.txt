@@ -152,5 +152,3 @@ C:\Users\Admin\source\repos\CarGuideDDD\API\obj\Debug\net8.0\scopedcss\bundle\AP
 C:\Users\Admin\source\repos\CarGuideDDD\API\obj\Debug\net8.0\API.csproj.Up2Date
 C:\Users\Admin\source\repos\CarGuideDDD\API\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Users\Admin\source\repos\CarGuideDDD\API\obj\Debug\net8.0\ref\API.dll
-C:\Users\Admin\source\repos\CarGuideDDD\API\bin\Debug\net8.0\CarGuideDDD.Domain.dll
-C:\Users\Admin\source\repos\CarGuideDDD\API\bin\Debug\net8.0\CarGuideDDD.Domain.pdb

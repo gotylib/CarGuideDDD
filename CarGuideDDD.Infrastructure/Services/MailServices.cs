@@ -13,14 +13,16 @@ namespace CarGuideDDD.Infrastructure.Services
         { 
             _httpClientFactory = httpClientFactory;
         }
-        public Task<bool> SendBuyCarMessageAsync()
+
+        public Task<bool> SendBuyCarMessageAsync(string clientEmail, string managerEmail)
         {
-            
+            throw new NotImplementedException();
         }
 
-        public Task<bool> SendInformCarMessageAsync()
+
+        public Task<bool> SendInformCarMessageAsync(string clientEmail, string managerEmail)
         {
-            
+            throw new NotImplementedException();
         }
 
         public async Task<bool> SendUserNotFountManagerMessageAsync(string email)

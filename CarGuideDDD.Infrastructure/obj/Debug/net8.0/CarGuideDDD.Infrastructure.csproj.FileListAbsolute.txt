@@ -30,5 +30,3 @@ C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Core.pdb
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\CarGuide.F7286BC6.Up2Date
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\obj\Debug\net8.0\ref\CarGuideDDD.Infrastructure.dll
-C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Domain.dll
-C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Infrastructure\bin\Debug\net8.0\CarGuideDDD.Domain.pdb

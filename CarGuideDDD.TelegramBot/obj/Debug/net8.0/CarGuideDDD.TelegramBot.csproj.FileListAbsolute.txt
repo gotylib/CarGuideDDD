@@ -36,3 +36,16 @@ C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\obj\Debug\net8.0
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\obj\Debug\net8.0\CarGuideDDD.TelegramBot.pdb
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\obj\Debug\net8.0\CarGuideDDD.TelegramBot.genruntimeconfig.cache
 C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\obj\Debug\net8.0\ref\CarGuideDDD.TelegramBot.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.TelegramBot\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll

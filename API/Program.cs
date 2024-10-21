@@ -1,5 +1,4 @@
 using CarGuideDDD.Core.Jwt;
-using CarGuideDDD.Domain.Methods;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;

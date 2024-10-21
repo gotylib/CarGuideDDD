@@ -102,7 +102,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        /*[Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("BuyOrInformateCar")]
         public async Task<IActionResult> BuyOrInformateCar([FromBody] BuyOrInformateCarDto buyOrInformateCarDto)
         {
@@ -117,6 +117,6 @@ namespace API.Controllers
                return Ok("Не получилось создать заявку");
             }
 
-        }
+        }*/
     }
 }

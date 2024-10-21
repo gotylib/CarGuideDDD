@@ -19,13 +19,6 @@ services:
           - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
         depends_on:      
             - db
-    mail:
-        build:
-            context: .
-            dockerfile: CarGuideDDD.MailServices
-        ports:
-            - "8081:7288"
-            - "8080:7289"
     bot:
         build:
             context: .
@@ -33,5 +26,12 @@ services:
         ports:
             - "8081:5000"
             - "8080:5001"
+    mail:
+        build:
+            context: .
+            dockerfile: CarGuideDDD.MailServices
+        ports:
+            - "8081:7288"
+            - "8080:7289"
     
     

@@ -118,8 +118,17 @@ namespace CarGuideDDD.Infrastructure.Services
 
             }
         }
+        public Task<bool> BuyAsync(int id, string clientName)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task<bool> BuyAsync(int id, string clientName)
+        public Task<bool> InfoAsync(int id, string clientName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<bool> BuyAsync(int id, string clientName)
         {
             var client = await _userRepository.GetByNameAsync(clientName);
             var car = await _carRepository.GetByIdAsync(id);
@@ -141,7 +150,7 @@ namespace CarGuideDDD.Infrastructure.Services
             }
 
 
-        }
+        }*/
     }
 
 }
