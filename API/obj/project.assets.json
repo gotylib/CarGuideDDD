@@ -3341,11 +3341,25 @@
           "bin/placeholder/CarGuideDDD.Core.dll": {}
         }
       },
+      "CarGuideDDD.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "CarGuideDDD.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CarGuideDDD.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CarGuideDDD.Domain.dll": {}
+        }
+      },
       "CarGuideDDD.Infrastructure/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "CarGuideDDD.Core": "1.0.0",
+          "CarGuideDDD.Domain": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.10",
           "Microsoft.AspNetCore.Mvc": "2.2.0"
         },
@@ -9548,6 +9562,11 @@
       "path": "../CarGuideDDD.Core/CarGuideDDD.Core.csproj",
       "msbuildProject": "../CarGuideDDD.Core/CarGuideDDD.Core.csproj"
     },
+    "CarGuideDDD.Domain/1.0.0": {
+      "type": "project",
+      "path": "../CarGuideDDD.Domain/CarGuideDDD.Domain.csproj",
+      "msbuildProject": "../CarGuideDDD.Domain/CarGuideDDD.Domain.csproj"
+    },
     "CarGuideDDD.Infrastructure/1.0.0": {
       "type": "project",
       "path": "../CarGuideDDD.Infrastructure/CarGuideDDD.Infrastructure.csproj",
@@ -9568,24 +9587,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\repos\\CarGuideDDD\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "E:\\repos\\CarGuideDDD\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "E:\\repos\\CarGuideDDD\\API\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9600,11 +9614,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj": {
-              "projectPath": "E:\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj"
+            "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj": {
+              "projectPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj"
             },
-            "E:\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj": {
-              "projectPath": "E:\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj"
+            "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj"
             }
           }
         }

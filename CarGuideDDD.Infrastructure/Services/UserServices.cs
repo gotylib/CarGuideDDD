@@ -181,23 +181,7 @@ namespace CarGuideDDD.Infrastructure.Services
             return new OkObjectResult(new { AccessToken = newAccessToken, RefreshToken = newRefreshToken.Token });
         }
 
-        public async Task<IActionResult> BuyCar(int idCar, UserDto userDto)
-        {
-            var users = _userManager.Users.ToList();
 
-            // Список для хранения пользователей с ролью "Manager"
-            var managers = new List<EntityUser>();
-
-            foreach (var user in users)
-            {
-                // Проверяем, есть ли у пользователя роль "Manager"
-                if (await _userManager.IsInRoleAsync(user, "Manager"))
-                {
-                    managers.Add(user);
-                }
-            }
-
-        }
 
     }
 }

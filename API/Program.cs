@@ -1,4 +1,5 @@
 using CarGuideDDD.Core.Jwt;
+using CarGuideDDD.Domain.Methods;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
@@ -20,7 +21,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
-
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

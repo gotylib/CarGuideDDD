@@ -1,0 +1,16 @@
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\bin\Debug\net8.0\CarGuideDDD.Domain.deps.json
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\bin\Debug\net8.0\CarGuideDDD.Domain.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\bin\Debug\net8.0\CarGuideDDD.Domain.pdb
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\bin\Debug\net8.0\CarGuideDDD.Core.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\bin\Debug\net8.0\CarGuideDDD.Core.pdb
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.AssemblyInfo.cs
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.sourcelink.json
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuide.0ED59048.Up2Date
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\refint\CarGuideDDD.Domain.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\CarGuideDDD.Domain.pdb
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Domain\obj\Debug\net8.0\ref\CarGuideDDD.Domain.dll

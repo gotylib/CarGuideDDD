@@ -1,4 +1,6 @@
-﻿using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+﻿using CarGuideDDD.Core.MapObjects;
+using CarGuideDDD.Domain.Methods;
+using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using Domain.Entities;
 using DTOs;
 using Infrastructure.Data;
@@ -16,11 +18,15 @@ namespace CarGuideDDD.Infrastructure.Services
     {
         private readonly ICarRepository _carRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<EntityUser> _userManager;
+        private readonly IUserRepository _userRepository;
 
-        public CarService(ICarRepository carRepository, RoleManager<IdentityRole> roleManager)
+        public CarService(ICarRepository carRepository, RoleManager<IdentityRole> roleManager, UserManager<EntityUser> userManager, IUserRepository userRepository)
         {
             _carRepository = carRepository;
             _roleManager = roleManager;
+            _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         // Получение всех автомобилей
@@ -98,6 +104,37 @@ namespace CarGuideDDD.Infrastructure.Services
         public async Task SetCarAvailabilityAsync(int id, bool inAvailable)
         {
             await _carRepository.SetAvailabilityAsync(id, inAvailable);
+        }
+
+        public async Task<bool> BuyOrInforameAsync(int id, string clientName,bool statis)
+        {
+            var users = _userManager.Users.ToList();
+
+            // Список для хранения пользователей с ролью "Manager"
+            var managers = new List<EntityUser>();
+
+            foreach (var user in users)
+            {
+                // Проверяем, есть ли у пользователя роль "Manager"
+                if (await _userManager.IsInRoleAsync(user, "Manager"))
+                {
+                    managers.Add(user);
+                }
+            }
+            Random random = new Random();
+            
+            CreateRequestCar createRequestCar = new CreateRequestCar();
+            var client = await _userRepository.GetByNameAsync(clientName);    
+            var car = await _carRepository.GetByIdAsync(id);
+            if(managers.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return await createRequestCar.CreatePurchaseRequestOrGetInformationAboutCar(car, client, Maps.MapEntityUseToUserDto(managers[random.Next(managers.Count)]), statis);
+            }
+
         }
 
     }

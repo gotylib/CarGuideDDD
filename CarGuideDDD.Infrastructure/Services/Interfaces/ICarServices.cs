@@ -35,6 +35,9 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
 
             // Сделать автомобиль недоступным
             Task SetCarAvailabilityAsync(int id, bool inAvailable);
+
+            //Создать заявку на обработку покупки или получение информации о машине
+            Task<bool> BuyOrInforameAsync(int id, string clientName, bool statis);
         }
     }
 }

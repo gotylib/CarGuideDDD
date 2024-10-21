@@ -17,3 +17,10 @@ E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.dll
 E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\refint\CarGuideDDD.Core.dll
 E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.pdb
 E:\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\ref\CarGuideDDD.Core.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.deps.json
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\bin\Debug\net8.0\CarGuideDDD.Core.pdb
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\refint\CarGuideDDD.Core.dll
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\CarGuideDDD.Core.pdb
+C:\Users\Admin\source\repos\CarGuideDDD\CarGuideDDD.Core\obj\Debug\net8.0\ref\CarGuideDDD.Core.dll

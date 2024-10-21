@@ -8,6 +8,10 @@ using Telegram.Bot.Types.Enums;
 using Newtonsoft.Json;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Security.AccessControl;
+using CarGuideDDD.TelegramBot.ProcessingMethods;
 
 public class Bot 
 {
@@ -15,6 +19,7 @@ public class Bot
     private static readonly string clientId = "52506965";   
     private static readonly string clientSecret = "Qsbj6ZrB7cRpU8UHy0SS"; 
     private static readonly string redirectUri = "https://t.me/BycarQPDbot"; 
+    private static readonly Dictionary<long,List<string>> tokens = new Dictionary<long,List<string>>();
 
     public static async Task HandlerUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
@@ -61,9 +66,138 @@ public class Bot
             {
                 string code = message.Text;
                 code = code.Remove(0, 4);
-                await HandleRedirect(code);
-            }
+                var information = await Methods.HandleRedirect(code);
+                if (information[0] == "Error")
+                {
+                    await botClient.SendTextMessageAsync(update.Message.Chat, "У вас не получилось войти, попробуйте ещё раз.");
+                }
+                else
+                {
+                    information.Add("Az100Az.");
+                    information.Add("Null");
+                    var url = "https://localhost:7162/api/Users/RegisterOrLogin";
+                    var jsonContent = new
+                    {
+                        username = $"{Methods.Translit(information[0])}",
+                        email = $"{information[1]}",
+                        password = $"{information[2]}",
+                        secretCode = $"{information[3]}"
+                    };
 
+                    using (var httpClient = new HttpClient())
+                    {
+                        // Установка заголовков
+                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+                        // Сериализация объекта в JSON
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(jsonContent);
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        // Отправка POST-запроса
+                        var response = await httpClient.PostAsync(url, content);
+
+                        // Проверка ответа
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var responseData = await response.Content.ReadAsStringAsync();
+                            var token = JsonConvert.DeserializeObject<Token>(responseData);
+                            Console.WriteLine("Access Token: " + token.accessToken);
+                            Console.WriteLine("Refresh Token: " + token.refreshToken);
+                            tokens.Add(message.Chat.Id, new List<string>() { token.accessToken, token.refreshToken });
+
+                            var replyKeyboard = new ReplyKeyboardMarkup(
+                                new List<KeyboardButton[]>()
+                                {
+                                    new KeyboardButton[]
+                                    {
+                                        new KeyboardButton("Посмотреть каталог машин"),
+                                        new KeyboardButton("Купить машину"),
+                                        new KeyboardButton("Получить информацию о машине"),
+                                    },
+                                })
+                            {
+                                ResizeKeyboard = true,
+                            };
+                            await botClient.SendTextMessageAsync(message.Chat.Id, "Добро пожаловать! Выберите действие:", replyMarkup: replyKeyboard);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: " + response.StatusCode);
+                        }
+                    }
+                }
+            }
+            else if (message.Text == "Посмотреть каталог машин")
+            {
+                var url = "https://localhost:7162/api/Cars/GetFofAll";
+                using (var httpClient = new HttpClient())
+                {
+                    // Установка заголовков
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+                    var response = await httpClient.GetAsync(url);
+                    var responsData = await response.Content.ReadAsStringAsync();
+                    await botClient.SendTextMessageAsync(message.Chat.Id, responsData);
+                }
+
+            }
+            else if (message.Text == "Купить машину")
+            {
+
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите Купить:<id машины>");
+            }
+            else if (message.Text == "Получить информацию о машине")
+            {
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите Информация:<id машины>");
+            }
+            else if (message.Text.Contains("Купить:"))
+            {
+                var carId = message.Text.Remove(0, 7);
+                if (tokens.ContainsKey(message.Chat.Id))
+                {
+                    var result = await Methods.BuyOrInformate(tokens[message.Chat.Id][0], int.Parse(carId), true);
+                    await botClient.SendTextMessageAsync(message.Chat.Id, result);
+                }
+                else
+                {
+                    var replyKeyboard = new ReplyKeyboardMarkup(
+                    new List<KeyboardButton[]>()
+                    {
+                        new KeyboardButton[]
+                        {
+                            new KeyboardButton("Зарегистрироваться"),
+                        },
+                    })
+                    {
+                        ResizeKeyboard = true,
+                    };
+                    await botClient.SendTextMessageAsync(message.Chat.Id, "Вы не зарегестрированны!!!", replyMarkup: replyKeyboard);
+                }
+            }
+            else if (message.Text.Contains("Информация:"))
+            {
+                var carId = message.Text.Remove(0, 11);
+                if (tokens.ContainsKey(message.Chat.Id))
+                {
+                    var result = await Methods.BuyOrInformate(tokens[message.Chat.Id][0], int.Parse(carId), true);
+                    await botClient.SendTextMessageAsync(message.Chat.Id, result);
+                }
+                else
+                {
+                    var replyKeyboard = new ReplyKeyboardMarkup(
+                    new List<KeyboardButton[]>()
+                    {
+                        new KeyboardButton[]
+                        {
+                            new KeyboardButton("Зарегистрироваться"),
+                        },
+                    })
+                    {
+                        ResizeKeyboard = true,
+                    };
+                    await botClient.SendTextMessageAsync(message.Chat.Id, "Вы не зарегестрированны!!!", replyMarkup: replyKeyboard);
+                }
+            }
         }
     }
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -71,64 +205,4 @@ public class Bot
         Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
     }
 
-    public static async Task<string> GetAccessTokenAsync(string code)
-    {
-        using (var httpClient = new HttpClient())
-        {
-            try
-            {
-                var response = await httpClient.GetStringAsync($"https://oauth.vk.com/access_token?client_id={clientId}&client_secret={clientSecret}&redirect_uri={redirectUri}&scope=email&code={code}");
-                dynamic jsonResponse = JsonConvert.DeserializeObject(response);
-                return jsonResponse.access_token;
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-                return "Error";
-            }
-
-        }
-    }
-
-    public static async Task<dynamic> GetUserInfoAsync(string accessToken)
-    {
-        if(accessToken == "Error")
-        {
-            return null;
-        }
-        using (var httpClient = new HttpClient())
-        {
-            var response = await httpClient.GetStringAsync($"https://api.vk.com/method/users.get?access_token={accessToken}&fields=email&v=5.131");
-            dynamic userInfo = JsonConvert.DeserializeObject(response);
-
-            // Проверка на наличие ошибок в ответе 
-            if (userInfo.error != null)
-            {
-                Console.WriteLine($"Error: {userInfo.error.message} (code: {userInfo.error.error_code})");
-                return null;
-            }
-
-            return userInfo.response[0];
-        }
-    }
-
-    public static async Task HandleRedirect(string code)
-    {
-        string accessToken = await GetAccessTokenAsync(code);
-        var userInfo = await GetUserInfoAsync(accessToken);
-
-        if (userInfo != null)
-        {
-            // Теперь можно получить email, но он может быть null
-            string email = userInfo.email ?? "Email не предоставлен"; // обрабатываем случай, если email отсутствует
-            Console.WriteLine($"User ID: {userInfo.id}, Name: {userInfo.first_name}, Email: {email}");
-        }
-        else
-        {
-            Console.WriteLine("Не удалось получить информацию о пользователе.");
-        }
-    }
-
 }
-

@@ -9,6 +9,7 @@
       "CarGuideDDD.Infrastructure/1.0.0": {
         "dependencies": {
           "CarGuideDDD.Core": "1.0.0",
+          "CarGuideDDD.Domain": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.10",
           "Microsoft.AspNetCore.Mvc": "2.2.0"
         },
@@ -1582,6 +1583,14 @@
         "runtime": {
           "CarGuideDDD.Core.dll": {}
         }
+      },
+      "CarGuideDDD.Domain/1.0.0": {
+        "dependencies": {
+          "CarGuideDDD.Core": "1.0.0"
+        },
+        "runtime": {
+          "CarGuideDDD.Domain.dll": {}
+        }
       }
     }
   },
@@ -2838,6 +2847,11 @@
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
     "CarGuideDDD.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CarGuideDDD.Domain/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

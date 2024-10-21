@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using CarGuideDDD.Core.DtoObjects;
+using Domain.Entities;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -102,9 +103,19 @@ namespace API.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPost("BuyCar")]
-        public async Task<IActionResult> Buycar()
+        [HttpPost("BuyOrInformateCar")]
+        public async Task<IActionResult> BuyOrInformateCar([FromBody] BuyOrInformateCarDto buyOrInformateCarDto)
         {
+            var username = User.Identity.Name;
+            var result = await _carService.BuyOrInforameAsync(buyOrInformateCarDto.Id,username,buyOrInformateCarDto.Status);
+            if (result)
+            {
+                return Ok("Заявка сформирована");
+            }
+            else
+            {
+               return Ok("Не получилось создать заявку");
+            }
 
         }
     }
