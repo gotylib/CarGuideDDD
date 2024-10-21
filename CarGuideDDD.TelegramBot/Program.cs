@@ -1,6 +1,12 @@
 ﻿using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot;
+using Microsoft.Extensions.DependencyInjection;
+
+
+var serviceProvider = new ServiceCollection()
+            .AddHttpClient() // Регистрация IHttpClientFactory
+            .BuildServiceProvider();
 
 Bot.bot = new TelegramBotClient("8041332399:AAGPCvDrFXD9ZV74a9nyztJptNEuXe90pdI");
 

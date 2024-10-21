@@ -13,6 +13,11 @@ namespace CarGuideDDD.Domain.Methods
 {
     public class CreateRequestCar
     {
+        public IHttpClientFactory _httpClientFactory { get; set; }
+        public CreateRequestCar(IHttpClientFactory httpClientFactory) 
+        {
+            _httpClientFactory = httpClientFactory;
+        }
         public async Task<bool> CreatePurchaseRequestOrGetInformationAboutCar(PriorityCarDto priorityCarDto, UserDto clientDto, UserDto? managerDto, bool Buy)
         {
             Car car = Maps.MapPriorityCarDtoToCar(priorityCarDto);
@@ -53,7 +58,7 @@ namespace CarGuideDDD.Domain.Methods
                     subject = "Заявка на получение информации о машине";
                 }
 
-                using (var userAnswer = new HttpClient())
+                var userAnswer = _httpClientFactory.CreateClient();
                 {
                     userAnswer.BaseAddress = new Uri("https://localhost:7288");
                     userAnswer.DefaultRequestHeaders.Accept.Clear();

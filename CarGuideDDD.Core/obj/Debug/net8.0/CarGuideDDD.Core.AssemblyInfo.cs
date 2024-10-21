@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarGuideDDD.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16a035d55cadce038ec222088c0966f51e2d70cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fa2e95d85f68409133b35ab144cd80165f35f07")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarGuideDDD.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarGuideDDD.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

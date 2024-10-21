@@ -1,18 +1,12 @@
-﻿using CarGuideDDD.Core.MapObjects;
-using CarGuideDDD.Domain.Methods;
+﻿using CarGuideDDD.Core.DomainObjects.ResultObjects;
+using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
 using Infrastructure.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -23,13 +17,15 @@ namespace CarGuideDDD.Infrastructure.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<EntityUser> _userManager;
         private readonly IUserRepository _userRepository;
+        private readonly IMailServices _mailServices;
 
-        public CarService(ICarRepository carRepository, RoleManager<IdentityRole> roleManager, UserManager<EntityUser> userManager, IUserRepository userRepository)
+        public CarService(ICarRepository carRepository, RoleManager<IdentityRole> roleManager, UserManager<EntityUser> userManager, IUserRepository userRepository, IMailServices mailServices)
         {
             _carRepository = carRepository;
             _roleManager = roleManager;
             _userManager = userManager;
             _userRepository = userRepository;
+            _mailServices = mailServices;
         }
 
         // Получение всех автомобилей
@@ -107,47 +103,47 @@ namespace CarGuideDDD.Infrastructure.Services
         public async Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable)
         {
             var car = await _carRepository.GetByIdAsync(id);
-            if(car.StockCount != 0)
+
+            var resultAction = Maps.MapPriorityCarDtoToCar(car).SetCarAvailability();
+
+            switch (resultAction)
             {
-                return new BadRequestObjectResult("Машину можно сделать недоступной, только если их нет на складе");
-            }
-            else
-            {
-                await _carRepository.SetAvailabilityAsync(id, inAvailable);
-                return new OkResult();
+                case AvailabilityActionResult.Success:
+                    await _carRepository.SetAvailabilityAsync(id, inAvailable);
+                    return new OkResult();
+                case AvailabilityActionResult.InvalidStockCount:
+                    return new BadRequestObjectResult("Машину можно сделать недоступной, только если их нет на складе");
+                default:
+                    return new StatusCodeResult(500);
+
             }
         }
 
-        public async Task<bool> BuyOrInforameAsync(int id, string clientName,bool statis)
+        public async Task<bool> BuyAsync(int id, string clientName)
         {
-            var users = _userManager.Users.ToList();
-
-            // Список для хранения пользователей с ролью "Manager"
-            var managers = new List<EntityUser>();
-
-            foreach (var user in users)
-            {
-                // Проверяем, есть ли у пользователя роль "Manager"
-                if (await _userManager.IsInRoleAsync(user, "Manager"))
-                {
-                    managers.Add(user);
-                }
-            }
-            Random random = new Random();
-            
-            CreateRequestCar createRequestCar = new CreateRequestCar();
-            var client = await _userRepository.GetByNameAsync(clientName);    
+            var client = await _userRepository.GetByNameAsync(clientName);
             var car = await _carRepository.GetByIdAsync(id);
-            if(managers.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return await createRequestCar.CreatePurchaseRequestOrGetInformationAboutCar(car, client, Maps.MapEntityUseToUserDto(managers[random.Next(managers.Count)]), statis);
-            }
-
+            var managers = (await _userManager.GetUsersInRoleAsync("Manager")).Select(Maps.MapEntityUserToUser).ToList();
+            var result = Maps.MapPriorityCarDtoToCar(car).BuyCar(managers, Maps.MapUserDtoToUser(client)); 
         }
 
+        public async Task<bool> InfoAsync(int id, string clientName)
+        {
+            var client = await _userRepository.GetByNameAsync(clientName);
+            var car = await _carRepository.GetByIdAsync(id);
+            var managers = (await _userManager.GetUsersInRoleAsync("Manager")).Select(Maps.MapEntityUserToUser).ToList();
+            var result = Maps.MapPriorityCarDtoToCar(car).InfoCar(managers, Maps.MapUserDtoToUser(client));
+
+            switch (result.Status)
+            {
+                case InfoCarActionResult.SendErrorMessageToUser:
+                    await _mailServices.SendUserNotFountManagerMessageAsync(
+            }
+
+
+        }
     }
+
 }
+
+

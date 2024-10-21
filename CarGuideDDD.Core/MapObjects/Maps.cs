@@ -14,19 +14,25 @@ namespace CarGuideDDD.Core.MapObjects
 
         public static partial EntityUser MapUserDtoToEntityUser(UserDto userDto);
 
-        public static partial UserDto MapEntityUseToUserDto (EntityUser entityDto);
-
-        public static partial Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto);
+        public static partial UserDto MapEntityUseToUserDto(EntityUser entityDto);
 
         [MapProperty(nameof(UserDto.Username), nameof(User.Name))]
-        [MapProperty(nameof(UserDto.Email), nameof(User.Email))]
         public static partial User MapUserDtoToUser(UserDto userDto);
 
+        [MapProperty(nameof(User.Name), nameof(UserDto.Username))]
+        public static partial UserDto MapUserDtoToUser(User user);
+
         [MapProperty(nameof(RegisterDto.Username), nameof(LoginDto.Name))]
-        [MapProperty(nameof(RegisterDto.Password), nameof(LoginDto.Password))]
         public static partial LoginDto MapRegisterDtoToLoginDto(RegisterDto registerDto);
 
         public static partial RegisterDto MapUserDtoToRegistaerDto(UserDto userDto);
+
+        public static partial Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto);
+
+        public static partial PriorityCarDto MapCarToPriorityCarDto(Car car);
+
+        public static partial User MapEntityUserToUser(EntityUser entityuser);
+
     }
 
 
