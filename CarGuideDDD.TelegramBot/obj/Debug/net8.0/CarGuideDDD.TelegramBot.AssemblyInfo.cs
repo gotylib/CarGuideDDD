@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarGuideDDD.TelegramBot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fa2e95d85f68409133b35ab144cd80165f35f07")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc80fac52e8cf7712547c07e8fbd4a944e06a1d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarGuideDDD.TelegramBot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarGuideDDD.TelegramBot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

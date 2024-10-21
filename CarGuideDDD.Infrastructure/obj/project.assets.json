@@ -3162,19 +3162,6 @@
         "runtime": {
           "bin/placeholder/CarGuideDDD.Core.dll": {}
         }
-      },
-      "CarGuideDDD.Domain/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "CarGuideDDD.Core": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/CarGuideDDD.Domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/CarGuideDDD.Domain.dll": {}
-        }
       }
     }
   },
@@ -8844,17 +8831,11 @@
       "type": "project",
       "path": "../CarGuideDDD.Core/CarGuideDDD.Core.csproj",
       "msbuildProject": "../CarGuideDDD.Core/CarGuideDDD.Core.csproj"
-    },
-    "CarGuideDDD.Domain/1.0.0": {
-      "type": "project",
-      "path": "../CarGuideDDD.Domain/CarGuideDDD.Domain.csproj",
-      "msbuildProject": "../CarGuideDDD.Domain/CarGuideDDD.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "CarGuideDDD.Core >= 1.0.0",
-      "CarGuideDDD.Domain >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.10",
       "Microsoft.AspNetCore.Mvc >= 2.2.0"
     ]
@@ -8889,9 +8870,6 @@
           "projectReferences": {
             "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj": {
               "projectPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Core\\CarGuideDDD.Core.csproj"
-            },
-            "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Domain\\CarGuideDDD.Domain.csproj": {
-              "projectPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Domain\\CarGuideDDD.Domain.csproj"
             }
           }
         }
@@ -8939,5 +8917,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json."
+    }
+  ]
 }

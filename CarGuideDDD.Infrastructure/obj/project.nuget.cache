@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oVr71QvwICM=",
+  "dgSpecHash": "xQoyC4Urkj4=",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -183,5 +183,12 @@
     "C:\\Users\\Admin\\.nuget\\packages\\system.xml.xpath\\4.3.0\\system.xml.xpath.4.3.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.xml.xpath.xdocument\\4.3.0\\system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json."
+    }
+  ]
 }
