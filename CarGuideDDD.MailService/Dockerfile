@@ -9,19 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CarGuideDDD/API/API.csproj", "API/"]
-COPY ["CarGuideDDD/CarGuideDDD.Core/CarGuideDDD.Core.csproj", "CarGuideDDD.Core/"]
-COPY ["CarGuideDDD/CarGuideDDD.Infrastructure/CarGuideDDD. .csproj", "CarGuideDDD.Core/"]
-RUN dotnet restore "./API/API.csproj"
+COPY ["CarGuideDDD.MailService/CarGuideDDD.MailService.csproj", "CarGuideDDD.MailService/"]
+RUN dotnet restore "./CarGuideDDD.MailService/CarGuideDDD.MailService.csproj"
 COPY . .
-WORKDIR "/src/API"
-RUN dotnet build "./API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/CarGuideDDD.MailService"
+RUN dotnet build "./CarGuideDDD.MailService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./CarGuideDDD.MailService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "API.dll"]
+ENTRYPOINT ["dotnet", "CarGuideDDD.MailService.dll"]

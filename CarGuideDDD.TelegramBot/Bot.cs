@@ -112,7 +112,7 @@ public class Bot
                                     {
                                         new KeyboardButton("Посмотреть каталог машин"),
                                         new KeyboardButton("Купить машину"),
-                                        new KeyboardButton("Получить информацию о машине"),
+                                        new KeyboardButton("Информация о машине"),
                                     },
                                 })
                             {
@@ -146,7 +146,7 @@ public class Bot
 
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Введите Купить:<id машины>");
             }
-            else if (message.Text == "Получить информацию о машине")
+            else if (message.Text == "Информация о машине")
             {
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Введите Информация:<id машины>");
             }

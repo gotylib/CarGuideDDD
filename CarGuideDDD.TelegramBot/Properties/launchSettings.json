@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CarGuideDDD.TelegramBot": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

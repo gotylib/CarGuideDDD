@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("5dfcda10-c804-4f7f-a0f7-bf5c0cd17e7c")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4eebc40d9a90a0a7e177bc84e0f693afffe6b50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36e6c2b7ebcc4ef8f251208ddccee1659ac79850")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
