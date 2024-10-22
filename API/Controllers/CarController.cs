@@ -1,6 +1,4 @@
-﻿using CarGuideDDD.Core.DtoObjects;
-using Domain.Entities;
-using DTOs;
+﻿using DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
@@ -102,12 +100,12 @@ namespace API.Controllers
             }
         }
 
-        /*[Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPost("BuyOrInformateCar")]
-        public async Task<IActionResult> BuyOrInformateCar([FromBody] BuyOrInformateCarDto buyOrInformateCarDto)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("InformateCar")]
+        public async Task<IActionResult> InformateCar([FromBody] IdDto carId)
         {
             var username = User.Identity.Name;
-            var result = await _carService.BuyOrInforameAsync(buyOrInformateCarDto.Id,username,buyOrInformateCarDto.Status);
+            var result = await _carService.InfoAsync(carId.Id,username);
             if (result)
             {
                 return Ok("Заявка сформирована");
@@ -117,6 +115,23 @@ namespace API.Controllers
                return Ok("Не получилось создать заявку");
             }
 
-        }*/
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("BuyCar")]
+        public async Task<IActionResult> BuyCar([FromBody] IdDto carId)
+        {
+            var username = User.Identity.Name;
+            var result = await _carService.BuyAsync(carId.Id, username);
+            if (result)
+            {
+                return Ok("Заявка сформирована");
+            }
+            else
+            {
+                return Ok("Не получилось создать заявку");
+            }
+
+        }
     }
 }

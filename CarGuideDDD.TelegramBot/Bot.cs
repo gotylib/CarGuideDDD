@@ -1,16 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Newtonsoft.Json;
-using Telegram.Bot.Polling;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Security.AccessControl;
 using CarGuideDDD.TelegramBot.ProcessingMethods;
 
 public class Bot 
@@ -23,8 +17,8 @@ public class Bot
 
     public static async Task HandlerUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
-        if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
+        Console.WriteLine(JsonConvert.SerializeObject(update));
+        if (update.Type == UpdateType.Message)
         {
             var message = update.Message;
             if (message.Text == "/start")
@@ -90,7 +84,7 @@ public class Bot
                         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
                         // Сериализация объекта в JSON
-                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(jsonContent);
+                        var json = JsonConvert.SerializeObject(jsonContent);
                         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                         // Отправка POST-запроса
@@ -152,11 +146,28 @@ public class Bot
             }
             else if (message.Text.Contains("Купить:"))
             {
-                var carId = message.Text.Remove(0, 7);
+                string carIdstr = "";
+                if (message.Text.Length > 7)
+                {
+                    carIdstr = message.Text.Remove(0, 7);
+                }
+                else
+                {
+                    await botClient.SendTextMessageAsync(message.Chat.Id, "Вы неправильно ввели id машины попробуйте ещё раз");
+                }
                 if (tokens.ContainsKey(message.Chat.Id))
                 {
-                    var result = await Methods.BuyOrInformate(tokens[message.Chat.Id][0], int.Parse(carId), true);
-                    await botClient.SendTextMessageAsync(message.Chat.Id, result);
+                    int carId;
+                    bool resultParse = int.TryParse(carIdstr, out carId);
+                    if (resultParse)
+                    {
+                        var result = await Methods.BuyOrInformate(tokens[message.Chat.Id][0], carId, true);
+                        await botClient.SendTextMessageAsync(message.Chat.Id, result);
+                    }
+                    else
+                    {
+                        await botClient.SendTextMessageAsync(message.Chat.Id, "Вы неправильно ввели id машины попробуйте ещё раз");
+                    }
                 }
                 else
                 {
@@ -202,7 +213,7 @@ public class Bot
     }
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
-        Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+        Console.WriteLine(JsonConvert.SerializeObject(exception));
     }
 
 }

@@ -14,24 +14,43 @@ namespace CarGuideDDD.Core.MapObjects
 
         public static partial EntityUser MapUserDtoToEntityUser(UserDto userDto);
 
+
+        [MapProperty(nameof(EntityUser.UserName), nameof(UserDto.Username))]
         public static partial UserDto MapEntityUseToUserDto(EntityUser entityDto);
 
-        [MapProperty(nameof(UserDto.Username), nameof(User.Name))]
-        public static partial User MapUserDtoToUser(UserDto userDto);
+        public static User MapUserDtoToUser(UserDto userDto)
+        {
+            var newUser = new User();
+            newUser.Create(userDto.Username, userDto.Email, "", userDto.Password);
+            return newUser;
+        }
+
+        public static User MapEntityUserToUser(EntityUser entityUser)
+        {
+            var newUser = new User();
+            newUser.Create(entityUser.UserName, entityUser.Email, "", entityUser.Password);
+            return newUser;
+        }
 
         [MapProperty(nameof(User.Name), nameof(UserDto.Username))]
-        public static partial UserDto MapUserDtoToUser(User user);
+        public static partial UserDto MapUserToUserDto(User user);
 
         [MapProperty(nameof(RegisterDto.Username), nameof(LoginDto.Name))]
         public static partial LoginDto MapRegisterDtoToLoginDto(RegisterDto registerDto);
 
         public static partial RegisterDto MapUserDtoToRegistaerDto(UserDto userDto);
 
-        public static partial Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto);
-
         public static partial PriorityCarDto MapCarToPriorityCarDto(Car car);
 
-        public static partial User MapEntityUserToUser(EntityUser entityuser);
+        public static Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto)
+        {
+            var newCar = new Car();
+            newCar.Create(priorityCarDto.Make, priorityCarDto.Model, priorityCarDto.Color, priorityCarDto.StockCount, priorityCarDto.IsAvailable);
+            return newCar;
+
+        }
+
+
 
     }
 

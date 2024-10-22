@@ -125,7 +125,15 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
 
         public static async Task<string> BuyOrInformate(string token, int carId, bool state)
         {
-            var url = "https://localhost:7162/api/Cars/BuyOrInformateCar";
+            string url;
+            if (state)
+            {
+                url = "https://localhost:7162/api/Cars/BuyCar";
+            }
+            else
+            {
+                url = "https://localhost:7162/api/Cars/InformateCar";
+            }
 
             var data = new
             {

@@ -54,7 +54,7 @@ namespace UnitTests
             var result = testCar.BuyCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(1, (int)result.Status);
+            Assert.Equal(BuyCarActionResult.SendBuyMessage, result.Status);
             Assert.NotNull(result.Client);
             Assert.NotNull(result.Manager);
         }
@@ -81,7 +81,7 @@ namespace UnitTests
             var result = testCar.BuyCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(0, (int)result.Status);
+            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaweCar, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -102,7 +102,7 @@ namespace UnitTests
             var result = testCar.BuyCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(0, (int)result.Status);
+            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaweManagers, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -112,7 +112,7 @@ namespace UnitTests
         {
             //Arrange
             Car testCar = new Car();
-            testCar.Create("BMW", "7", "green", 0, true);
+            testCar.Create("BMW", "7", "green", 1, true);
 
             var testClient = new User();
             testClient.Create("Masha", "mixalev702@mail.ru", "null", "Az100Az.");
@@ -129,9 +129,9 @@ namespace UnitTests
             var result = testCar.InfoCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(0, (int)result.Status);
+            Assert.Equal(InfoCarActionResult.SendInfoMessage, result.Status);
             Assert.NotNull(result.Client);
-            Assert.Null(result.Manager);
+            Assert.NotNull(result.Manager);
         }
 
         [Fact]
@@ -153,10 +153,10 @@ namespace UnitTests
             testManagers.Add(testManager2);
 
             //Act
-            var result = testCar.BuyCar(testManagers, testClient);
+            var result = testCar.InfoCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(0, (int)result.Status);
+            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaweCar, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -174,10 +174,10 @@ namespace UnitTests
 
 
             //Act
-            var result = testCar.BuyCar(testManagers, testClient);
+            var result = testCar.InfoCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(0, (int)result.Status);
+            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaweManagers, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }

@@ -13,13 +13,15 @@ namespace Domain.Entities
 
     public enum BuyCarActionResult
     {
-        SendErrorMessageToUser,
+        SendErrorMessageNoHaweCar,
+        SendErrorMessageNoHaweManagers,
         SendBuyMessage,
     }
 
     public enum InfoCarActionResult 
     {
-        SendErrorMessageToUser,
+        SendErrorMessageNoHaweCar,
+        SendErrorMessageNoHaweManagers,
         SendInfoMessage,
     }
 
@@ -56,9 +58,12 @@ namespace Domain.Entities
 
         public BuyCarResult BuyCar(IList<User> managers, User client)
         {
-            if(managers.Count == 0 || StockCount == 0)
+            if(managers.Count == 0)
             {
-                return new BuyCarResult {Status = BuyCarActionResult.SendErrorMessageToUser, Manager = null , Client = client};
+                return new BuyCarResult {Status = BuyCarActionResult.SendErrorMessageNoHaweManagers, Manager = null , Client = client};
+            }else if (StockCount == 0)
+            {
+                return new BuyCarResult { Status = BuyCarActionResult.SendErrorMessageNoHaweCar, Manager = null, Client = client };
             }
             else
             {
@@ -70,9 +75,13 @@ namespace Domain.Entities
 
         public InfoCarResult InfoCar(IList<User> managers, User client)
         {
-            if (managers.Count == 0 || StockCount == 0)
+            if (managers.Count == 0)
             {
-                return new InfoCarResult { Status = InfoCarActionResult.SendErrorMessageToUser, Manager = null, Client = client };
+                return new InfoCarResult { Status = InfoCarActionResult.SendErrorMessageNoHaweManagers, Manager = null, Client = client };
+            }
+            else if (StockCount == 0)
+            {
+                return new InfoCarResult { Status = InfoCarActionResult.SendErrorMessageNoHaweCar, Manager = null, Client = client };
             }
             else
             {
@@ -81,5 +90,6 @@ namespace Domain.Entities
                 return new InfoCarResult { Status = InfoCarActionResult.SendInfoMessage, Manager = manager, Client = client };
             }
         }
+        
     }
 }

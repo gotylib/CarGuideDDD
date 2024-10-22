@@ -118,22 +118,54 @@ namespace CarGuideDDD.Infrastructure.Services
 
             }
         }
-        public Task<bool> BuyAsync(int id, string clientName)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<bool> InfoAsync(int id, string clientName)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*public async Task<bool> BuyAsync(int id, string clientName)
+        public async Task<bool> BuyAsync(int id, string clientName)
         {
             var client = await _userRepository.GetByNameAsync(clientName);
             var car = await _carRepository.GetByIdAsync(id);
-            var managers = (await _userManager.GetUsersInRoleAsync("Manager")).Select(Maps.MapEntityUserToUser).ToList();
+            var managers1 = (await _userManager.GetUsersInRoleAsync("Manager"));
+            var managers2 = managers1.Select(Maps.MapEntityUserToUser);
+            var managers = managers2.ToList();
             var result = Maps.MapPriorityCarDtoToCar(car).BuyCar(managers, Maps.MapUserDtoToUser(client)); 
+            if(result.Status == BuyCarActionResult.SendBuyMessage)
+            {
+               var resultAnswer = await _mailServices.SendBuyCarMessageAsync(Maps.MapUserToUserDto(result.Client), Maps.MapUserToUserDto(result.Manager), car);
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false; 
+                }
+            
+            }else if (result.Status == BuyCarActionResult.SendErrorMessageNoHaweManagers)
+            {
+                var resultAnswer = await _mailServices.SendUserNotFountManagerMessageAsync(Maps.MapUserToUserDto(result.Client));
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if( result.Status == BuyCarActionResult.SendErrorMessageNoHaweCar)
+            {
+                var resultAnswer = await _mailServices.SendUserNoHaweCarMessageAsync(Maps.MapUserToUserDto(result.Client), car);
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return false;
+            
         }
 
         public async Task<bool> InfoAsync(int id, string clientName)
@@ -143,14 +175,47 @@ namespace CarGuideDDD.Infrastructure.Services
             var managers = (await _userManager.GetUsersInRoleAsync("Manager")).Select(Maps.MapEntityUserToUser).ToList();
             var result = Maps.MapPriorityCarDtoToCar(car).InfoCar(managers, Maps.MapUserDtoToUser(client));
 
-            switch (result.Status)
+            if (result.Status == InfoCarActionResult.SendInfoMessage)
             {
-                case InfoCarActionResult.SendErrorMessageToUser:
-                    await _mailServices.SendUserNotFountManagerMessageAsync(
+                var resultAnswer = await _mailServices.SendInformCarMessageAsync(Maps.MapUserToUserDto(result.Client), Maps.MapUserToUserDto(result.Manager), car);
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            else if (result.Status == InfoCarActionResult.SendErrorMessageNoHaweManagers)
+            {
+                var resultAnswer = await _mailServices.SendUserNotFountManagerMessageAsync(Maps.MapUserToUserDto(result.Client));
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (result.Status == InfoCarActionResult.SendErrorMessageNoHaweCar)
+            {
+                var resultAnswer = await _mailServices.SendUserNoHaweCarMessageAsync(Maps.MapUserToUserDto(result.Client), car);
+                if (resultAnswer)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
+            return false;
 
-        }*/
+        }
     }
 
 }
