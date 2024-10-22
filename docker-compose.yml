@@ -22,16 +22,16 @@ services:
     bot:
         build:
             context: .
-            dockerfile: CarGuideDDD.TelegramBot
+            dockerfile: CarGuideDDD.TelegramBot/Dockerfile
         ports:
-            - "8081:5000"
-            - "8080:5001"
+            - "8082:5000"
+            - "8083:5001"
     mail:
         build:
             context: .
-            dockerfile: CarGuideDDD.MailServices
+            dockerfile: CarGuideDDD.MailService/Dockerfile
         ports:
-            - "8081:7288"
-            - "8080:7289"
+            - "8084:8084"
+            - "8085:8085"
     
     

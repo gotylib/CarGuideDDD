@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0e28460e8a1504fe561cb45990540024f85edeb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ec2aa11517e115a42ce7229977c2147ba4618c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarGuideDDD.MailService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

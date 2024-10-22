@@ -82,7 +82,7 @@ namespace CarGuideDDD.Infrastructure.Services
             var contentManager = new StringContent(jsonManager, Encoding.UTF8, "application/json");
             try
             {
-                var managerResponse = await client.PostAsync(client.BaseAddress, contentUser);
+                var managerResponse = await client.PostAsync(client.BaseAddress, contentManager);
                 managerResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
                 managerResult = true;
             }
@@ -162,7 +162,7 @@ namespace CarGuideDDD.Infrastructure.Services
             var contentManager = new StringContent(jsonManager, Encoding.UTF8, "application/json");
             try
             {
-                var managerResponse = await client.PostAsync(client.BaseAddress, contentUser);
+                var managerResponse = await client.PostAsync(client.BaseAddress, contentManager);
                 managerResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
                 managerResult = true;
             }
