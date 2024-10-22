@@ -1,5 +1,4 @@
 ﻿using CarGuideDDD.Core.DomainObjects.ResultObjects;
-using DTOs;
 
 
 namespace Domain.Entities

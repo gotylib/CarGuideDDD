@@ -1,3 +1,4 @@
+using API.CastomMiddleware;
 using CarGuideDDD.Core.Jwt;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories;
@@ -114,7 +115,7 @@ if (app.Environment.IsDevelopment())
 
 await InitializeRoles(app);
 
-//app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
 await app.RunAsync();

@@ -25,12 +25,8 @@ namespace CarGuideDDD.Core.MapObjects
             return newUser;
         }
 
-        public static User MapEntityUserToUser(EntityUser entityUser)
-        {
-            var newUser = new User();
-            newUser.Create(entityUser.UserName, entityUser.Email, "", entityUser.Password);
-            return newUser;
-        }
+        public static partial User MapEntityUserToUser(EntityUser entityUser);
+
 
         [MapProperty(nameof(User.Name), nameof(UserDto.Username))]
         public static partial UserDto MapUserToUserDto(User user);

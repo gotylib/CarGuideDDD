@@ -123,45 +123,23 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             var client = await _userRepository.GetByNameAsync(clientName);
             var car = await _carRepository.GetByIdAsync(id);
-            var managers1 = (await _userManager.GetUsersInRoleAsync("Manager"));
-            var managers2 = managers1.Select(Maps.MapEntityUserToUser);
-            var managers = managers2.ToList();
+            var managers = (await _userManager.GetUsersInRoleAsync("Manager")).Select(Maps.MapEntityUserToUser).ToList();
             var result = Maps.MapPriorityCarDtoToCar(car).BuyCar(managers, Maps.MapUserDtoToUser(client)); 
             if(result.Status == BuyCarActionResult.SendBuyMessage)
             {
                var resultAnswer = await _mailServices.SendBuyCarMessageAsync(Maps.MapUserToUserDto(result.Client), Maps.MapUserToUserDto(result.Manager), car);
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false; 
-                }
+
+                return resultAnswer;
             
             }else if (result.Status == BuyCarActionResult.SendErrorMessageNoHaweManagers)
             {
                 var resultAnswer = await _mailServices.SendUserNotFountManagerMessageAsync(Maps.MapUserToUserDto(result.Client));
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return resultAnswer;
             }
             else if( result.Status == BuyCarActionResult.SendErrorMessageNoHaweCar)
             {
                 var resultAnswer = await _mailServices.SendUserNoHaweCarMessageAsync(Maps.MapUserToUserDto(result.Client), car);
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return resultAnswer;
             }
 
             return false;
@@ -178,39 +156,18 @@ namespace CarGuideDDD.Infrastructure.Services
             if (result.Status == InfoCarActionResult.SendInfoMessage)
             {
                 var resultAnswer = await _mailServices.SendInformCarMessageAsync(Maps.MapUserToUserDto(result.Client), Maps.MapUserToUserDto(result.Manager), car);
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return resultAnswer;
 
             }
             else if (result.Status == InfoCarActionResult.SendErrorMessageNoHaweManagers)
             {
                 var resultAnswer = await _mailServices.SendUserNotFountManagerMessageAsync(Maps.MapUserToUserDto(result.Client));
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return resultAnswer;
             }
             else if (result.Status == InfoCarActionResult.SendErrorMessageNoHaweCar)
             {
                 var resultAnswer = await _mailServices.SendUserNoHaweCarMessageAsync(Maps.MapUserToUserDto(result.Client), car);
-                if (resultAnswer)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return resultAnswer;
             }
 
             return false;
