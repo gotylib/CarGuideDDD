@@ -5,11 +5,15 @@ using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
+using DTOs;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
@@ -53,7 +57,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(opt => opt
+    .AddRouteComponents("odata", GetEdmModel())
+    .Select()
+    .Filter()
+    .OrderBy()
+    .Expand()
+    .SetMaxTop(20)
+    .Count()
+    );
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -83,6 +95,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddControllers();
 
 builder.Services.AddHttpClient();
 
@@ -151,4 +164,12 @@ static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
             await roleManager.CreateAsync(new IdentityRole { Name = roleName });
         }
     }
+}
+
+
+static IEdmModel GetEdmModel()
+{
+    var builder = new ODataConventionModelBuilder();
+    builder.EntitySet<PriorityCarDto>("Cars");
+    return builder.GetEdmModel();
 }

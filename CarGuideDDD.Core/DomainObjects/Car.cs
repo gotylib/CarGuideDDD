@@ -1,4 +1,5 @@
 ﻿using CarGuideDDD.Core.DomainObjects.ResultObjects;
+using System.Runtime.CompilerServices;
 
 
 namespace Domain.Entities
@@ -27,7 +28,6 @@ namespace Domain.Entities
 
     public class Car
     {
-        
         public string Make { get; private set; }
         public string Model { get; private set; }
         public string Color { get; private set; }

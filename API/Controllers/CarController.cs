@@ -1,6 +1,7 @@
 ﻿using DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 namespace API.Controllers
@@ -16,20 +17,26 @@ namespace API.Controllers
             _carService = carService;
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [EnableQuery]
+        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
         [HttpGet("Get")]
-        public async Task<IActionResult> GetCars()
+        public IActionResult GetCars()
         {
-            var cars = await _carService.GetAllCarsAsync();
+            var cars = _carService.GetAllCars();
+            
+            return Ok(cars);
+
+        }
+
+        [EnableQuery]
+        [HttpGet("GetFofAll")]
+        public IActionResult GetForAllCars()
+        {
+            var cars = _carService.GetForAllCars();
+
             return Ok(cars);
         }
 
-        [HttpGet("GetFofAll")]
-        public async Task<IActionResult> GetForAllCars()
-        {
-            var cars = await _carService.GetForAllCarsAsync();
-            return Ok(cars);
-        }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
         [HttpPost("CreateCar")]

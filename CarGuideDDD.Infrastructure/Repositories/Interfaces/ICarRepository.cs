@@ -6,7 +6,7 @@ namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
 {
     public interface ICarRepository
     {
-        Task<IEnumerable<PriorityCarDto>> GetAllAsync(bool priority);
+        IQueryable<PriorityCarDto> GetAll(bool priority);
         Task<PriorityCarDto> GetByIdAsync(int id);
         Task<bool> AddAsync(PriorityCarDto car);
         Task<bool> UpdateAsync(int id, PriorityCarDto car);

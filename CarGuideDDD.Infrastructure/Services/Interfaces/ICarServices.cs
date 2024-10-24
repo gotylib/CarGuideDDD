@@ -1,12 +1,6 @@
-﻿using CarGuideDDD.Core;
-using Domain.Entities;
-using DTOs;
+﻿using DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
@@ -15,9 +9,9 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
         public interface ICarService
         {
             // Получение всех автомобилей
-            Task<IEnumerable<PriorityCarDto>> GetAllCarsAsync();
+            IQueryable<PriorityCarDto> GetAllCars();
 
-            public Task<IEnumerable<PriorityCarDto>> GetForAllCarsAsync();
+            IQueryable<PriorityCarDto> GetForAllCars();
 
             // Получение автомобиля по ID
             Task<PriorityCarDto> GetCarByIdAsync(int id);

@@ -2,7 +2,6 @@
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using DTOs;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace CarGuideDDD.Infrastructure.Repositories
@@ -40,17 +39,40 @@ namespace CarGuideDDD.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<PriorityCarDto>> GetAllAsync(bool priority)
+        public IQueryable<PriorityCarDto> GetAll(bool priority)
         {
+            var query = _context.Cars.AsQueryable();
+
             if (priority)
             {
-                return (await _context.Cars.ToListAsync()).Select(Maps.EntityCarToMapPriorityCarDto);
+                // Если приоритет, возвращаем все автомобили
+                return query.Select(car => new PriorityCarDto
+                {
+                    Id = car.Id,
+                    Make = car.Make,
+                    Model = car.Model,
+                    Color = car.Color,
+                    StockCount = car.StockCount,
+                    IsAvailable = car.IsAvailable
+                });
             }
             else
             {
-                return ((await _context.Cars.Where(c => c.IsAvailable == true).ToListAsync()).Select(Maps.EntityCarToMapPriorityCarDto));
+                // Если не приоритет, фильтруем по доступности
+                return query.Where(c => c.IsAvailable)
+                            .Select(car => new PriorityCarDto
+                            {
+                                Id = car.Id,
+                                Make = car.Make,
+                                Model = car.Model,
+                                Color = car.Color,
+                                StockCount = car.StockCount,
+                                IsAvailable = car.IsAvailable
+                            });
             }
         }
+
+
 
         public async Task<PriorityCarDto?> GetByIdAsync(int id)
         {

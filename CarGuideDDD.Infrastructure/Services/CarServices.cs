@@ -29,15 +29,15 @@ namespace CarGuideDDD.Infrastructure.Services
         }
 
         // Получение всех автомобилей
-        public async Task<IEnumerable<PriorityCarDto>> GetAllCarsAsync()
+        public IQueryable<PriorityCarDto> GetAllCars()
         {
-            return(await _carRepository.GetAllAsync(true)).ToList();
+            return _carRepository.GetAll(true);
             
         }
 
-        public async Task<IEnumerable<PriorityCarDto>> GetForAllCarsAsync()
+        public IQueryable<PriorityCarDto> GetForAllCars()
         {
-            return(await _carRepository.GetAllAsync(false)).ToList();
+            return _carRepository.GetAll(false);
             
         }
 
