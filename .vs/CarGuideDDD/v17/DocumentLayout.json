@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|solutionrelative:api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\repositories\\carrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\carguideddd.infrastructure\\repositories\\interfaces\\icarrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E55B3CA0-E360-48F4-BF9F-1792858FE294}|CarGuideDDD.Infrastructure\\CarGuideDDD.Infrastructure.csproj|solutionrelative:carguideddd.infrastructure\\repositories\\interfaces\\icarrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|solutionrelative:api\\controllers\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C4D89F32-E205-4B33-AAB6-3AE3B412DE15}|API\\API.csproj|c:\\users\\admin\\source\\repos\\carguideddd\\api\\castommiddleware\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -221,7 +221,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -242,7 +242,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ICarRepository.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Repositories\\Interfaces\\ICarRepository.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Repositories\\Interfaces\\ICarRepository.cs",
@@ -281,20 +281,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "CarController.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\CarController.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\API\\Controllers\\CarController.cs",
               "RelativeToolTip": "API\\Controllers\\CarController.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwCEAAAAIAAAA",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAQwBQAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-19T11:20:03.302Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CarRepository.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\CarGuideDDD\\CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
               "RelativeDocumentMoniker": "CarGuideDDD.Infrastructure\\Repositories\\CarRepository.cs",
