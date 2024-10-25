@@ -12,20 +12,17 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IStatisticsService _statisticsService;
 
-        public UsersController(IUserService userService, IStatisticsService statisticsService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _statisticsService = statisticsService;
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
@@ -35,8 +32,7 @@ namespace API.Controllers
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserDto user)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.AddUserAsync(user);
         }
@@ -45,8 +41,7 @@ namespace API.Controllers
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserDto updateUser)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.UpdateUserAsync(updateUser);
         }
@@ -55,8 +50,7 @@ namespace API.Controllers
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UsernameDto user)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.DeleteUserAsync(user.Name);
 
@@ -65,8 +59,7 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.Register(model);
         }
@@ -74,8 +67,7 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.Login(model);
         }
@@ -83,8 +75,7 @@ namespace API.Controllers
         [HttpPut("RefreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.RefreshToken(model);
         }
@@ -93,8 +84,7 @@ namespace API.Controllers
         [HttpPost("RegisterOrLogin")]
         public async Task<IActionResult> RegisterOrLogin([FromBody] UserDto userDto)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
+
 
             return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
         }

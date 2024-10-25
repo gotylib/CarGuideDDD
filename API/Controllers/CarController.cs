@@ -14,28 +14,17 @@ namespace API.Controllers
     {
         private readonly ICarService _carService;
 
-        private readonly IStatisticsService _statisticsService;
-
-        public CarsController(ICarService carService, IStatisticsService statisticsService)
+        public CarsController(ICarService carService)
         {
             _carService = carService;
-            _statisticsService = statisticsService;
         }
 
         [EnableQuery]
-        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
         [HttpGet("Get")]
         public IActionResult GetCars()
         {
             var cars = _carService.GetAllCars();
-
-            var queryParameters = HttpContext.Request.Query;
-
-            var queryString = string.Join("&", queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-
-            _statisticsService.RecordVisit(baseUrl, queryString);
 
             return Ok(cars);
 
@@ -46,14 +35,6 @@ namespace API.Controllers
         public IActionResult GetForAllCars()
         {
             var cars = _carService.GetForAllCars();
-
-            var queryParameters = HttpContext.Request.Query;
-
-            var queryString = string.Join("&", queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-
-            _statisticsService.RecordVisit(baseUrl, queryString);
 
             return Ok(cars);
 
@@ -67,9 +48,6 @@ namespace API.Controllers
         {
             await _carService.AddCarAsync(priorityCarDto);
 
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-
-            await _statisticsService.RecordVisit(baseUrl, "");
             return Ok();
         }
 
@@ -78,9 +56,7 @@ namespace API.Controllers
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateCar([FromBody] PriorityCarDto priorityCarDto)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
 
-            await _statisticsService.RecordVisit(baseUrl, "");
             try
             {
                 await _carService.UpdateCarAsync(priorityCarDto.Id, priorityCarDto);
@@ -96,9 +72,7 @@ namespace API.Controllers
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCar([FromBody] IdDto idDte)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
 
-            await _statisticsService.RecordVisit(baseUrl, "");
 
             try
             {
@@ -115,9 +89,7 @@ namespace API.Controllers
         [HttpPut("Quantity")]
         public async Task<IActionResult> UpdateCarQuantity([FromBody] QuantityDto quantityDto)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
 
-            await _statisticsService.RecordVisit(baseUrl, "");
 
             try
             {
@@ -134,9 +106,6 @@ namespace API.Controllers
         [HttpPut("Availability")]
         public async Task<IActionResult> SetCarAvailability([FromBody] IsAvailableDto isAvailableDto)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-
-            await _statisticsService.RecordVisit(baseUrl, "");
 
             try
             {
@@ -153,8 +122,6 @@ namespace API.Controllers
         [HttpPost("InformateCar")]
         public async Task<IActionResult> InformateCar([FromBody] IdDto carId)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
 
             var username = User.Identity.Name;
             var result = await _carService.InfoAsync(carId.Id,username);
@@ -173,8 +140,6 @@ namespace API.Controllers
         [HttpPost("BuyCar")]
         public async Task<IActionResult> BuyCar([FromBody] IdDto carId)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            await _statisticsService.RecordVisit(baseUrl, "");
 
             var username = User.Identity.Name;
             var result = await _carService.BuyAsync(carId.Id, username);

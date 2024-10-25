@@ -130,6 +130,8 @@ if (app.Environment.IsDevelopment())
 
 await InitializeRoles(app);
 
+app.UseMiddleware<StatisticsMiddleware>();
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
