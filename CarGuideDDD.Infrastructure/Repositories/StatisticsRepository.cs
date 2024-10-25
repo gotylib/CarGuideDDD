@@ -36,7 +36,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         public async Task<IEnumerable<EndpointStatisticsDto>> GetStatisticAsync()
         {
-            return (await _context.EndpointStatistics.ToListAsync()).Select(Maps.MapEntityEndpointToEndpointDto);
+            return (await _context.EndpointStatistics.ToListAsync()).Select(Maps.MapEntityEndpointToEndpointDto).OrderByDescending(dto => dto.VisitCount);
         }
     }
 }
