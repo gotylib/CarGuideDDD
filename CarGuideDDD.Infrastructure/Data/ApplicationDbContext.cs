@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data;
+﻿using CarGuideDDD.Core.EntityObjects;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,5 +19,7 @@ namespace CarGuideDDD.Infrastructure.Data
         }
 
         public DbSet<EntityCar> Cars { get; set; }
+
+        public DbSet<EntityEndpointStatistics> EndpointStatistics { get; set; }
     }
 }

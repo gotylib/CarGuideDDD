@@ -26,6 +26,8 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IMailServices, MailServices>();
+builder.Services.AddScoped<IStatisticsService, StatisticService>();
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

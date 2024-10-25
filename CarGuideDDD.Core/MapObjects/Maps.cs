@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.EntityObjects;
+using Domain.Entities;
 using DTOs;
 using Infrastructure.Data;
 using Riok.Mapperly.Abstractions;
@@ -8,6 +10,7 @@ namespace CarGuideDDD.Core.MapObjects
     [Mapper]
     public static partial class Maps
     {
+
         public static partial PriorityCarDto EntityCarToMapPriorityCarDto(EntityCar entityCar);
         public static partial EntityCar MapPriorityCarDtoToEntityCar(PriorityCarDto priorityCarDto);
 
@@ -38,6 +41,9 @@ namespace CarGuideDDD.Core.MapObjects
 
         public static partial PriorityCarDto MapCarToPriorityCarDto(Car car);
 
+        public static partial EndpointStatisticsDto MapEntityEndpointToEndpointDto(EntityEndpointStatistics entityEndpointStatistics);
+
+        public static partial EntityEndpointStatistics MapEndpointDtoToEntityEndpoint(EndpointStatisticsDto endpointStatisticsDto);
         public static Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto)
         {
             var newCar = new Car();
@@ -45,7 +51,6 @@ namespace CarGuideDDD.Core.MapObjects
             return newCar;
 
         }
-
 
 
     }
