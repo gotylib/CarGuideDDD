@@ -1,37 +1,79 @@
-services:  
-    db:    
-        image: postgres:latest
-        environment:        
-            POSTGRES_DB: CarInventoryDB
-            POSTGRES_USER: postgres        
-            POSTGRES_PASSWORD: 1234
-        ports:        
-         - "5432:5432"
-    api:  
-        build:
-          context: .      
-          dockerfile: API/Dockerfile
+
+   services:
+     kafka-sample-zookeeper:
+        container_name: kafka-sample-zookeeper
+        image: confluentinc/cp-zookeeper:7.5.3
         ports:
-            - "8081:7162"
-            - "8080:7163"     
+          - 5001:5001
+        hostname: kafka-sample-zookeeper
         environment:
-          - ASPNETCORE_ENVIRONMENT=Development      
-          - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
-        depends_on:      
-            - db
-    bot:
-        build:
-            context: .
-            dockerfile: CarGuideDDD.TelegramBot/Dockerfile
+          - ZOOKEEPER_CLIENT_PORT=5001
+          - ZOOKEEPER_TICK_TIME=2000
+     kafka-sample-kafka:
+        container_name: kafka-sample-kafka
+        image: confluentinc/cp-kafka:7.5.3
+        depends_on:
+          - kafka-sample-zookeeper
         ports:
-            - "8082:5000"
-            - "8083:5001"
-    mail:
-        build:
-            context: .
-            dockerfile: CarGuideDDD.MailService/Dockerfile
+          - 5002:29092
+        hostname: kafka-sample-kafka
+        environment:
+          - KAFKA_BROKER_ID=1
+          - KAFKA_ZOOKEEPER_CONNECT=kafka-sample-zookeeper:5001
+          - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-sample-kafka:5002
+          - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+          - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+          - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+     kafka-sample-kafka-ui:
+        container_name: kafka-sample-kafka-ui
+        image: provectuslabs/kafka-ui
         ports:
-            - "8084:8084"
-            - "8085:8085"
-    
-    
+          - 5003:8080
+        environment:
+          - KAFKA_CLUSTERS_0_NAME=local
+          - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-sample-kafka:5002
+          - KAFKA_CLUSTERS_0_ZOOKEEPER=kafka-sample-zookeeper:5001
+        links:
+          - kafka-sample-kafka
+          - kafka-sample-zookeeper    
+     db:    
+       image: postgres:latest
+       environment:        
+         POSTGRES_DB: CarInventoryDB
+         POSTGRES_USER: postgres        
+         POSTGRES_PASSWORD: 1234
+       ports:        
+         - "5432:5432"
+
+     api:  
+       build:
+         context: .      
+         dockerfile: API/Dockerfile
+       ports:
+         - "7162:8081"
+         - "7163:8080"     
+       environment:
+         - ASPNETCORE_ENVIRONMENT=Development      
+         - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
+         - KAFKA__BOOTSTRAPSERVERS=kafka-sample-kafka:5002
+         - PUBLISHING_TOPIC=kafka-sample-topic
+       depends_on:      
+         - db
+  
+
+     bot:
+       build:
+         context: .
+         dockerfile: CarGuideDDD.TelegramBot/Dockerfile
+
+     mail:
+       build:
+         context: .
+         dockerfile: CarGuideDDD.MailService/Dockerfile
+       ports:
+           - 8084:8084
+           - 8085:8085
+       environment:
+             - KAFKA__BOOTSTRAPSERVERS=kafka-sample-kafka:5002
+             - KAFKA__GROUPID=kafka-sample-consumer
+             - LISTENING_TOPIC=kafka-sample-topic

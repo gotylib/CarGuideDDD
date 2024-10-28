@@ -5,6 +5,8 @@ using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
+using CarGuideDDD.Infrastructure.Services.Producers;
+using Confluent.Kafka;
 using DTOs;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,6 +30,8 @@ builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IMailServices, MailServices>();
 builder.Services.AddScoped<IStatisticsService, StatisticService>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+
+builder.Services.AddSingleton<ProducerHostedService>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -100,6 +104,24 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers();
 
 builder.Services.AddHttpClient();
+
+builder.Services.AddSingleton((IServiceProvider provider) =>
+{
+    ProducerConfig config = builder.Configuration.GetSection("Kafka").Get<ProducerConfig>() ??
+                            throw new Exception("No kafka producer config section: 'Kafka'.");
+    IProducer<Null, string> producer = new ProducerBuilder<Null, string>(config).Build();
+    string topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
+                   throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
+    ILogger<KafkaMessageProducer> logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();
+    KafkaMessageProducer messageProducer = new
+    (
+      producer: producer,
+      topic: topic,
+      logger: logger
+    );
+
+    return messageProducer;
+});
 
 var app = builder.Build();
 

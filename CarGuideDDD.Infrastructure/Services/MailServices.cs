@@ -1,12 +1,7 @@
-﻿
-
-using CarGuideDDD.Infrastructure.Repositories;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
+﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
 using DTOs;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -14,10 +9,12 @@ namespace CarGuideDDD.Infrastructure.Services
     public class MailServices : IMailServices
     {
         IHttpClientFactory _httpClientFactory;
+        ProducerHostedService _producerHostedService;
 
-        public MailServices(IHttpClientFactory httpClientFactory)
+        public MailServices(IHttpClientFactory httpClientFactory, ProducerHostedService producerHostedService)
         {
             _httpClientFactory = httpClientFactory;
+            _producerHostedService = producerHostedService;
         }
         public async Task<bool> SendBuyCarMessageAsync(UserDto user, UserDto manager, PriorityCarDto car)
         {
@@ -57,19 +54,6 @@ namespace CarGuideDDD.Infrastructure.Services
             // Отправка сообщения пользователю
            
             var jsonUser = JsonConvert.SerializeObject(dataUser);
-            var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-
-            try
-            {
-                var userResponse = await client.PostAsync(client.BaseAddress, contentUser);
-                userResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                clientResult = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                clientResult = false;
-            }
 
             var dataManager = new
             {
@@ -79,20 +63,11 @@ namespace CarGuideDDD.Infrastructure.Services
             };
 
             var jsonManager = JsonConvert.SerializeObject(dataManager);
-            var contentManager = new StringContent(jsonManager, Encoding.UTF8, "application/json");
-            try
-            {
-                var managerResponse = await client.PostAsync(client.BaseAddress, contentManager);
-                managerResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                managerResult = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                managerResult = false;
-            }
 
-            return clientResult && managerResult; 
+            _producerHostedService.SendMessage(jsonUser);
+            _producerHostedService.SendMessage(jsonManager);
+
+            return true; 
 
         }
 
@@ -109,24 +84,18 @@ namespace CarGuideDDD.Infrastructure.Services
 
             var toUserBody = toUserBodyBuild.ToString();
 
-            StringBuilder toManagerBodyBuilder = new StringBuilder();
-            toUserBodyBuild.AppendLine("Заявку на предоставление более полной информации о машине:");
-            toUserBodyBuild.AppendLine($"Марка:{car.Make}");
-            toUserBodyBuild.AppendLine($"Модель:{car.Model}");
-            toUserBodyBuild.AppendLine($"Цвет:{car.Color}");
-            toUserBodyBuild.AppendLine($"Свяжитесь с покупателем: Имя:{user.Username}, Email:{user.Email}");
+            StringBuilder toManagerBodyBuild = new StringBuilder();
+            toManagerBodyBuild.AppendLine("Заявку на предоставление более полной информации о машине:");
+            toManagerBodyBuild.AppendLine($"Марка:{car.Make}");
+            toManagerBodyBuild.AppendLine($"Модель:{car.Model}");
+            toManagerBodyBuild.AppendLine($"Цвет:{car.Color}");
+            toManagerBodyBuild.AppendLine($"Свяжитесь с покупателем: Имя:{user.Username}, Email:{user.Email}");
 
-            var toManagerBody = toUserBodyBuild.ToString();
+            var toManagerBody = toManagerBodyBuild.ToString() ;
 
             string subject = "Заявка на предоставление более полной информации о машине";
 
-            bool clientResult = false;
-            bool managerResult = false;
 
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://localhost:7288/api/Mail/SendMessageToMain");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
             var dataUser = new
             {
@@ -137,19 +106,6 @@ namespace CarGuideDDD.Infrastructure.Services
             // Отправка сообщения пользователю
 
             var jsonUser = JsonConvert.SerializeObject(dataUser);
-            var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-
-            try
-            {
-                var userResponse = await client.PostAsync(client.BaseAddress, contentUser);
-                userResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                clientResult = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                clientResult = false;
-            }
 
             var dataManager = new
             {
@@ -159,20 +115,11 @@ namespace CarGuideDDD.Infrastructure.Services
             };
 
             var jsonManager = JsonConvert.SerializeObject(dataManager);
-            var contentManager = new StringContent(jsonManager, Encoding.UTF8, "application/json");
-            try
-            {
-                var managerResponse = await client.PostAsync(client.BaseAddress, contentManager);
-                managerResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                managerResult = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                managerResult = false;
-            }
 
-            return clientResult && managerResult;
+            _producerHostedService.SendMessage(jsonUser);
+            _producerHostedService.SendMessage(jsonManager);
+
+            return true;
         }
 
         public async Task<bool> SendUserNoHaweCarMessageAsync(UserDto user, PriorityCarDto car)
@@ -195,18 +142,9 @@ namespace CarGuideDDD.Infrastructure.Services
             var jsonUser = JsonConvert.SerializeObject(dataUser);
             var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
 
-            try
-            {
-                var userResponse = await client.PostAsync(client.BaseAddress, contentUser);
-                userResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                return false;
-            }
+            _producerHostedService.SendMessage(jsonUser);
 
+            return true;
         }
 
         public async Task<bool> SendUserNotFountManagerMessageAsync(UserDto user)
@@ -228,19 +166,9 @@ namespace CarGuideDDD.Infrastructure.Services
 
             var jsonUser = JsonConvert.SerializeObject(dataUser);
             var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-
-            try
-            {
-                var userResponse = await client.PostAsync(client.BaseAddress, contentUser);
-                userResponse.EnsureSuccessStatusCode(); // Проверка успешного ответа
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при отправке сообщения пользователю: {ex.Message}");
-                return false;
-            }
-
+            
+            _producerHostedService.SendMessage(jsonUser);
+            return true;
 
         }
     }

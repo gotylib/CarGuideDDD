@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CarGuideDDD.MailServiceConsole": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

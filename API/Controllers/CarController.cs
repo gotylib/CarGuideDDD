@@ -1,5 +1,4 @@
 ﻿using CarGuideDDD.Infrastructure.Services;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
 using DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +39,6 @@ namespace API.Controllers
 
 
         }
-
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
         [HttpPost("CreateCar")]
