@@ -1,41 +1,41 @@
 
    services:
-     kafka-sample-zookeeper:
-        container_name: kafka-sample-zookeeper
+     zookeeper:
+        container_name: zookeeper
         image: confluentinc/cp-zookeeper:7.5.3
         ports:
           - 5001:5001
-        hostname: kafka-sample-zookeeper
+        hostname: zookeeper
         environment:
           - ZOOKEEPER_CLIENT_PORT=5001
           - ZOOKEEPER_TICK_TIME=2000
-     kafka-sample-kafka:
-        container_name: kafka-sample-kafka
+     kafka:
+        container_name: kafka
         image: confluentinc/cp-kafka:7.5.3
         depends_on:
-          - kafka-sample-zookeeper
+          - zookeeper
         ports:
           - 5002:29092
-        hostname: kafka-sample-kafka
+        hostname: kafka
         environment:
           - KAFKA_BROKER_ID=1
-          - KAFKA_ZOOKEEPER_CONNECT=kafka-sample-zookeeper:5001
-          - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-sample-kafka:5002
+          - KAFKA_ZOOKEEPER_CONNECT=zookeeper:5001
+          - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:5002
           - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
           - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
           - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-     kafka-sample-kafka-ui:
-        container_name: kafka-sample-kafka-ui
+     kafka-ui:
+        container_name: kafka-ui
         image: provectuslabs/kafka-ui
         ports:
           - 5003:8080
         environment:
           - KAFKA_CLUSTERS_0_NAME=local
-          - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-sample-kafka:5002
-          - KAFKA_CLUSTERS_0_ZOOKEEPER=kafka-sample-zookeeper:5001
+          - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:5002
+          - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:5001
         links:
-          - kafka-sample-kafka
-          - kafka-sample-zookeeper    
+          - kafka
+          - zookeeper    
      db:    
        image: postgres:latest
        environment:        
@@ -55,18 +55,20 @@
        environment:
          - ASPNETCORE_ENVIRONMENT=Development      
          - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
-         - KAFKA__BOOTSTRAPSERVERS=kafka-sample-kafka:5002
+         - KAFKA__BOOTSTRAPSERVERS=kafka:5002
          - PUBLISHING_TOPIC=kafka-sample-topic
        depends_on:      
          - db
   
 
      bot:
+       container_name: bot
        build:
          context: .
          dockerfile: CarGuideDDD.TelegramBot/Dockerfile
 
      mail:
+       container_name: mail
        build:
          context: .
          dockerfile: CarGuideDDD.MailService/Dockerfile
@@ -74,6 +76,6 @@
            - 8084:8084
            - 8085:8085
        environment:
-             - KAFKA__BOOTSTRAPSERVERS=kafka-sample-kafka:5002
+             - KAFKA__BOOTSTRAPSERVERS=kafka:5002
              - KAFKA__GROUPID=kafka-sample-consumer
              - LISTENING_TOPIC=kafka-sample-topic
