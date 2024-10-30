@@ -66,28 +66,33 @@ namespace CarGuideDDD.MailService.Services
                     var result = _consumer.Consume(cancellationToken);
                     var jsonmessage = result.Message.Value;
                     var type = result.Message.Key;
-                    var message = JsonConvert.DeserializeObject<Message>(jsonmessage);
-                    if (message != null)
-                    {
-                        switch (type)
+                    var responce = JsonConvert.DeserializeObject<MailSendObj>(jsonmessage);
+                    if (responce == null) throw OperationCanceledException(); 
+                    switch (type)
                         {
                             case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
-                                
+                                _mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
+                                _consumer.Commit(result);
                                 break;
                             case (int)TypeOfMessage.SendErrorMessageNoHaveManagers:
+                                _mailServices.SendUserNotFountManagerMessage(responce.User);
+                                _consumer.Commit(result);
                                 break;
                             case (int)TypeOfMessage.SendBuyMessage:
+                                _mailServices.SendBuyCarMessage(responce.User, responce.Manager, responce.Car);
+                                _consumer.Commit(result);
                                 break;
                             case (int)TypeOfMessage.SendInfoMessage:
+                                _mailServices.SendInformCarMessage(responce.User, responce.Manager, responce.Car);
+                                _consumer.Commit(result);
+                                break;
+                            default:
+                                _logger.LogInformation("Message dont convert to object.", result.Message.Value);
                                 break;
                         }
-                        _consumer.Commit(result);
+                        
                         _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
-                    }
-                    else
-                    {
-                        _logger.LogInformation("Message dont convert to object.", result.Message.Value);
-                    }
+
                 }
                 catch (OperationCanceledException)
                 {

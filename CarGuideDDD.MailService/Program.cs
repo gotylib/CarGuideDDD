@@ -1,7 +1,6 @@
 using CarGuideDDD.MailService.Services;
 using CarGuideDDD.MailService.Services.Interfaces;
 using Confluent.Kafka;
-using MailKit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,23 +11,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IMailServices, MailServices>();
-
-
 builder.Services.AddHostedService((IServiceProvider provider) =>
 {
-    var config = builder.Configuration.GetSection("Kafka").Get<ConsumerConfig>() ??
-                 throw new Exception("No kafka consumer config section: 'Kafka'.");
+    var config = builder.Configuration.GetSection("Kafka").Get<ConsumerConfig>() ??throw new Exception("No kafka consumer config section: 'Kafka'.");
     var consumer = new ConsumerBuilder<int, string>(config).Build();
-    var topic = builder.Configuration.GetValue<string>("LISTENING_TOPIC") ??
-                throw new Exception("No listening kafka topic: 'LISTENING_TOPIC'.");
+    var topic = builder.Configuration.GetValue<string>("LISTENING_TOPIC") ?? throw new Exception("No listening kafka topic: 'LISTENING_TOPIC'.");
     var logger = provider.GetRequiredService<ILogger<ConsumerHostedService>>();
+    var mailService = new MailServices();
     ConsumerHostedService backbroundService = new
     (
         consumer: consumer,
         topic: topic,
         logger: logger,
-        mailServices: IMailServices
+        mailServices: mailService
     );
 
     return backbroundService;

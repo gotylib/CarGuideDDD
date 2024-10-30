@@ -9,7 +9,7 @@ namespace CarGuideDDD.MailService.Services;
 public class MailServices : IMailServices
     {
  
-        public bool SendBuyCarMessage(User user, User? manager, Car car)
+        public bool SendBuyCarMessage(User? user, User? manager, Car? car)
         {
 
             var toUserBodyBuild = new StringBuilder()
@@ -46,7 +46,7 @@ public class MailServices : IMailServices
 
         }
 
-        public bool SendInformCarMessage(User user, User manager, Car car)
+        public bool SendInformCarMessage(User? user, User? manager, Car? car)
         {
             var toUserBodyBuild = new StringBuilder()
                             .AppendLine("Вы отправили нам заявку на предоставление более полной информации о машине:")
@@ -83,7 +83,7 @@ public class MailServices : IMailServices
             return true;
         }
 
-        public bool SendUserNoHaveCarMessage(User user, Car car)
+        public bool SendUserNoHaveCarMessage(User? user, Car? car)
         {
             const string subject = "Сообщение об ошибке: нет машин на складе";
             const string toUserBody = "Извините, сейчас на складе нет машины, которую вы хотите купить. Как только она появиться мы вам сообщим";
@@ -97,7 +97,7 @@ public class MailServices : IMailServices
             return true;
         }
 
-        public bool SendUserNotFountManagerMessage(User user)
+        public bool SendUserNotFountManagerMessage(User? user)
         {
             const string subject = "Сообщение об ошибки";
             const string body = "Извините сейчас нет свободных менеджеров, приносим свои извиения.";
