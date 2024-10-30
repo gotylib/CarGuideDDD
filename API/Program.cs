@@ -109,7 +109,7 @@ builder.Services.AddSingleton((IServiceProvider provider) =>
 {
     var config = builder.Configuration.GetSection("Kafka").Get<ProducerConfig>() ??
                  throw new Exception("No kafka producer config section: 'Kafka'.");
-    var producer = new ProducerBuilder<Null, string>(config).Build();
+    var producer = new ProducerBuilder<int, string>(config).Build();
     var topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
                 throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
     var logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();

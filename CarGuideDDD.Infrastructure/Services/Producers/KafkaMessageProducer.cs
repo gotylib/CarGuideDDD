@@ -6,11 +6,11 @@ namespace CarGuideDDD.Infrastructure.Services.Producers
 {
     public sealed class KafkaMessageProducer
     {
-        private readonly IProducer<Null, string> _producer;
+        private readonly IProducer<int, string> _producer;
         private readonly string _topic;
         private readonly ILogger<KafkaMessageProducer> _logger;
 
-        public KafkaMessageProducer(IProducer<Null, string> producer, string topic,
+        public KafkaMessageProducer(IProducer<int, string> producer, string topic,
             ILogger<KafkaMessageProducer> logger)
         {
             _producer = producer ?? throw new ArgumentNullException(nameof(producer));
@@ -22,30 +22,32 @@ namespace CarGuideDDD.Infrastructure.Services.Producers
             _logger.LogInformation("Kafka message sending...");
             _producer.Produce
             (
-              topic: _topic,
-              message: new Message<Null, string>
-              {
-                  Value = message,
-              },
-              deliveryHandler: (DeliveryReport<Null, string> report) =>
-              {
-                  
-                  switch (report.Status)
-                  {
-                      case PersistenceStatus.NotPersisted:
-                          _logger.LogWarning("Sending kafka message failed.");
-                          return;
-                      case PersistenceStatus.PossiblyPersisted:
-                          _logger.LogWarning("Sending kafka message possibly failed.");
-                          return;
-                      case PersistenceStatus.Persisted:
-                          _logger.LogInformation("Kafka message sent.");
-                          return;
-                      default:
-                          throw new ArgumentOutOfRangeException();
-                  }
-              }
+                topic: _topic,
+                message: new Message<int, string>
+                {
+                    Value = message,
+                },
+                deliveryHandler: HandleDeliveryReport
             );
+        }
+
+
+        private void HandleDeliveryReport(DeliveryReport<int, string> report)
+        {
+            switch (report.Status)
+            {
+                case PersistenceStatus.NotPersisted:
+                    _logger.LogWarning("Sending kafka message failed.");
+                    break;
+                case PersistenceStatus.PossiblyPersisted:
+                    _logger.LogWarning("Sending kafka message possibly failed.");
+                    break;
+                case PersistenceStatus.Persisted:
+                    _logger.LogInformation("Kafka message sent.");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

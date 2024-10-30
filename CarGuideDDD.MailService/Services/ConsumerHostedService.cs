@@ -1,21 +1,36 @@
-﻿using Confluent.Kafka;
+﻿using CarGuideDDD.MailService.Objects;
+using CarGuideDDD.MailService.Services.Interfaces;
+using Confluent.Kafka;
 using Newtonsoft.Json;
 
 namespace CarGuideDDD.MailService.Services
 {
+    public enum TypeOfMessage
+    {
+        SendErrorMessageNoHaveCar,
+        SendErrorMessageNoHaveManagers,
+        SendInfoMessage,
+        SendBuyMessage
+    }
+    
+    
     public sealed class ConsumerHostedService : BackgroundService
     {
-        private readonly IConsumer<Null, string> _consumer;
+        private readonly IConsumer<int, string> _consumer;
         private readonly string _topic;
         private readonly ILogger<ConsumerHostedService> _logger;
+        private readonly IMailServices _mailServices;
 
-        public ConsumerHostedService(IConsumer<Null, string> consumer, string topic,
-            ILogger<ConsumerHostedService> logger)
+        public ConsumerHostedService(IConsumer<int, string> consumer, string topic,
+            ILogger<ConsumerHostedService> logger, IMailServices mailServices)
         {
             _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
             _topic = topic ?? throw new ArgumentNullException(nameof(topic));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailServices = mailServices;
         }
+        
+
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Consumer starting...");
@@ -50,10 +65,22 @@ namespace CarGuideDDD.MailService.Services
                     _logger.LogInformation("Message consuming");
                     var result = _consumer.Consume(cancellationToken);
                     var jsonmessage = result.Message.Value;
+                    var type = result.Message.Key;
                     var message = JsonConvert.DeserializeObject<Message>(jsonmessage);
                     if (message != null)
                     {
-                        MessageSender.SendMessage(message);
+                        switch (type)
+                        {
+                            case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
+                                
+                                break;
+                            case (int)TypeOfMessage.SendErrorMessageNoHaveManagers:
+                                break;
+                            case (int)TypeOfMessage.SendBuyMessage:
+                                break;
+                            case (int)TypeOfMessage.SendInfoMessage:
+                                break;
+                        }
                         _consumer.Commit(result);
                         _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
                     }

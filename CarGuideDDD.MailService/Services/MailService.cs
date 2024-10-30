@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.Metrics;
+using System.Text;
 using CarGuideDDD.MailService.Objects;
 using CarGuideDDD.MailService.Services.Interfaces;
 using Newtonsoft.Json;
@@ -30,27 +31,16 @@ public class MailServices : IMailServices
 
             const string subject = "Заявка на покупку машины";
 
-            var dataUser = new
-            {
-                mailRecipient = user.Email,
-                subject = subject,
-                body = toUserBody
-            };
+            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
             // Отправка сообщения пользователю
+                
 
-            var jsonUser = JsonConvert.SerializeObject(dataUser);
+            var dataManager = new Message() { MailRecipient = manager.Email, Subject = subject, Body= toManagerBody };
 
-            var dataManager = new
-            {
-                mailRecipient = manager.Email,
-                subject = subject,
-                body = toManagerBody
-            };
 
-            var jsonManager = JsonConvert.SerializeObject(dataManager);
-
-            _producerHostedService.SendMessage(jsonUser);
-            _producerHostedService.SendMessage(jsonManager);
+            MessageSender.SendMessage(dataUser);
+            
+            MessageSender.SendMessage(dataManager);
 
             return true;
 
@@ -80,28 +70,15 @@ public class MailServices : IMailServices
             const string subject = "Заявка на предоставление более полной информации о машине";
 
 
-
-            var dataUser = new
-            {
-                mailRecipient = user.Email,
-                subject = subject,
-                body = toUserBody
-            };
             // Отправка сообщения пользователю
+            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
+            
+            var dataManager = new Message() { MailRecipient = manager.Email, Subject = subject, Body= toManagerBody };
 
-            var jsonUser = JsonConvert.SerializeObject(dataUser);
 
-            var dataManager = new
-            {
-                mailRecipient = manager.Email,
-                subject = subject,
-                body = toManagerBody
-            };
-
-            var jsonManager = JsonConvert.SerializeObject(dataManager);
-
-            _producerHostedService.SendMessage(jsonUser);
-            _producerHostedService.SendMessage(jsonManager);
+            MessageSender.SendMessage(dataUser);
+            
+            MessageSender.SendMessage(dataManager);
 
             return true;
         }
@@ -111,19 +88,12 @@ public class MailServices : IMailServices
             const string subject = "Сообщение об ошибке: нет машин на складе";
             const string toUserBody = "Извините, сейчас на складе нет машины, которую вы хотите купить. Как только она появиться мы вам сообщим";
 
-            var dataUser = new
-            {
-                mailRecipient = user.Email,
-                subject = subject,
-                body = toUserBody
-            };
             // Отправка сообщения пользователю
 
-            var jsonUser = JsonConvert.SerializeObject(dataUser);
-            var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-
-            _producerHostedService.SendMessage(jsonUser);
-
+            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
+            
+            MessageSender.SendMessage(dataUser);
+            
             return true;
         }
 
@@ -132,18 +102,11 @@ public class MailServices : IMailServices
             const string subject = "Сообщение об ошибки";
             const string body = "Извините сейчас нет свободных менеджеров, приносим свои извиения.";
 
-            var dataUser = new
-            {
-                mailRecipient = user.Email,
-                subject = subject,
-                body = body
-            };
             // Отправка сообщения пользователю
+            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = body };
 
-            var jsonUser = JsonConvert.SerializeObject(dataUser);
-            var contentUser = new StringContent(jsonUser, Encoding.UTF8, "application/json");
-
-            _producerHostedService.SendMessage(jsonUser);
+            MessageSender.SendMessage(dataUser);
+            
             return true;
 
         }
