@@ -1,18 +1,17 @@
-﻿using Domain.Entities;
-using DTOs;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
     public interface IUserService
     {
         // Получение всех пользователей
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
+        Task<IEnumerable<UserDto?>> GetAllUsersAsync();
 
         // Получение пользователя по имени
         Task<UserDto> GetUserByNameAsync(string name);

@@ -1,14 +1,18 @@
 ﻿
 
-using Domain.Entities;
-
 namespace CarGuideDDD.Core.DomainObjects.ResultObjects
 {
     public class InfoCarResult
     {
-        public InfoCarActionResult Status { get; set; }
-        public User? Manager { get; set; }
+        public InfoCarResult(User client, InfoCarActionResult status)
+        {
+            Client = client;
+            Status = status;
+        }
+        
+        public InfoCarActionResult Status { get; }
+        public User? Manager { get; init; }
 
-        public User Client { get; set; }
+        public User Client { get; }
     }
 }

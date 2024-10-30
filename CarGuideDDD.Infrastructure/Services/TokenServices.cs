@@ -1,13 +1,13 @@
-﻿using CarGuideDDD.Core.Jwt;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
-using DTOs;
-using Infrastructure.Data;
+﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.Token;
 
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -28,21 +28,18 @@ namespace CarGuideDDD.Infrastructure.Services
         public string GenerateAccessToken(EntityUser user)
         {
             var userRoles = _userManager.GetRolesAsync(user).Result;
-
+            
             var claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email)};
-            foreach (var role in userRoles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role)); // Добавляем каждую роль в claims
-            }
+                new Claim(ClaimTypes.Name, user.UserName ?? "default"),
+                new Claim(ClaimTypes.Email, user.Email ?? "default")};
+            claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var key = AuthOptions.GetSymmetricSecurityKey();
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: AuthOptions.ISSUER,
-                audience: AuthOptions.AUDIENCE,
+                issuer: AuthOptions.Issuer,
+                audience: AuthOptions.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
@@ -63,27 +60,18 @@ namespace CarGuideDDD.Infrastructure.Services
         public async Task<string> RefreshAccessTokenAsync(string refreshToken)
         {
             var user = await GetUserByRefreshTokenAsync(refreshToken);
-            if (user == null || !IsValidRefreshToken(user, refreshToken))
-            {
-                throw new SecurityTokenException("Invalid refresh token");
-            }
+            
+            if (user == null || !IsValidRefreshToken(user, refreshToken))  throw new SecurityTokenException("Invalid refresh token");
 
             // Генерируем новый access token
             return GenerateAccessToken(user);
         }
 
-        public async Task<EntityUser> GetUserByRefreshTokenAsync(string refreshToken)
+        private async Task<EntityUser?> GetUserByRefreshTokenAsync(string refreshToken)
         {
             // Получаем всех пользователей (или используем фильтрацию по refresh token в БД)
             var users = await _userManager.Users.ToListAsync();
-            foreach (var user in users)
-            {
-                if (user.RefreshToken == refreshToken)
-                {
-                    return user;
-                }
-            }
-            return null;
+            return users.FirstOrDefault(user => user.RefreshToken == refreshToken);
         }
 
         private bool IsValidRefreshToken(EntityUser user, string refreshToken)
@@ -103,12 +91,10 @@ namespace CarGuideDDD.Infrastructure.Services
 
         private string GenerateRandomToken()
         {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var randomBytes = new byte[32];
-                rng.GetBytes(randomBytes);
-                return Convert.ToBase64String(randomBytes);
-            }
+            using var rng = new RNGCryptoServiceProvider();
+            var randomBytes = new byte[32];
+            rng.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
         }
     }
 }

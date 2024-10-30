@@ -1,8 +1,6 @@
-﻿using CarGuideDDD.Core.DtObjects;
+﻿using CarGuideDDD.Core.DomainObjects;
+using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.EntityObjects;
-using Domain.Entities;
-using DTOs;
-using Infrastructure.Data;
 using Riok.Mapperly.Abstractions;
 
 namespace CarGuideDDD.Core.MapObjects
@@ -11,7 +9,7 @@ namespace CarGuideDDD.Core.MapObjects
     public static partial class Maps
     {
 
-        public static partial PriorityCarDto EntityCarToMapPriorityCarDto(EntityCar entityCar);
+        public static partial PriorityCarDto EntityCarToMapPriorityCarDto(EntityCar? entityCar);
         public static partial EntityCar MapPriorityCarDtoToEntityCar(PriorityCarDto priorityCarDto);
 
 
@@ -19,15 +17,15 @@ namespace CarGuideDDD.Core.MapObjects
 
 
         [MapProperty(nameof(EntityUser.UserName), nameof(UserDto.Username))]
-        public static partial UserDto MapEntityUseToUserDto(EntityUser entityDto);
+        public static partial UserDto? MapEntityUseToUserDto(EntityUser? entityDto);
 
-        public static User MapUserDtoToUser(UserDto userDto)
+        public static User MapUserDtoToUser(UserDto? userDto)
         {
             var newUser = new User();
-            newUser.Create(userDto.Username, userDto.Email, "", userDto.Password);
+            newUser.Create(userDto?.Username ?? "default", userDto?.Email ?? "default", "", userDto?.Password ?? "default");
             return newUser;
         }
-
+        
         public static partial User MapEntityUserToUser(EntityUser entityUser);
 
 
@@ -47,7 +45,7 @@ namespace CarGuideDDD.Core.MapObjects
         public static Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto)
         {
             var newCar = new Car();
-            newCar.Create(priorityCarDto.Make, priorityCarDto.Model, priorityCarDto.Color, priorityCarDto.StockCount, priorityCarDto.IsAvailable);
+            newCar.Create(priorityCarDto.Make ?? "default", priorityCarDto.Model ?? "default", priorityCarDto.Color ?? "default", priorityCarDto.StockCount, priorityCarDto.IsAvailable);
             return newCar;
 
         }

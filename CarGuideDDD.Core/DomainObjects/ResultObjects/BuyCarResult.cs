@@ -1,12 +1,10 @@
-﻿using Domain.Entities;
-
-namespace CarGuideDDD.Core.DomainObjects.ResultObjects
+﻿namespace CarGuideDDD.Core.DomainObjects.ResultObjects
 {
     public class BuyCarResult
     {
-        public BuyCarActionResult Status { get; set; }
-        public User? Manager { get; set; }
+        public BuyCarActionResult Status { get; init; }
+        public User? Manager { get; init; }
 
-        public User Client { get; set; }
+        public User? Client { get; init; }
     }
 }

@@ -22,7 +22,7 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             var fullEndpoint = $"{endpoint}?{queryString}";
 
-            await _statisticsService.AddOrConutStatisticsAsync(fullEndpoint);
+            await _statisticsService.AddOrCountStatisticsAsync(fullEndpoint);
         }
     }
 }

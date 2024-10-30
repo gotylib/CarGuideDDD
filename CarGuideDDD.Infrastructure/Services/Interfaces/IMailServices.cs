@@ -1,17 +1,17 @@
 ﻿
-using DTOs;
+using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
     public interface IMailServices
     {
-        public Task<bool> SendUserNotFountManagerMessageAsync(UserDto user);
+        public bool SendUserNotFountManagerMessage(UserDto user);
 
-        public Task<bool> SendUserNoHaweCarMessageAsync(UserDto user, PriorityCarDto car);
+        public bool SendUserNoHaveCarMessage(UserDto user, PriorityCarDto car);
 
-        public Task<bool> SendBuyCarMessageAsync(UserDto user, UserDto manager, PriorityCarDto car);
+        public bool SendBuyCarMessage(UserDto user, UserDto? manager, PriorityCarDto car);
 
-        public Task<bool> SendInformCarMessageAsync(UserDto user, UserDto manager, PriorityCarDto car);
+        public bool SendInformCarMessage(UserDto user, UserDto manager, PriorityCarDto car);
 
     }
 }

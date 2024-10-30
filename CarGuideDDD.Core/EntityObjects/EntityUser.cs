@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Data
+namespace CarGuideDDD.Core.EntityObjects
 {
     public class EntityUser : IdentityUser
     {

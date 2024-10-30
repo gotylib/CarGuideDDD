@@ -8,7 +8,7 @@ namespace CarGuideDDD.Core.EntityObjects
         [Key]
         [MapperIgnore]
         public int Id { get; set; }
-        public string Endpoint { get; set; }
+        public string? Endpoint { get; set; }
         public int VisitCount { get; set; }
     }
 }

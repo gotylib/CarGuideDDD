@@ -11,61 +11,54 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
 {
     public static class Methods
     {
-        private static readonly string clientId = "52506965";
-        private static readonly string clientSecret = "Qsbj6ZrB7cRpU8UHy0SS";
-        private static readonly string redirectUri = "https://t.me/BycarQPDbot";
+        private const string ClientId = "52506965";
+        private const string ClientSecret = "Qsbj6ZrB7cRpU8UHy0SS";
+        private const string RedirectUri = "https://t.me/BycarQPDbot";
 
-        public static async Task<List<string>> GetAccessTokenAsync(string code)
+        private static async Task<List<string>> GetAccessTokenAsync(string code)
         {
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var respons = new List<string>();
+            try
             {
-                List<string> respons = new List<string>();
-                try
-                {
-                    var response = await httpClient.GetStringAsync($"https://oauth.vk.com/access_token?client_id={clientId}&client_secret={clientSecret}&redirect_uri={redirectUri}&scope=email&code={code}");
-                    dynamic jsonResponse = JsonConvert.DeserializeObject(response);
+                var response = await httpClient.GetStringAsync($"https://oauth.vk.com/access_token?client_id={ClientId}&client_secret={ClientSecret}&redirect_uri={RedirectUri}&scope=email&code={code}");
+                dynamic jsonResponse = JsonConvert.DeserializeObject(response);
 
-                    respons.Add((string)jsonResponse.access_token);
-                    respons.Add((string)jsonResponse.email);
-                    return respons;
-                }
-                catch (Exception ex)
-                {
-                    respons.Add("Error");
-                    Console.WriteLine(ex.Message);
-                    return respons;
-                }
-
+                respons.Add((string)jsonResponse.access_token);
+                respons.Add((string)jsonResponse.email);
+                return respons;
+            }
+            catch (Exception ex)
+            {
+                respons.Add("Error");
+                Console.WriteLine(ex.Message);
+                return respons;
             }
         }
 
-        public static async Task<dynamic> GetUserInfoAsync(string accessToken)
+        private static async Task<dynamic?> GetUserInfoAsync(string accessToken)
         {
             if (accessToken == "Error")
             {
                 return null;
             }
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetStringAsync($"https://api.vk.com/method/users.get?access_token={accessToken}&fields=email&v=5.131");
-                dynamic userInfo = JsonConvert.DeserializeObject(response);
 
-                // Проверка на наличие ошибок в ответе 
-                if (userInfo.error != null)
-                {
-                    Console.WriteLine($"Error: {userInfo.error.message} (code: {userInfo.error.error_code})");
-                    return null;
-                }
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetStringAsync($"https://api.vk.com/method/users.get?access_token={accessToken}&fields=email&v=5.131");
+            dynamic userInfo = JsonConvert.DeserializeObject(response);
 
-                return userInfo.response[0];
-            }
+            // Проверка на наличие ошибок в ответе 
+            if (userInfo?.error == null) return userInfo.response[0];
+            Console.WriteLine($"Error: {userInfo.error.message} (code: {userInfo.error.error_code})");
+            return null;
+
         }
 
         public static async Task<List<string>> HandleRedirect(string code)
         {
-            List<string> accessToken = await GetAccessTokenAsync(code);
+            var accessToken = await GetAccessTokenAsync(code);
             var userInfo = await GetUserInfoAsync(accessToken[0]);
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
             if (userInfo != null)
             {
@@ -76,19 +69,18 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
                 result.Add(accessToken[1]);
                 return result;
             }
-            else
-            {
-                result.Add("Error");
-                Console.WriteLine("Не удалось получить информацию о пользователе.");
-                return result;
-            }
+
+            result.Add("Error");
+            Console.WriteLine("Не удалось получить информацию о пользователе.");
+            return result;
+            
         }
 
 
         public static string Translit(string input)
         {
-            var translitDict = new Dictionary<char, string>
-        {
+            var translitDict = new Dictionary<char, string?>
+            {
             {'А', "A"}, {'Б', "B"}, {'В', "V"}, {'Г', "G"}, {'Д', "D"},
             {'Е', "E"}, {'Ё', "Yo"}, {'Ж', "Zh"}, {'З', "Z"}, {'И', "I"},
             {'Й', "Y"}, {'К', "K"}, {'Л', "L"}, {'М', "M"}, {'Н', "N"},
@@ -106,11 +98,11 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
             {'э', "e"}, {'ю', "yu"}, {'я', "ya"}
         };
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            foreach (char c in input)
+            foreach (var c in input)
             {
-                if (translitDict.TryGetValue(c, out string transliteratedChar))
+                if (translitDict.TryGetValue(c, out var transliteratedChar))
                 {
                     result.Append(transliteratedChar);
                 }
@@ -125,15 +117,7 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
 
         public static async Task<string> BuyOrInformate(string token, int carId, bool state)
         {
-            string url;
-            if (state)
-            {
-                url = "https://localhost:7162/api/Cars/BuyCar";
-            }
-            else
-            {
-                url = "https://localhost:7162/api/Cars/InformateCar";
-            }
+            var url = state ? "https://localhost:7162/api/Cars/BuyCar" : "https://localhost:7162/api/Cars/InformateCar";
 
             var data = new
             {
@@ -141,32 +125,28 @@ namespace CarGuideDDD.TelegramBot.ProcessingMethods
                 status = state
             };
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            // Установка заголовков
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Сериализация данных в JSON
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Выполнение POST-запроса
+            var response = await httpClient.PostAsync(url, content);
+
+            // Проверка ответа
+            if (response.IsSuccessStatusCode)
             {
-                // Установка заголовков
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                // Сериализация данных в JSON
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                // Выполнение POST-запроса
-                var response = await httpClient.PostAsync(url, content);
-
-                // Проверка ответа
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseData = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Response: " + responseData);
-                    return responseData;
-                }
-                else
-                {
-                    Console.WriteLine("Error: " + response.StatusCode);
-                    return "Error";
-                }
+                var responseData = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response: " + responseData);
+                return responseData;
             }
+
+            Console.WriteLine("Error: " + response.StatusCode);
+            return "Error";
         }
     }
 }

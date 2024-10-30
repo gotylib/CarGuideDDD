@@ -1,5 +1,7 @@
-using API.CastomMiddleware;
-using CarGuideDDD.Core.Jwt;
+using API.CustomMiddleware;
+using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.Token;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
@@ -7,8 +9,6 @@ using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using CarGuideDDD.Infrastructure.Services.Producers;
 using Confluent.Kafka;
-using DTOs;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
@@ -50,9 +50,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = AuthOptions.ISSUER,
+            ValidIssuer = AuthOptions.Issuer,
             ValidateAudience = true,
-            ValidAudience = AuthOptions.AUDIENCE,
+            ValidAudience = AuthOptions.Audience,
             ValidateLifetime = true,
             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
             ValidateIssuerSigningKey = true,
@@ -107,12 +107,12 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton((IServiceProvider provider) =>
 {
-    ProducerConfig config = builder.Configuration.GetSection("Kafka").Get<ProducerConfig>() ??
-                            throw new Exception("No kafka producer config section: 'Kafka'.");
-    IProducer<Null, string> producer = new ProducerBuilder<Null, string>(config).Build();
-    string topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
-                   throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
-    ILogger<KafkaMessageProducer> logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();
+    var config = builder.Configuration.GetSection("Kafka").Get<ProducerConfig>() ??
+                 throw new Exception("No kafka producer config section: 'Kafka'.");
+    var producer = new ProducerBuilder<Null, string>(config).Build();
+    var topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
+                throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
+    var logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();
     KafkaMessageProducer messageProducer = new
     (
       producer: producer,
@@ -160,22 +160,20 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 await app.RunAsync();
 
 
-static async Task InitializeRoles(WebApplication app)
+static async Task InitializeRoles(IHost app)
 {
-    using (var scope = app.Services.CreateScope())
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    try
     {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            await SeedRoles(roleManager);
-        }
-        catch (Exception ex)
-        {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await SeedRoles(roleManager);
+    }
+    catch (Exception ex)
+    {
 
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred while seeding roles.");
-        }
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding roles.");
     }
 }
 

@@ -1,7 +1,8 @@
 ﻿using NLog;
 using System.Net;
+using System.Text.Json;
 
-namespace API.CastomMiddleware
+namespace API.CustomMiddleware
 {
     public class ErrorHandlingMiddleware
     {
@@ -28,15 +29,14 @@ namespace API.CastomMiddleware
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             Logger.Error(exception, "An unhandled exception has occurred: {Message}", exception.Message);
-
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            return context.Response.WriteAsync(new
+            var result = JsonSerializer.Serialize(new
             {
                 StatusCode = context.Response.StatusCode,
                 Message = "Internal Server Error. Please try again later."
-            }.ToString());
+            });
+            return context.Response.WriteAsync(result);
         }
     }
 }

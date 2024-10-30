@@ -1,5 +1,4 @@
-﻿using CarGuideDDD.Infrastructure.Services;
-using DTOs;
+﻿using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -23,21 +22,14 @@ namespace API.Controllers
         [HttpGet("Get")]
         public IActionResult GetCars()
         {
-            var cars = _carService.GetAllCars();
-
-            return Ok(cars);
-
+            return Ok(_carService.GetAllCars());
         }
 
         [EnableQuery]
         [HttpGet("GetFofAll")]
         public IActionResult GetForAllCars()
         {
-            var cars = _carService.GetForAllCars();
-
-            return Ok(cars);
-
-
+            return Ok(_carService.GetForAllCars());
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
@@ -70,8 +62,6 @@ namespace API.Controllers
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCar([FromBody] IdDto idDte)
         {
-
-
             try
             {
                 await _carService.DeleteCarAsync(idDte.Id);
@@ -87,8 +77,6 @@ namespace API.Controllers
         [HttpPut("Quantity")]
         public async Task<IActionResult> UpdateCarQuantity([FromBody] QuantityDto quantityDto)
         {
-
-
             try
             {
                 await _carService.UpdateCarQuantityAsync(quantityDto.Id, quantityDto.Quantity);
@@ -104,7 +92,6 @@ namespace API.Controllers
         [HttpPut("Availability")]
         public async Task<IActionResult> SetCarAvailability([FromBody] IsAvailableDto isAvailableDto)
         {
-
             try
             {
                 var result = await _carService.SetCarAvailabilityAsync(isAvailableDto.Id, isAvailableDto.IsAvailable);
@@ -121,35 +108,24 @@ namespace API.Controllers
         public async Task<IActionResult> InformateCar([FromBody] IdDto carId)
         {
 
-            var username = User.Identity.Name;
-            var result = await _carService.InfoAsync(carId.Id,username);
-            if (result)
-            {
-                return Ok("Заявка сформирована");
-            }
-            else
-            {
-               return Ok("Не получилось создать заявку");
-            }
+            var username = User.Identity?.Name;
 
+            if(username == null)
+            {
+                return BadRequest("Проблемы с нахождением пользователя");
+            } 
+
+            var result = await _carService.InfoAsync(carId.Id,username);
+            return Ok(result ? "Заявка сформирована" : "Не получилось создать заявку");
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("BuyCar")]
         public async Task<IActionResult> BuyCar([FromBody] IdDto carId)
         {
-
             var username = User.Identity.Name;
             var result = await _carService.BuyAsync(carId.Id, username);
-            if (result)
-            {
-                return Ok("Заявка сформирована");
-            }
-            else
-            {
-                return Ok("Не получилось создать заявку");
-            }
-
+            return Ok(result ? "Заявка сформирована" : "Не получилось создать заявку");
         }
     }
 }

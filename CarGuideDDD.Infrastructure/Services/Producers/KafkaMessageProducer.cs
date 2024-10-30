@@ -4,12 +4,19 @@ using Microsoft.Extensions.Logging;
 
 namespace CarGuideDDD.Infrastructure.Services.Producers
 {
-    public sealed class KafkaMessageProducer(IProducer<Null, string> producer, string topic, ILogger<KafkaMessageProducer> logger)
+    public sealed class KafkaMessageProducer
     {
-        private readonly IProducer<Null, string> _producer = producer ?? throw new ArgumentNullException(nameof(producer));
-        private readonly string _topic = topic ?? throw new ArgumentNullException(nameof(topic));
-        private readonly ILogger<KafkaMessageProducer> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly IProducer<Null, string> _producer;
+        private readonly string _topic;
+        private readonly ILogger<KafkaMessageProducer> _logger;
 
+        public KafkaMessageProducer(IProducer<Null, string> producer, string topic,
+            ILogger<KafkaMessageProducer> logger)
+        {
+            _producer = producer ?? throw new ArgumentNullException(nameof(producer));
+            _topic = topic ?? throw new ArgumentNullException(nameof(topic));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
         public void Message(string message)
         {
             _logger.LogInformation("Kafka message sending...");
@@ -22,28 +29,20 @@ namespace CarGuideDDD.Infrastructure.Services.Producers
               },
               deliveryHandler: (DeliveryReport<Null, string> report) =>
               {
-                  if (report is null)
+                  
+                  switch (report.Status)
                   {
-                      _logger.LogWarning("Kafka delivery report null.");
-                      return;
-                  }
-
-                  if (report.Status == PersistenceStatus.NotPersisted)
-                  {
-                      _logger.LogWarning("Sending kafka message failed.");
-                      return;
-                  }
-
-                  if (report.Status == PersistenceStatus.PossiblyPersisted)
-                  {
-                      _logger.LogWarning("Sending kafka message possibly failed.");
-                      return;
-                  }
-
-                  if (report.Status == PersistenceStatus.Persisted)
-                  {
-                      _logger.LogInformation("Kafka message sent.");
-                      return;
+                      case PersistenceStatus.NotPersisted:
+                          _logger.LogWarning("Sending kafka message failed.");
+                          return;
+                      case PersistenceStatus.PossiblyPersisted:
+                          _logger.LogWarning("Sending kafka message possibly failed.");
+                          return;
+                      case PersistenceStatus.Persisted:
+                          _logger.LogInformation("Kafka message sent.");
+                          return;
+                      default:
+                          throw new ArgumentOutOfRangeException();
                   }
               }
             );

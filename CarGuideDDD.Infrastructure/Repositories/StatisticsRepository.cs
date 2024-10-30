@@ -3,7 +3,6 @@ using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarGuideDDD.Infrastructure.Repositories
@@ -16,7 +15,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
         {
             _context = context; 
         }
-        public async Task AddOrConutStatisticsAsync(string fullEndpoint)
+        public async Task AddOrCountStatisticsAsync(string fullEndpoint)
         {
 
             var stat = await _context.EndpointStatistics.FirstOrDefaultAsync(s =>

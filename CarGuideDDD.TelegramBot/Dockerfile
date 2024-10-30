@@ -7,7 +7,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CarGuideDDD.TelegramBot/CarGuideDDD.TelegramBot.csproj", "CarGuideDDD.TelegramBot/"]
+COPY ["./CarGuideDDD.TelegramBot/CarGuideDDD.TelegramBot.csproj", "CarGuideDDD.TelegramBot/"]
 RUN dotnet restore "./CarGuideDDD.TelegramBot/CarGuideDDD.TelegramBot.csproj"
 COPY . .
 WORKDIR "/src/CarGuideDDD.TelegramBot"

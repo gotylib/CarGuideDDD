@@ -5,13 +5,18 @@ using Microsoft.Extensions.Logging;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
-    public sealed class ProducerHostedService(KafkaMessageProducer producer, ILogger<ProducerHostedService> logger) : IHostedService, IDisposable
+    public sealed class ProducerHostedService : IHostedService, IDisposable
     {
-        private readonly KafkaMessageProducer _producer = producer ?? throw new ArgumentNullException(nameof(producer));
-        private readonly ILogger<ProducerHostedService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly KafkaMessageProducer _producer;
+        private readonly ILogger<ProducerHostedService> _logger;
 
-        private Timer? _timer;
 
+        public ProducerHostedService(KafkaMessageProducer producer, ILogger<ProducerHostedService> logger)
+        {
+            _producer = producer ?? throw new ArgumentNullException(nameof(producer));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+        
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Producer starting...");
@@ -30,7 +35,7 @@ namespace CarGuideDDD.Infrastructure.Services
             return Task.CompletedTask;
         }
 
-        public void Dispose() => _timer?.Dispose();
+        public void Dispose(){}
 
         public void SendMessage(string message)
         {

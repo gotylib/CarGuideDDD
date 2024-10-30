@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-using DTOs;
-using Infrastructure.Data;
+﻿using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
 {

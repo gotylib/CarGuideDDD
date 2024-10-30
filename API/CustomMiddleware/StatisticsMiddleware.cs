@@ -1,8 +1,6 @@
 ﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
-namespace API.CastomMiddleware
+namespace API.CustomMiddleware
 {
     public class StatisticsMiddleware
     {

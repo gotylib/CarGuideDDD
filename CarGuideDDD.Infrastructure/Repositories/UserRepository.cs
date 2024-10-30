@@ -1,10 +1,10 @@
-﻿using CarGuideDDD.Core.MapObjects;
-using CarGuideDDD.Infrastructure.Repositories.Interfaces;
-using Domain.Entities;
-using DTOs;
-using Infrastructure.Data;
+﻿using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.MapObjects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+
 
 
 namespace CarGuideDDD.Infrastructure.Repositories
@@ -19,41 +19,42 @@ namespace CarGuideDDD.Infrastructure.Repositories
         }
         public async Task<IdentityResult> AddAsync(UserDto user)
         {
-
-            return await _userManager.CreateAsync(Maps.MapUserDtoToEntityUser(user), user.Password);
-
+            return await _userManager.CreateAsync(Maps.MapUserDtoToEntityUser(user), user.Password ?? "default");
         }
 
         public async Task<IdentityResult> DeleteAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
-            return await _userManager.DeleteAsync(user);
-
+            if (user != null)
+            {
+                return await _userManager.DeleteAsync(user);
+            }
+            
+            return new IdentityResult();
+            
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserDto?>> GetAllAsync()
         {
-            return (await _userManager.Users.ToListAsync()).Select(Maps.MapEntityUseToUserDto);
+            return (await _userManager.Users.ToListAsync())
+                .Select(Maps.MapEntityUseToUserDto);
+
         }
+
 
         public async Task<UserDto?> GetByNameAsync(string name)
         {
-            var user = await _userManager.FindByNameAsync(name);
-            if (user != null)
-            {
-                return Maps.MapEntityUseToUserDto( user);
-            }
-            else
-            {
-                return null;
-            }
+                return Maps.MapEntityUseToUserDto(await _userManager.FindByNameAsync(name));
         }
 
         public async Task<IdentityResult> UpdateAsync(UserDto user)
         {
-            var Olduser = await _userManager.FindByNameAsync(user.Username);
+            if(user.Username != null)
+            {
+                return await _userManager.UpdateAsync(Maps.MapUserDtoToEntityUser(user));
+            }
 
-            return await _userManager.UpdateAsync(Maps.MapUserDtoToEntityUser(user));
+            return new IdentityResult();
 
         }
     }

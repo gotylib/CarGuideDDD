@@ -1,11 +1,10 @@
-﻿
-using CarGuideDDD.Core.DtObjects;
+﻿using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
 {
     public interface IStatisticsRepository
     {
-        Task AddOrConutStatisticsAsync(string fullEndpoint);
+        Task AddOrCountStatisticsAsync(string fullEndpoint);
         Task<IEnumerable<EndpointStatisticsDto>> GetStatisticAsync();
     }
 }

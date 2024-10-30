@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using CarGuideDDD.Core.DomainObjects;
 using Newtonsoft.Json.Bson;
 
 namespace UnitTests
@@ -9,7 +9,7 @@ namespace UnitTests
         public void ChangingStatusOfMachineUnavailable_Correct()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 1, true);
 
             //Act
@@ -36,7 +36,7 @@ namespace UnitTests
         public void BuyCarTest_Correct()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 1, true);
 
             var testClient = new User();
@@ -63,7 +63,7 @@ namespace UnitTests
         public void BuyCarTest_InCorrectCarStockCount()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 0, true);
 
             var testClient = new User();
@@ -81,7 +81,7 @@ namespace UnitTests
             var result = testCar.BuyCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaweCar, result.Status);
+            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaveCar, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -90,7 +90,7 @@ namespace UnitTests
         public void BuyCarTest_InCorrectManagers()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 1, true);
 
             var testClient = new User();
@@ -102,7 +102,7 @@ namespace UnitTests
             var result = testCar.BuyCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaweManagers, result.Status);
+            Assert.Equal(BuyCarActionResult.SendErrorMessageNoHaveManagers, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -111,7 +111,7 @@ namespace UnitTests
         public void InfoCarTest_Correct()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 1, true);
 
             var testClient = new User();
@@ -138,7 +138,7 @@ namespace UnitTests
         public void InfoCarTest_InCorrectCarStockCount()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 0, true);
 
             var testClient = new User();
@@ -156,7 +156,7 @@ namespace UnitTests
             var result = testCar.InfoCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaweCar, result.Status);
+            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaveCar, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }
@@ -165,7 +165,7 @@ namespace UnitTests
         public void InfoCarTest_InCorrectManagers()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 1, true);
 
             var testClient = new User();
@@ -177,7 +177,7 @@ namespace UnitTests
             var result = testCar.InfoCar(testManagers, testClient);
 
             //Assert
-            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaweManagers, result.Status);
+            Assert.Equal(InfoCarActionResult.SendErrorMessageNoHaveManagers, result.Status);
             Assert.NotNull(result.Client);
             Assert.Null(result.Manager);
         }

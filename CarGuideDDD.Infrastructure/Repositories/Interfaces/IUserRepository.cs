@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-using DTOs;
-using Infrastructure.Data;
+﻿using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.Identity;
 
 namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
@@ -8,7 +6,7 @@ namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<UserDto?>> GetAllAsync();
-        Task<UserDto> GetByNameAsync(string name);
+        Task<UserDto?> GetByNameAsync(string name);
         Task<IdentityResult> AddAsync(UserDto user);
         Task<IdentityResult> UpdateAsync(UserDto user);
         Task<IdentityResult> DeleteAsync(string name);

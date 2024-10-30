@@ -1,7 +1,7 @@
-﻿namespace DTOs
+﻿namespace CarGuideDDD.Core.DtObjects
 {
     public class UsernameDto
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

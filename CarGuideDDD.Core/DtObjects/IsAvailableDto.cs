@@ -1,4 +1,4 @@
-﻿namespace DTOs
+﻿namespace CarGuideDDD.Core.DtObjects
 {
     public class IsAvailableDto
     {

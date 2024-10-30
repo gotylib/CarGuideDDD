@@ -1,19 +1,14 @@
 ﻿using System.Text;
-using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.MailService.Objects;
+using CarGuideDDD.MailService.Services.Interfaces;
 using Newtonsoft.Json;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
 
-namespace CarGuideDDD.Infrastructure.Services
-{
-    public class MailServices : IMailServices
+namespace CarGuideDDD.MailService.Services;
+
+public class MailServices : IMailServices
     {
-        private readonly ProducerHostedService _producerHostedService;
-
-        public MailServices(ProducerHostedService producerHostedService)
-        {
-            _producerHostedService = producerHostedService;
-        }
-        public bool SendBuyCarMessage(UserDto user, UserDto? manager, PriorityCarDto car)
+ 
+        public bool SendBuyCarMessage(User user, User? manager, Car car)
         {
 
             var toUserBodyBuild = new StringBuilder()
@@ -61,7 +56,7 @@ namespace CarGuideDDD.Infrastructure.Services
 
         }
 
-        public bool SendInformCarMessage(UserDto user, UserDto manager, PriorityCarDto car)
+        public bool SendInformCarMessage(User user, User manager, Car car)
         {
             var toUserBodyBuild = new StringBuilder()
                             .AppendLine("Вы отправили нам заявку на предоставление более полной информации о машине:")
@@ -111,7 +106,7 @@ namespace CarGuideDDD.Infrastructure.Services
             return true;
         }
 
-        public bool SendUserNoHaveCarMessage(UserDto user, PriorityCarDto car)
+        public bool SendUserNoHaveCarMessage(User user, Car car)
         {
             const string subject = "Сообщение об ошибке: нет машин на складе";
             const string toUserBody = "Извините, сейчас на складе нет машины, которую вы хотите купить. Как только она появиться мы вам сообщим";
@@ -132,7 +127,7 @@ namespace CarGuideDDD.Infrastructure.Services
             return true;
         }
 
-        public bool SendUserNotFountManagerMessage(UserDto user)
+        public bool SendUserNotFountManagerMessage(User user)
         {
             const string subject = "Сообщение об ошибки";
             const string body = "Извините сейчас нет свободных менеджеров, приносим свои извиения.";
@@ -153,6 +148,3 @@ namespace CarGuideDDD.Infrastructure.Services
 
         }
     }
-}
-
-
