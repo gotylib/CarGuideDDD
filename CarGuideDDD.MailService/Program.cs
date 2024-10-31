@@ -1,4 +1,5 @@
 using CarGuideDDD.MailService.Services;
+using CarGuideDDD.MailService.Services.Producers;
 using Confluent.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);

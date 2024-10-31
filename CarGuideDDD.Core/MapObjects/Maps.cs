@@ -1,6 +1,7 @@
 ﻿using CarGuideDDD.Core.DomainObjects;
 using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.MailSendObjects;
 using Riok.Mapperly.Abstractions;
 
 namespace CarGuideDDD.Core.MapObjects

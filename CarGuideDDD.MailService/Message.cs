@@ -1,5 +1,4 @@
-﻿using MimeKit;
-
+﻿
 namespace CarGuideDDD.MailService
 {
     public class Message

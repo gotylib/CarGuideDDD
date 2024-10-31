@@ -1,4 +1,4 @@
-﻿namespace CarGuideDDD.Core.DtObjects;
+﻿namespace CarGuideDDD.Core.MailSendObjects;
 
 public class MailCar
 {

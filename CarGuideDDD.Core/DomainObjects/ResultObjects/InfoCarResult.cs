@@ -1,6 +1,4 @@
-﻿
-
-namespace CarGuideDDD.Core.DomainObjects.ResultObjects
+﻿namespace CarGuideDDD.Core.DomainObjects.ResultObjects
 {
     public class InfoCarResult
     {

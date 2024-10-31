@@ -1,5 +1,4 @@
 ﻿using CarGuideDDD.Core.DomainObjects;
-using Newtonsoft.Json.Bson;
 
 namespace UnitTests
 {

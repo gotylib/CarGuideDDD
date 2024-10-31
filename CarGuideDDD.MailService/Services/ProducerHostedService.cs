@@ -1,4 +1,4 @@
-﻿
+﻿using CarGuideDDD.MailService.Services.Producers;
 
 namespace CarGuideDDD.MailService.Services;
 

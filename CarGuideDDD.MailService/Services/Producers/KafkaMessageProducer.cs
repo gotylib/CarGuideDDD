@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace CarGuideDDD.MailService.Services;
+namespace CarGuideDDD.MailService.Services.Producers;
 
 public sealed class KafkaMessageProducer(
     IProducer<int, string> producer,

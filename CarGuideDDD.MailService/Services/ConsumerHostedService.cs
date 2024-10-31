@@ -1,5 +1,6 @@
 ﻿using CarGuideDDD.MailService.Objects;
 using CarGuideDDD.MailService.Services.Interfaces;
+using CarGuideDDD.MailService.Services.Producers;
 using Confluent.Kafka;
 using Newtonsoft.Json;
 

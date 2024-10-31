@@ -1,5 +1,4 @@
-﻿
-namespace CarGuideDDD.Core.DtObjects
+﻿namespace CarGuideDDD.Core.DtObjects
 {
     public class EndpointStatisticsDto
     {

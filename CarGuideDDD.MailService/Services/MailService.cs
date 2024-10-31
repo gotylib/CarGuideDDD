@@ -1,8 +1,6 @@
-﻿using System.Diagnostics.Metrics;
-using System.Text;
+﻿using System.Text;
 using CarGuideDDD.MailService.Objects;
 using CarGuideDDD.MailService.Services.Interfaces;
-using Newtonsoft.Json;
 
 namespace CarGuideDDD.MailService.Services;
 
