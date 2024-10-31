@@ -26,7 +26,12 @@ namespace CarGuideDDD.Core.MapObjects
             return newUser;
         }
         
-        public static partial User MapEntityUserToUser(EntityUser entityUser);
+        public static User MapEntityUserToUser(EntityUser entityUser)
+        {
+            User user = new User();
+            user.Create(entityUser.UserName, entityUser.Email, entityUser.Password, "Null");
+            return user;
+        }
 
 
         [MapProperty(nameof(User.Name), nameof(UserDto.Username))]
@@ -49,7 +54,11 @@ namespace CarGuideDDD.Core.MapObjects
             return newCar;
 
         }
+        
+        [MapProperty(nameof(User.Name), nameof(MailUser.Username))]
+        public static partial MailUser MapUserToMailUser(User? user);
 
+        public static partial MailCar MapPriorityCarDotToMailCar(PriorityCarDto car);
 
     }
 

@@ -37,10 +37,10 @@ namespace CarGuideDDD.Infrastructure.Services
 
         public void Dispose(){}
 
-        public void SendMessage(string message)
+        public void SendMessage(int key,string message)
         {
             _logger.LogInformation("Producer sending message to kafka...");
-            _producer.Message(message);
+            _producer.Message(key, message);
             _logger.LogInformation("Producer sent message to kafka.");
         }
     }

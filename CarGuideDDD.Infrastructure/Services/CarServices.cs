@@ -1,11 +1,12 @@
 ﻿using CarGuideDDD.Core.DomainObjects;
 using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.MailSendObjects;
 using Microsoft.AspNetCore.Mvc;
 using CarGuideDDD.Core.MapObjects;
 using Microsoft.AspNetCore.Identity;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+using Newtonsoft.Json;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -15,19 +16,19 @@ namespace CarGuideDDD.Infrastructure.Services
         private readonly ICarRepository _carRepository;
         private readonly UserManager<EntityUser> _userManager;
         private readonly IUserRepository _userRepository;
-        private readonly IMailServices _mailServices;
+        private readonly ProducerHostedService _producerHostedService;
 
         public CarService(
             ICarRepository carRepository,
             RoleManager<IdentityRole> roleManager,
             UserManager<EntityUser> userManager,
             IUserRepository userRepository,
-            IMailServices mailServices)
+            ProducerHostedService producerHostedService)
         {
             _carRepository = carRepository;
             _userManager = userManager;
             _userRepository = userRepository;
-            _mailServices = mailServices;
+            _producerHostedService = producerHostedService;
         }
 
         // Получение всех автомобилей
@@ -120,24 +121,39 @@ namespace CarGuideDDD.Infrastructure.Services
             {
                 case BuyCarActionResult.SendBuyMessage:
                 {
-                    var resultAnswer = result is { Manager: not null, Client: not null } && _mailServices.SendBuyCarMessage(
-                        Maps.MapUserToUserDto(result.Client),
-                        Maps.MapUserToUserDto(result.Manager),
-                        car);
-
+                    var resultAnswer = result is { Manager: not null, Client: not null };
+                    var sendMessage = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Manager = Maps.MapUserToMailUser(result.Manager),
+                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                        
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessage);
+                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendBuyMessage + 1, send);
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveManagers:
                 {
-                    var resultAnswer = result.Client != null && _mailServices.SendUserNotFountManagerMessage(
-                        Maps.MapUserToUserDto(result.Client));
+                    var resultAnswer = result.Client != null;
+                    var sendMessaga = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client)
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessaga);
+                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveManagers, send);
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveCar:
                 {
-                    var resultAnswer = result.Client != null && _mailServices.SendUserNoHaveCarMessage(
-                        Maps.MapUserToUserDto(result.Client),
-                        car);
+                    var resultAnswer = result.Client != null;
+                    var sendMessaga = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessaga);
+                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveCar, send);
                     return resultAnswer;
                 }
                 default:
@@ -156,24 +172,38 @@ namespace CarGuideDDD.Infrastructure.Services
             {
                 case InfoCarActionResult.SendInfoMessage:
                 {
-                    var resultAnswer = result.Manager != null && _mailServices.SendInformCarMessage(
-                        Maps.MapUserToUserDto(result.Client),
-                        Maps.MapUserToUserDto(result.Manager),
-                        car);
+                    var resultAnswer = result is { Manager: not null, Client: not null };
+                    var sendMessage = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Manager = Maps.MapUserToMailUser(result.Manager),
+                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                        
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessage);
+                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendInfoMessage , send);
                     return resultAnswer;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveManagers:
                 {
-                    var resultAnswer = _mailServices.SendUserNotFountManagerMessage(
-                        Maps.MapUserToUserDto(result.Client));
-                    return resultAnswer;
+                    var sendMessaga = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client)
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessaga);
+                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveManagers, send);
+                    return true;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveCar:
                 {
-                    var resultAnswer = _mailServices.SendUserNoHaveCarMessage(
-                        Maps.MapUserToUserDto(result.Client),
-                        car);
-                    return resultAnswer;
+                    var sendMessaga = new MailSendObj
+                    {
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                    };
+                    var send = JsonConvert.SerializeObject(sendMessaga);
+                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveCar, send);
+                    return true;
                 }
                 default:
                     return false;

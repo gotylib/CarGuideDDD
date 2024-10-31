@@ -14,22 +14,21 @@ namespace CarGuideDDD.MailService.Services
     }
     
     
-    public sealed class ConsumerHostedService : BackgroundService
+    public sealed class ConsumerHostedService(
+        IConsumer<int, string> consumer,
+        string topic,
+        ILogger<ConsumerHostedService> logger,
+        IMailServices mailServices,
+        KafkaMessageProducer kafkaMessageProducer,
+        ILogger<ProducerHostedService> loggerProduce)
+        : BackgroundService
     {
-        private readonly IConsumer<int, string> _consumer;
-        private readonly string _topic;
-        private readonly ILogger<ConsumerHostedService> _logger;
-        private readonly IMailServices _mailServices;
+        private readonly IConsumer<int, string> _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
+        private readonly string _topic = topic ?? throw new ArgumentNullException(nameof(topic));
+        private readonly ILogger<ConsumerHostedService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly KafkaMessageProducer _kafkaMessageProducer = kafkaMessageProducer ?? throw new ArgumentNullException(nameof(kafkaMessageProducer));
+        private readonly ILogger<ProducerHostedService> _loggerProducer = loggerProduce ?? throw new ArgumentNullException(nameof(loggerProduce));
 
-        public ConsumerHostedService(IConsumer<int, string> consumer, string topic,
-            ILogger<ConsumerHostedService> logger, IMailServices mailServices)
-        {
-            _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
-            _topic = topic ?? throw new ArgumentNullException(nameof(topic));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mailServices = mailServices;
-        }
-        
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -67,31 +66,36 @@ namespace CarGuideDDD.MailService.Services
                     var jsonmessage = result.Message.Value;
                     var type = result.Message.Key;
                     var responce = JsonConvert.DeserializeObject<MailSendObj>(jsonmessage);
-                    if (responce == null) throw OperationCanceledException(); 
+                    if (responce == null) throw new OperationCanceledException(); 
                     switch (type)
                         {
                             case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
-                                _mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
+                                mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
                                 _consumer.Commit(result);
+                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
                                 break;
                             case (int)TypeOfMessage.SendErrorMessageNoHaveManagers:
-                                _mailServices.SendUserNotFountManagerMessage(responce.User);
+                                mailServices.SendUserNotFountManagerMessage(responce.User);
                                 _consumer.Commit(result);
+                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
                                 break;
                             case (int)TypeOfMessage.SendBuyMessage:
-                                _mailServices.SendBuyCarMessage(responce.User, responce.Manager, responce.Car);
+                                mailServices.SendBuyCarMessage(responce.User, responce.Manager, responce.Car);
                                 _consumer.Commit(result);
+                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
                                 break;
                             case (int)TypeOfMessage.SendInfoMessage:
-                                _mailServices.SendInformCarMessage(responce.User, responce.Manager, responce.Car);
+                                mailServices.SendInformCarMessage(responce.User, responce.Manager, responce.Car);
                                 _consumer.Commit(result);
+                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
                                 break;
                             default:
                                 _logger.LogInformation("Message dont convert to object.", result.Message.Value);
+                                var producer = new ProducerHostedService(_kafkaMessageProducer, loggerProduce);
+                                producer.SendMessage(result.Message.Key, result.Message.Value);
+                                _consumer.Commit(result);
                                 break;
                         }
-                        
-                        _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
 
                 }
                 catch (OperationCanceledException)

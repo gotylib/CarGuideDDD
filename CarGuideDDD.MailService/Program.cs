@@ -1,5 +1,4 @@
 using CarGuideDDD.MailService.Services;
-using CarGuideDDD.MailService.Services.Interfaces;
 using Confluent.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,15 +17,38 @@ builder.Services.AddHostedService((IServiceProvider provider) =>
     var topic = builder.Configuration.GetValue<string>("LISTENING_TOPIC") ?? throw new Exception("No listening kafka topic: 'LISTENING_TOPIC'.");
     var logger = provider.GetRequiredService<ILogger<ConsumerHostedService>>();
     var mailService = new MailServices();
+    var massageProducer = provider.GetRequiredService<KafkaMessageProducer>();
+    var produceLoggeer = provider.GetRequiredService<ILogger<ProducerHostedService>>();
     ConsumerHostedService backbroundService = new
     (
         consumer: consumer,
         topic: topic,
         logger: logger,
-        mailServices: mailService
+        mailServices: mailService,
+        kafkaMessageProducer: massageProducer,
+        loggerProduce: produceLoggeer
     );
 
     return backbroundService;
+});
+
+
+builder.Services.AddSingleton((IServiceProvider provider) =>
+{
+    var config = builder.Configuration.GetSection("KafkaProduce").Get<ProducerConfig>() ??
+                 throw new Exception("No kafka producer config section: 'Kafka'.");
+    var producer = new ProducerBuilder<int, string>(config).Build();
+    var topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
+                throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
+    var logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();
+    KafkaMessageProducer messageProducer = new
+    (
+        producer: producer,
+        topic: topic,
+        logger: logger
+    );
+
+    return messageProducer;
 });
 
 var app = builder.Build();

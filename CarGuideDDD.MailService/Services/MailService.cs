@@ -14,28 +14,28 @@ public class MailServices : IMailServices
 
             var toUserBodyBuild = new StringBuilder()
                             .AppendLine("Вы отправили нам заявку на покупку машины:")
-                            .AppendLine($"Марка: {car.Make}")
-                            .AppendLine($"Модель: {car.Model}")
-                            .AppendLine($"Цвет: {car.Color}")
-                            .AppendLine($"Мы уже назначили вам менеджера {manager.Username}")
+                            .AppendLine($"Марка: {car?.Make}")
+                            .AppendLine($"Модель: {car?.Model}")
+                            .AppendLine($"Цвет: {car?.Color}")
+                            .AppendLine($"Мы уже назначили вам менеджера {manager?.Username}")
                             .AppendLine("С вами свяжутся в ближайшее время");
             var toUserBody = toUserBodyBuild.ToString();
 
             var toManagerBodyBuilder = new StringBuilder()
                                 .AppendLine("Заявка на покупку машины:")
-                                .AppendLine($"Марка: {car.Make}")
-                                .AppendLine($"Модель: {car.Model}")
-                                .AppendLine($"Цвет: {car.Color}")
-                                .AppendLine($"Свяжитесь с покупателем: Имя: {user.Username}, Email: {user.Email}");
+                                .AppendLine($"Марка: {car?.Make}")
+                                .AppendLine($"Модель: {car?.Model}")
+                                .AppendLine($"Цвет: {car?.Color}")
+                                .AppendLine($"Свяжитесь с покупателем: Имя: {user?.Username}, Email: {user?.Email}");
             var toManagerBody = toManagerBodyBuilder.ToString();
 
             const string subject = "Заявка на покупку машины";
 
-            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
+            var dataUser = new Message() { MailRecipient = user?.Email, Subject = subject, Body = toUserBody };
             // Отправка сообщения пользователю
                 
 
-            var dataManager = new Message() { MailRecipient = manager.Email, Subject = subject, Body= toManagerBody };
+            var dataManager = new Message() { MailRecipient = manager?.Email, Subject = subject, Body= toManagerBody };
 
 
             MessageSender.SendMessage(dataUser);
@@ -50,20 +50,20 @@ public class MailServices : IMailServices
         {
             var toUserBodyBuild = new StringBuilder()
                             .AppendLine("Вы отправили нам заявку на предоставление более полной информации о машине:")
-                            .AppendLine($"Марка:{car.Make}")
-                            .AppendLine($"Модель:{car.Model}")
-                            .AppendLine($"Цвет:{car.Color}")
-                            .AppendLine($"Мы уже назначили вам менеджера {manager.Username}")
+                            .AppendLine($"Марка:{car?.Make}")
+                            .AppendLine($"Модель:{car?.Model}")
+                            .AppendLine($"Цвет:{car?.Color}")
+                            .AppendLine($"Мы уже назначили вам менеджера {manager?.Username}")
                             .AppendLine($"С вами свяжутся в ближайшее время");
 
             var toUserBody = toUserBodyBuild.ToString();
 
             var toManagerBodyBuild = new StringBuilder()
                               .AppendLine("Заявку на предоставление более полной информации о машине:")
-                              .AppendLine($"Марка:{car.Make}")
-                              .AppendLine($"Модель:{car.Model}")
-                              .AppendLine($"Цвет:{car.Color}")
-                              .AppendLine($"Свяжитесь с покупателем: Имя:{user.Username}, Email:{user.Email}");
+                              .AppendLine($"Марка:{car?.Make}")
+                              .AppendLine($"Модель:{car?.Model}")
+                              .AppendLine($"Цвет:{car?.Color}")
+                              .AppendLine($"Свяжитесь с покупателем: Имя:{user?.Username}, Email:{user?.Email}");
 
             var toManagerBody = toManagerBodyBuild.ToString();
 
@@ -71,9 +71,9 @@ public class MailServices : IMailServices
 
 
             // Отправка сообщения пользователю
-            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
+            var dataUser = new Message() { MailRecipient = user?.Email, Subject = subject, Body = toUserBody };
             
-            var dataManager = new Message() { MailRecipient = manager.Email, Subject = subject, Body= toManagerBody };
+            var dataManager = new Message() { MailRecipient = manager?.Email, Subject = subject, Body= toManagerBody };
 
 
             MessageSender.SendMessage(dataUser);
@@ -90,7 +90,7 @@ public class MailServices : IMailServices
 
             // Отправка сообщения пользователю
 
-            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = toUserBody };
+            var dataUser = new Message() { MailRecipient = user?.Email, Subject = subject, Body = toUserBody };
             
             MessageSender.SendMessage(dataUser);
             
@@ -103,7 +103,7 @@ public class MailServices : IMailServices
             const string body = "Извините сейчас нет свободных менеджеров, приносим свои извиения.";
 
             // Отправка сообщения пользователю
-            var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = body };
+            var dataUser = new Message() { MailRecipient = user?.Email, Subject = subject, Body = body };
 
             MessageSender.SendMessage(dataUser);
             
