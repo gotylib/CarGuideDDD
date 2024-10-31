@@ -79,3 +79,4 @@
              - KAFKA__BOOTSTRAPSERVERS=kafka:5002
              - KAFKA__GROUPID=kafka-sample-consumer
              - LISTENING_TOPIC=kafka-sample-topic
+             - PUBLISHING_TOPIC=dead-message-topic
