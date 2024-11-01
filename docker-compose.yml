@@ -80,3 +80,16 @@
              - KAFKA__GROUPID=kafka-sample-consumer
              - LISTENING_TOPIC=kafka-sample-topic
              - PUBLISHING_TOPIC=dead-message-topic
+     mail2:
+       container_name: mail2
+       build:
+         context: .
+         dockerfile: CarGuideDDD.MailService/Dockerfile
+       ports:
+           - 8086:8084
+           - 8087:8085
+       environment:
+             - KAFKA__BOOTSTRAPSERVERS=kafka:5002
+             - KAFKA__GROUPID=kafka-sample-consumer
+             - LISTENING_TOPIC=kafka-sample-topic
+             - PUBLISHING_TOPIC=dead-message-topic
