@@ -1,7 +1,7 @@
-﻿using CarGuideDDD.Core.DtObjects;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.Authorization;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 namespace API.Controllers

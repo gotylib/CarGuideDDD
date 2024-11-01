@@ -1,12 +1,12 @@
-﻿using CarGuideDDD.Core.DomainObjects;
-using CarGuideDDD.Core.DtObjects;
-using CarGuideDDD.Core.EntityObjects;
-using CarGuideDDD.Core.MailSendObjects;
+﻿using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.MapObjects;
 using Microsoft.AspNetCore.Identity;
+using CarGuideDDD.Core.DomainObjects;
+using CarGuideDDD.Core.EntityObjects;
+using CarGuideDDD.Core.MailSendObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
-using Newtonsoft.Json;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -126,8 +126,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     {
                         User = Maps.MapUserToMailUser(result.Client),
                         Manager = Maps.MapUserToMailUser(result.Manager),
-                        Car = Maps.MapPriorityCarDotToMailCar(car)
-                        
+                        Car = Maps.MapPriorityCarDotToMailCar(car),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
                     _producerHostedService.SendMessage((int)BuyCarActionResult.SendBuyMessage + 1, send);
@@ -138,7 +138,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     var resultAnswer = result.Client != null;
                     var sendMessaga = new MailSendObj
                     {
-                        User = Maps.MapUserToMailUser(result.Client)
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
                     _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveManagers, send);
@@ -150,7 +151,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     var sendMessaga = new MailSendObj
                     {
                         User = Maps.MapUserToMailUser(result.Client),
-                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                        Car = Maps.MapPriorityCarDotToMailCar(car),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
                     _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveCar, send);
@@ -177,8 +179,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     {
                         User = Maps.MapUserToMailUser(result.Client),
                         Manager = Maps.MapUserToMailUser(result.Manager),
-                        Car = Maps.MapPriorityCarDotToMailCar(car)
-                        
+                        Car = Maps.MapPriorityCarDotToMailCar(car),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
                     _producerHostedService.SendMessage((int)InfoCarActionResult.SendInfoMessage , send);
@@ -188,7 +190,8 @@ namespace CarGuideDDD.Infrastructure.Services
                 {
                     var sendMessaga = new MailSendObj
                     {
-                        User = Maps.MapUserToMailUser(result.Client)
+                        User = Maps.MapUserToMailUser(result.Client),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
                     _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveManagers, send);
@@ -199,7 +202,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     var sendMessaga = new MailSendObj
                     {
                         User = Maps.MapUserToMailUser(result.Client),
-                        Car = Maps.MapPriorityCarDotToMailCar(car)
+                        Car = Maps.MapPriorityCarDotToMailCar(car),
+                        Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
                     _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveCar, send);

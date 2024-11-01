@@ -1,6 +1,5 @@
-﻿using CarGuideDDD.Core.DtObjects;
-using Microsoft.AspNetCore.Mvc;
-
+﻿using Microsoft.AspNetCore.Mvc;
+using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {

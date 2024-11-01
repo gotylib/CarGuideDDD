@@ -1,8 +1,8 @@
-﻿using CarGuideDDD.MailService.Objects;
-using CarGuideDDD.MailService.Services.Interfaces;
-using CarGuideDDD.MailService.Services.Producers;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Newtonsoft.Json;
+using CarGuideDDD.MailService.Objects;
+using CarGuideDDD.MailService.Services.Producers;
+using CarGuideDDD.MailService.Services.Interfaces;
 
 namespace CarGuideDDD.MailService.Services
 {
@@ -21,15 +21,18 @@ namespace CarGuideDDD.MailService.Services
         ILogger<ConsumerHostedService> logger,
         IMailServices mailServices,
         KafkaMessageProducer kafkaMessageProducer,
-        ILogger<ProducerHostedService> loggerProduce)
+        RederectMessageProducer rederectMessageProducer,
+        KafkaAdmin.KafkaAdmin kafkaAdmin)
         : BackgroundService
     {
         private readonly IConsumer<int, string> _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
         private readonly string _topic = topic ?? throw new ArgumentNullException(nameof(topic));
         private readonly ILogger<ConsumerHostedService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly KafkaMessageProducer _kafkaMessageProducer = kafkaMessageProducer ?? throw new ArgumentNullException(nameof(kafkaMessageProducer));
-        private readonly ILogger<ProducerHostedService> _loggerProducer = loggerProduce ?? throw new ArgumentNullException(nameof(loggerProduce));
+        private readonly RederectMessageProducer _rederectMessageProducer =
+            rederectMessageProducer ?? throw new ArgumentNullException(nameof(rederectMessageProducer));
 
+        private readonly KafkaAdmin.KafkaAdmin _kafkaAdmin = kafkaAdmin ?? throw new ArgumentNullException(nameof(kafkaAdmin));
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -54,7 +57,7 @@ namespace CarGuideDDD.MailService.Services
             base.Dispose();
         }
 
-        private void Consume(CancellationToken cancellationToken)
+        private async Task Consume(CancellationToken cancellationToken)
         {
             _consumer.Subscribe(_topic);
 
@@ -67,8 +70,11 @@ namespace CarGuideDDD.MailService.Services
                     var jsonmessage = result.Message.Value;
                     var type = result.Message.Key;
                     var responce = JsonConvert.DeserializeObject<MailSendObj>(jsonmessage);
-                    if (responce == null) throw new OperationCanceledException(); 
-                    switch (type)
+                    if (responce == null) throw new OperationCanceledException();
+                        
+                    try
+                    {
+                        switch (type)
                         {
                             case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
                                 mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
@@ -92,12 +98,44 @@ namespace CarGuideDDD.MailService.Services
                                 break;
                             default:
                                 _logger.LogInformation("Message dont convert to object.", result.Message.Value);
-                                var producer = new ProducerHostedService(_kafkaMessageProducer, loggerProduce);
-                                producer.SendMessage(result.Message.Key, result.Message.Value);
+                                await _kafkaMessageProducer.Message(result.Message.Key, result.Message.Value);
                                 _consumer.Commit(result);
                                 break;
                         }
+                    }
+                    catch(Exception ex)
+                    {
+                        //тут можно установить вместо 2 колличество партиций у нас их две.
+                        if (responce.Score == 2)
+                        {
+                            await _kafkaMessageProducer.Message(result.Message.Key, result.Message.Value);
+                            _consumer.Commit(result);
+                            break;
+                        }
+                        
+                        var partitions = _kafkaAdmin.GetPartitions();
+        
+                        // Находим текущую партицию
+                        var currentPartition = result.Partition.Value; // Получаем текущую партицию из сообщения
 
+                        // Ищем другую партицию для перенаправления
+                        var otherPartitions = partitions.Where(p => p.PartitionId != currentPartition).ToList();
+                        
+
+                        if (otherPartitions.Any())
+                        {
+                            // Выбираем случайную другую партицию
+                            var targetPartition = otherPartitions[new Random().Next(otherPartitions.Count)];
+
+                            responce.Score++;
+                            jsonmessage = JsonConvert.SerializeObject(responce);
+
+                            await _rederectMessageProducer.Message(type, jsonmessage, targetPartition.PartitionId);
+
+                            // Отправляем сообщение в другую партицию
+                            break;
+                        }
+                    }
                 }
                 catch (OperationCanceledException)
                 {

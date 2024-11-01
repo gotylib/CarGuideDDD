@@ -1,13 +1,15 @@
-﻿using CarGuideDDD.Infrastructure.Services.Interfaces;
+﻿using CarGuideDDD.Core.Token;
+using System.Security.Claims;
+using CarGuideDDD.Core.DtObjects;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.EntityObjects;
-using CarGuideDDD.Core.Token;
+using System.IdentityModel.Tokens.Jwt;
+using CarGuideDDD.Infrastructure.Services.Interfaces;
+
+
 
 
 namespace CarGuideDDD.Infrastructure.Services
