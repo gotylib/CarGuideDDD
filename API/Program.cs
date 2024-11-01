@@ -112,9 +112,11 @@ builder.Services.AddSingleton((IServiceProvider provider) =>
     var producer = new ProducerBuilder<int, string>(config).Build();
     var topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
                 throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
-
-
-    using var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = config.BootstrapServers }).Build();
+    
+    using var adminClient = new AdminClientBuilder(new AdminClientConfig
+    {
+        BootstrapServers = config.BootstrapServers,
+    }).Build();
     var metadata = adminClient.GetMetadata(topic, TimeSpan.FromSeconds(10));
     if (metadata.Topics.Count == 0)
     {
