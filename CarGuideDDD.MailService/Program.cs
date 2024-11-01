@@ -27,29 +27,34 @@ builder.Services.AddSingleton((IServiceProvider provider) =>
     return kafkaAdmin;
 });
 
-builder.Services.AddHostedService((IServiceProvider provider) =>
+//Я создаю несколько Consumer, это можно сделать создав фабрику
+for (var i = 0; i < 1; ++i)
 {
-    var config = builder.Configuration.GetSection("Kafka").Get<ConsumerConfig>() ??throw new Exception("No kafka consumer config section: 'Kafka'.");
-    var consumer = new ConsumerBuilder<int, string>(config).Build();
-    var topic = builder.Configuration.GetValue<string>("LISTENING_TOPIC") ?? throw new Exception("No listening kafka topic: 'LISTENING_TOPIC'.");
-    var logger = provider.GetRequiredService<ILogger<ConsumerHostedService>>();
-    var mailService = new MailServices();
-    var massageProducer = provider.GetRequiredService<KafkaMessageProducer>();
-    var rederectMessageProducer = provider.GetRequiredService<RederectMessageProducer>();
-    var kafkaAdmin = provider.GetRequiredService<KafkaAdmin>();
-    ConsumerHostedService backbroundService = new
-    (
-        consumer: consumer,
-        topic: topic,
-        logger: logger,
-        mailServices: mailService,
-        kafkaMessageProducer: massageProducer,
-        rederectMessageProducer: rederectMessageProducer,
-        kafkaAdmin: kafkaAdmin
-    );
+    
+    builder.Services.AddHostedService((IServiceProvider provider) =>
+    {
+        var config = builder.Configuration.GetSection("Kafka").Get<ConsumerConfig>() ??throw new Exception("No kafka consumer config section: 'Kafka'.");
+        var consumer = new ConsumerBuilder<int, string>(config).Build();
+        var topic = builder.Configuration.GetValue<string>("LISTENING_TOPIC") ?? throw new Exception("No listening kafka topic: 'LISTENING_TOPIC'.");
+        var logger = provider.GetRequiredService<ILogger<ConsumerHostedService>>();
+        var mailService = new MailServices();
+        var massageProducer = provider.GetRequiredService<KafkaMessageProducer>();
+        var rederectMessageProducer = provider.GetRequiredService<RederectMessageProducer>();
+        var kafkaAdmin = provider.GetRequiredService<KafkaAdmin>();
+        ConsumerHostedService backbroundService = new
+        (
+            consumer: consumer,
+            topic: topic,
+            logger: logger,
+            mailServices: mailService,
+            kafkaMessageProducer: massageProducer,
+            rederectMessageProducer: rederectMessageProducer,
+            kafkaAdmin: kafkaAdmin
+        );
 
-    return backbroundService;
-});
+        return backbroundService;
+    });
+}
 
 
 builder.Services.AddSingleton((IServiceProvider provider) =>
