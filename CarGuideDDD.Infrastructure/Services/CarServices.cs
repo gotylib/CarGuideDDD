@@ -124,13 +124,14 @@ namespace CarGuideDDD.Infrastructure.Services
                     var resultAnswer = result is { Manager: not null, Client: not null };
                     var sendMessage = new MailSendObj
                     {
+                        EventId = (int)BuyCarActionResult.SendBuyMessage + 1,
                         User = Maps.MapUserToMailUser(result.Client),
                         Manager = Maps.MapUserToMailUser(result.Manager),
                         Car = Maps.MapPriorityCarDotToMailCar(car),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
-                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendBuyMessage + 1, send);
+                    _producerHostedService.SendMessage(send);
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveManagers:
@@ -138,11 +139,12 @@ namespace CarGuideDDD.Infrastructure.Services
                     var resultAnswer = result.Client != null;
                     var sendMessaga = new MailSendObj
                     {
+                        EventId = (int)BuyCarActionResult.SendErrorMessageNoHaveManagers,
                         User = Maps.MapUserToMailUser(result.Client),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveManagers, send);
+                    _producerHostedService.SendMessage(send);
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveCar:
@@ -150,12 +152,13 @@ namespace CarGuideDDD.Infrastructure.Services
                     var resultAnswer = result.Client != null;
                     var sendMessaga = new MailSendObj
                     {
+                        EventId = (int)BuyCarActionResult.SendErrorMessageNoHaveCar,
                         User = Maps.MapUserToMailUser(result.Client),
                         Car = Maps.MapPriorityCarDotToMailCar(car),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage((int)BuyCarActionResult.SendErrorMessageNoHaveCar, send);
+                    _producerHostedService.SendMessage(send);
                     return resultAnswer;
                 }
                 default:
@@ -177,36 +180,39 @@ namespace CarGuideDDD.Infrastructure.Services
                     var resultAnswer = result is { Manager: not null, Client: not null };
                     var sendMessage = new MailSendObj
                     {
+                        EventId = (int)InfoCarActionResult.SendInfoMessage,
                         User = Maps.MapUserToMailUser(result.Client),
                         Manager = Maps.MapUserToMailUser(result.Manager),
                         Car = Maps.MapPriorityCarDotToMailCar(car),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
-                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendInfoMessage , send);
+                    _producerHostedService.SendMessage(send);
                     return resultAnswer;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveManagers:
                 {
                     var sendMessaga = new MailSendObj
                     {
+                        EventId = (int)InfoCarActionResult.SendErrorMessageNoHaveManagers,
                         User = Maps.MapUserToMailUser(result.Client),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveManagers, send);
+                    _producerHostedService.SendMessage(send);
                     return true;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveCar:
                 {
                     var sendMessaga = new MailSendObj
                     {
+                        EventId = (int)InfoCarActionResult.SendErrorMessageNoHaveCar,
                         User = Maps.MapUserToMailUser(result.Client),
                         Car = Maps.MapPriorityCarDotToMailCar(car),
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage((int)InfoCarActionResult.SendErrorMessageNoHaveCar, send);
+                    _producerHostedService.SendMessage(send);
                     return true;
                 }
                 default:

@@ -105,45 +105,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddSingleton((IServiceProvider provider) =>
-{
-    var config = builder.Configuration.GetSection("Kafka").Get<ProducerConfig>() ??
-                 throw new Exception("No kafka producer config section: 'Kafka'.");
-    var producer = new ProducerBuilder<int, string>(config).Build();
-    var topic = builder.Configuration.GetValue<string>("PUBLISHING_TOPIC") ??
-                throw new Exception("No publishing kafka topic: 'PUBLISHING_TOPIC'.");
-    
-    using var adminClient = new AdminClientBuilder(new AdminClientConfig
-    {
-        BootstrapServers = config.BootstrapServers,
-    }).Build();
-    var metadata = adminClient.GetMetadata(topic, TimeSpan.FromSeconds(10));
-    if (metadata.Topics.Count == 0)
-    {
-            
-        const int numPartitions = 2;
-        const int replicationFactor = 1; 
 
-        var topicSpecification = new TopicSpecification
-        {
-            Name = topic,
-            NumPartitions = numPartitions,
-            ReplicationFactor = replicationFactor
-        };
-
-        adminClient.CreateTopicsAsync(new[] { topicSpecification }).GetAwaiter().GetResult();
-    }
-
-    var logger = provider.GetRequiredService<ILogger<KafkaMessageProducer>>();
-    KafkaMessageProducer messageProducer = new
-    (
-        producer: producer,
-        topic: topic,
-        logger: logger
-    );
-
-    return messageProducer;
-});
 
 var app = builder.Build();
 
@@ -162,6 +124,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

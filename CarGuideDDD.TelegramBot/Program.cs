@@ -18,7 +18,7 @@ var cancellationToken = cts.Token;
 
 var receiverOptions = new ReceiverOptions
 {
-    AllowedUpdates = new[] { UpdateType.Message } // Пример: получение только обновлений с типом Message
+    AllowedUpdates = new []{ UpdateType.Message } // Пример: получение только обновлений с типом Message
 };
 
 

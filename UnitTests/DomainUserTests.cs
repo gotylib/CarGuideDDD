@@ -1,4 +1,5 @@
 ﻿using CarGuideDDD.Core.DomainObjects;
+using CarGuideDDD.Infrastructure.Services;
 
 namespace UnitTests
 {
@@ -21,7 +22,7 @@ namespace UnitTests
         public void ChangingStatusOfMachineUnavailable_Incorrect()
         {
             //Arrange
-            Car testCar = new Car();
+            var testCar = new Car();
             testCar.Create("BMW", "7", "green", 0, true);
 
             //Act

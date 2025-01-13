@@ -72,5 +72,31 @@ namespace API.Controllers
         {
             return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
         }
+
+        [HttpGet("Hello")]
+
+        public async  Task<ActionResult> Hello()
+        {
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+
+            using (HttpClient client = new HttpClient(handler))
+            {
+                try
+                {
+                    string url = "https://mail:8085/api/Mail/Hello";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return Ok(responseBody);
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                    return BadRequest();
+                }
+            }
+        }
     }
 }

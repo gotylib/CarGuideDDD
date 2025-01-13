@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CarGuideDDD.Core\CarGuideDDD.Core.csproj" />
+    <ProjectReference Include="..\CarGuideDDD.Infrastructure\CarGuideDDD.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

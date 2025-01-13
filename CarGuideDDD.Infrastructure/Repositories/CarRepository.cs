@@ -27,6 +27,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var car = await GetByIdAsync(id);
+            _context.Entry(Maps.MapPriorityCarDtoToEntityCar(car)).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
             _context.Cars.Remove(Maps.MapPriorityCarDtoToEntityCar(car));
             await _context.SaveChangesAsync();
             return true;

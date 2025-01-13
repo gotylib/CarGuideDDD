@@ -15,5 +15,21 @@ namespace CarGuideDDD.Infrastructure.Data
         public DbSet<EntityCar> Cars { get; set; } = null!;
 
         public DbSet<EntityEndpointStatistics> EndpointStatistics { get; set; } = null!;
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Убираем уникальное ограничение на UserName
+            modelBuilder.Entity<EntityUser>()
+                .HasIndex(u => u.UserName)
+                .IsUnique(false);
+
+            // Устанавливаем уникальное ограничение на Email
+            modelBuilder.Entity<EntityUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
+        
     }
 }

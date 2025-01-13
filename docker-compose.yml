@@ -1,95 +1,68 @@
+version: '3'
+services:
+  minio:
+    container_name: mioni
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ACCESS_KEY: your-access-key
+      MINIO_SECRET_KEY: your-secret-key
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
 
-   services:
-     zookeeper:
-        container_name: zookeeper
-        image: confluentinc/cp-zookeeper:7.5.3
-        ports:
-          - 5001:5001
-        hostname: zookeeper
-        environment:
-          - ZOOKEEPER_CLIENT_PORT=5001
-          - ZOOKEEPER_TICK_TIME=2000
-     kafka:
-        container_name: kafka
-        image: confluentinc/cp-kafka:7.5.3
-        depends_on:
-          - zookeeper
-        ports:
-          - 5002:29092
-        hostname: kafka
-        environment:
-          - KAFKA_BROKER_ID=1
-          - KAFKA_ZOOKEEPER_CONNECT=zookeeper:5001
-          - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:5002
-          - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
-          - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-          - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-     kafka-ui:
-        container_name: kafka-ui
-        image: provectuslabs/kafka-ui
-        ports:
-          - 5003:8080
-        environment:
-          - KAFKA_CLUSTERS_0_NAME=local
-          - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:5002
-          - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:5001
-        links:
-          - kafka
-          - zookeeper    
-     db:    
-       image: postgres:latest
-       environment:        
-         POSTGRES_DB: CarInventoryDB
-         POSTGRES_USER: postgres        
-         POSTGRES_PASSWORD: 1234
-       ports:        
-         - "5432:5432"
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: CarInventoryDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
 
-     api:  
-       build:
-         context: .      
-         dockerfile: API/Dockerfile
-       ports:
-         - "7162:8081"
-         - "7163:8080"     
-       environment:
-         - ASPNETCORE_ENVIRONMENT=Development      
-         - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
-         - KAFKA__BOOTSTRAPSERVERS=kafka:5002
-         - PUBLISHING_TOPIC=kafka-sample-topic
-       depends_on:      
-         - db
-  
+  api:
+    container_name: main
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+      - "0:8081"
+      - "0:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CarInventoryDB;Username=postgres;Password=1234
+    depends_on:
+      - db
 
-     bot:
-       container_name: bot
-       build:
-         context: .
-         dockerfile: CarGuideDDD.TelegramBot/Dockerfile
+  bot:
+    container_name: bot
+    build:
+      context: .
+      dockerfile: CarGuideDDD.TelegramBot/Dockerfile
 
-     mail:
-       container_name: mail
-       build:
-         context: .
-         dockerfile: CarGuideDDD.MailService/Dockerfile
-       ports:
-           - 8084:8084
-           - 8085:8085
-       environment:
-             - KAFKA__BOOTSTRAPSERVERS=kafka:5002
-             - KAFKA__GROUPID=kafka-sample-consumer
-             - LISTENING_TOPIC=kafka-sample-topic
-             - PUBLISHING_TOPIC=dead-message-topic
-     mail2:
-       container_name: mail2
-       build:
-         context: .
-         dockerfile: CarGuideDDD.MailService/Dockerfile
-       ports:
-           - 8086:8084
-           - 8087:8085
-       environment:
-             - KAFKA__BOOTSTRAPSERVERS=kafka:5002
-             - KAFKA__GROUPID=kafka-sample-consumer
-             - LISTENING_TOPIC=kafka-sample-topic
-             - PUBLISHING_TOPIC=dead-message-topic
+  mail:
+    container_name: mail
+    build:
+      context: .
+      dockerfile: CarGuideDDD.MailService/Dockerfile
+    ports:
+      - "0:8084"
+      - "0:8085"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  minio-data:

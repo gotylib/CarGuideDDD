@@ -12,5 +12,12 @@ namespace CarGuideDDD.MailService.Controllers
             MessageSender.SendMessage(message);
             return Ok();   
         }
+
+        [HttpGet("Hello")]
+
+        public IActionResult Hello()
+        {
+            return Ok("Hello");
+        }
     }
 }
