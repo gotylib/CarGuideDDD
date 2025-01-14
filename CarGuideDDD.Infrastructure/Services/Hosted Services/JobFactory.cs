@@ -8,22 +8,24 @@ namespace CarGuideDDD.Infrastructure.Services.Hosted_Services
 {
     public class JobFactory : IJobFactory
     {
-        protected readonly IServiceScopeFactory _scopeFactory;
+        private readonly IScheduler _scheduler;
 
-        public JobFactory(IServiceScopeFactory scopeFactory)
+        public JobFactory(IScheduler scheduler)
         {
-            _scopeFactory = scopeFactory;
+            _scheduler = scheduler;
         }
+
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            using var scope = _scopeFactory.CreateScope();
-            var job = scope.ServiceProvider.GetServices(bundle.JobDetail.JobType) as IJob;
-            return job;
+            // Получаем тип задания из bundle
+            return (IJob)ActivatorUtilities.GetServiceOrCreateInstance(
+                _scheduler.Context.GetService<IServiceProvider>(),
+                bundle.JobDetail.JobType);
         }
 
         public void ReturnJob(IJob job)
         {
-            throw new NotImplementedException();
+            // Логика, если вам нужно вернуть job (например, для переиспользования)
         }
     }
 }

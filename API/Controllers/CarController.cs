@@ -15,14 +15,12 @@ namespace API.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ICarService _carService;
-        private readonly JobScheduler _jobScheduler;
         private readonly IFileManagerService _fileManagerService;
 
 
-        public CarsController(ICarService carService, JobScheduler jobScheduler, IFileManagerService fileManagerService)
+        public CarsController(ICarService carService, IFileManagerService fileManagerService)
         {
             _carService = carService;
-            _jobScheduler = jobScheduler;
             _fileManagerService = fileManagerService;
         }
 
@@ -58,7 +56,7 @@ namespace API.Controllers
             priorityCarDto.AddUserName = username;
             priorityCarDto.NameOfPhoto = "";
             await _carService.AddCarAsync(priorityCarDto);
-            await _jobScheduler.ScheduleJop(priorityCarDto.Make, priorityCarDto.Model, priorityCarDto.Color, TimeSpan.FromSeconds(1));
+            
             return Ok();
         }
 
@@ -72,9 +70,9 @@ namespace API.Controllers
             }
 
             using var stream = carPhotoDto.file.OpenReadStream();
-
-            await _fileManagerService.UploadFileAsync(stream, carPhotoDto.file.FileName);
-
+            var guid = Guid.NewGuid().ToString();  
+            await _fileManagerService.UploadFileAsync(stream, carPhotoDto.file.FileName, guid);
+            
             return Ok("File uploaded successfully.");
         }
 

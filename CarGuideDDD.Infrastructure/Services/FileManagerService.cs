@@ -43,13 +43,14 @@ namespace CarGuideDDD.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task UploadFileAsync(Stream fileStream, string fileName)
+        public async Task UploadFileAsync(Stream fileStream, string fileName, string guid)
         {
             try
             {
+                var type = fileName.Split('.')[0];
                 var putObjectArgs = new PutObjectArgs()
                     .WithBucket(bucketName)
-                    .WithObject(fileName+Guid.NewGuid().ToString())
+                    .WithObject(guid + "." +type)
                     .WithStreamData(fileStream)
                     .WithObjectSize(fileStream.Length)
                     .WithContentType("image/jpeg");

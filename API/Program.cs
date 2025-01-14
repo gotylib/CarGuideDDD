@@ -64,21 +64,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddQuartz();
+builder.Services.AddSingleton<IJobFactory, JobFactory>();
 
-builder.Services.AddSingleton<IScheduler>(sp =>
+builder.Services.AddQuartz(q =>
 {
-    var schedulerFactory = new StdSchedulerFactory();
-    var scheduler = schedulerFactory.GetScheduler().Result;
-    scheduler.JobFactory = sp.GetService<IJobFactory>();
-    return scheduler;
+    q.UseMicrosoftDependencyInjectionJobFactory();
+
+    // Настройка вашего задания с параметрами
+    var jobKey = new JobKey("checkAddPhotoToCarJob");
+    q.AddJob<CheckAddPhotoToCarJob>(opts => opts.WithIdentity(jobKey));
+
+    // Настройка триггера
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("checkAddPhotoToCarJob-trigger")
+        .StartNow()
+        .WithSimpleSchedule(x => x
+            .WithInterval(TimeSpan.FromMinutes(1))  // Пример интервала
+            .RepeatForever()));
+
 });
 
+// Добавление сервисов
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
-builder.Services.AddSingleton<CheckAddPhotoToCarJob>();
-
-builder.Services.AddSingleton<JobScheduler>();
 
 
 builder.Logging.ClearProviders();
