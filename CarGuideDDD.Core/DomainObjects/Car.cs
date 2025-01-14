@@ -31,8 +31,10 @@ namespace CarGuideDDD.Core.DomainObjects
         public string? Color { get; private set; }
         public int StockCount { get; private set; }
         public bool IsAvailable { get; private set; }
-
-        public void Create(string make, string model, string color, int stockCount, bool isAvailable)
+        public string NameOfPhoto { get; private set; }
+        public DateTime AddTime { get; set; }
+        public string AddUserName { get; set; }
+        public void Create(string make, string model, string color, int stockCount, bool isAvailable, string addUserName, DateTime AddTime, string NameOfPhoto = "")
         {
             Make = make;
             Model = model;

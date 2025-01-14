@@ -43,6 +43,7 @@ namespace CarGuideDDD.Core.MapObjects
 
         public static partial RegisterDto MapUserDtoToRegistaerDto(UserDto userDto);
 
+        public static partial MailUser MapEntityUserToMailUser(EntityUser entityUser);
         public static partial PriorityCarDto MapCarToPriorityCarDto(Car car);
 
         public static partial EndpointStatisticsDto MapEntityEndpointToEndpointDto(EntityEndpointStatistics entityEndpointStatistics);
@@ -51,7 +52,7 @@ namespace CarGuideDDD.Core.MapObjects
         public static Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto)
         {
             var newCar = new Car();
-            newCar.Create(priorityCarDto.Make ?? "default", priorityCarDto.Model ?? "default", priorityCarDto.Color ?? "default", priorityCarDto.StockCount, priorityCarDto.IsAvailable);
+            newCar.Create(priorityCarDto.Make ?? "default", priorityCarDto.Model ?? "default", priorityCarDto.Color ?? "default", priorityCarDto.StockCount, priorityCarDto.IsAvailable, priorityCarDto.AddUserName ?? "default" , priorityCarDto.AddTime);
             return newCar;
 
         }

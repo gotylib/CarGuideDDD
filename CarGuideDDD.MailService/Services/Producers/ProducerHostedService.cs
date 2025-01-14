@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using CarGuideDDD.Infrastructure.Services.Interfaces;
+﻿using CarGuideDDD.MailService.Services.Interfaces;
+using Microsoft.AspNetCore.Connections;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace CarGuideDDD.Infrastructure.Services
+namespace CarGuideDDD.MailService.Services.Producers
 {
     public sealed class ProducerHostedService : IDisposable, IProducerHostedService
     {
@@ -16,8 +15,8 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        
-        public void Dispose(){}
+
+        public void Dispose() { }
 
 
         public void SendMessage(object obj)
@@ -33,7 +32,7 @@ namespace CarGuideDDD.Infrastructure.Services
             using var connection = await factory.CreateConnectionAsync();
             using (var channel = await connection.CreateChannelAsync())
             {
-                await channel.QueueDeclareAsync(queue: "MailMessages",
+                await channel.QueueDeclareAsync(queue: "MailMessages.DLM",
                     durable: false,
                     exclusive: false,
                     autoDelete: false,
@@ -42,7 +41,7 @@ namespace CarGuideDDD.Infrastructure.Services
                 var body = Encoding.UTF8.GetBytes(message);
 
                 await channel.BasicPublishAsync(exchange: "",
-                    routingKey: "MailMessages",
+                    routingKey: "MailMessages.DLM",
                     mandatory: false,
                     basicProperties: new BasicProperties(),
                     body: body);

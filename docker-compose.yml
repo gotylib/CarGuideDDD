@@ -1,14 +1,14 @@
 version: '3'
 services:
   minio:
-    container_name: mioni
+    container_name: minio
     image: minio/minio
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ACCESS_KEY: your-access-key
-      MINIO_SECRET_KEY: your-secret-key
+      MINIO_ACCESS_KEY: Gleb
+      MINIO_SECRET_KEY: Az100Az.
     volumes:
       - minio-data:/data
     command: server /data --console-address ":9001"
@@ -66,3 +66,4 @@ services:
 
 volumes:
   minio-data:
+

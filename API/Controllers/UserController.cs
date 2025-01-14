@@ -11,10 +11,12 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IFileManagerService _fileManagerService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IFileManagerService fileManagerService)
         {
             _userService = userService;
+            _fileManagerService = fileManagerService;
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
@@ -35,7 +37,6 @@ namespace API.Controllers
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserDto updateUser)
         {
-
 
             return await _userService.UpdateUserAsync(updateUser);
         }
@@ -73,30 +74,30 @@ namespace API.Controllers
             return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
         }
 
-        [HttpGet("Hello")]
+        //[HttpPost("File")]
+        //public async Task<IActionResult>
 
-        public async  Task<ActionResult> Hello()
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadPhoto([FromForm] IFormFile file)
         {
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-
-            using (HttpClient client = new HttpClient(handler))
+            if (file == null || file.Length == 0)
             {
-                try
-                {
-                    string url = "https://mail:8085/api/Mail/Hello";
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    return Ok(responseBody);
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("Message :{0} ", e.Message);
-                    return BadRequest();
-                }
+                return BadRequest("File is not selected or has no content.");
             }
+
+            using (var stream = file.OpenReadStream())
+            {
+                await _fileManagerService.UploadFileAsync(stream, file.FileName);
+            }
+
+            return Ok("File uploaded successfully.");
+        }
+
+        [HttpGet("list")]
+        public async Task<IActionResult> ListFiles()
+        {
+            var fileNames = await _fileManagerService.ListFilesAsync();
+            return Ok(fileNames);
         }
     }
 }

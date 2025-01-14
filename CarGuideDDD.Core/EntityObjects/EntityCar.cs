@@ -9,6 +9,9 @@ namespace CarGuideDDD.Core.EntityObjects
         public string? Make { get; set; }
         public string? Model { get; set; }
         public string? Color { get; set; }
+        public DateTime AddTime { get; set; }
+        public string? AddUserName { get; set; }
+        public string? NameOfPhoto { get; set; }
         public int StockCount { get; set; }
         public bool IsAvailable { get; set; }
     }

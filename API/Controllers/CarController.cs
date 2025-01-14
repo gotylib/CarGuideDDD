@@ -3,6 +3,10 @@ using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
+using CarGuideDDD.Infrastructure.Services.Hosted_Services;
+using Microsoft.IdentityModel.Tokens;
+using CarGuideDDD.Infrastructure.Services;
+using CarGuideDDD.Infrastructure.Services.Interfaces;
 
 namespace API.Controllers
 {
@@ -11,10 +15,15 @@ namespace API.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ICarService _carService;
+        private readonly JobScheduler _jobScheduler;
+        private readonly IFileManagerService _fileManagerService;
 
-        public CarsController(ICarService carService)
+
+        public CarsController(ICarService carService, JobScheduler jobScheduler, IFileManagerService fileManagerService)
         {
             _carService = carService;
+            _jobScheduler = jobScheduler;
+            _fileManagerService = fileManagerService;
         }
 
         [EnableQuery]
@@ -36,9 +45,37 @@ namespace API.Controllers
         [HttpPost("CreateCar")]
         public async Task<IActionResult> CreateCar([FromBody] PriorityCarDto priorityCarDto)
         {
+            if (priorityCarDto.Make.IsNullOrEmpty() || priorityCarDto.Model.IsNullOrEmpty() || priorityCarDto.Color.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+            priorityCarDto.AddTime = (DateTime.Now).ToUniversalTime();
+            var username = User.Identity?.Name;
+            if (username == null)
+            {
+                return BadRequest("Проблемы с нахождением пользователя");
+            }
+            priorityCarDto.AddUserName = username;
+            priorityCarDto.NameOfPhoto = "";
             await _carService.AddCarAsync(priorityCarDto);
-
+            await _jobScheduler.ScheduleJop(priorityCarDto.Make, priorityCarDto.Model, priorityCarDto.Color, TimeSpan.FromSeconds(1));
             return Ok();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [HttpPost("AddCarPhoto")]
+        public async Task<IActionResult> AddCarPhoto([FromForm] CarPhotoDto carPhotoDto)
+        {
+            if (carPhotoDto.file == null || carPhotoDto.file.Length == 0 || carPhotoDto.Make.IsNullOrEmpty() || carPhotoDto.Model.IsNullOrEmpty() || carPhotoDto.Color.IsNullOrEmpty())
+            {
+                return BadRequest("Don't have information");
+            }
+
+            using var stream = carPhotoDto.file.OpenReadStream();
+
+            await _fileManagerService.UploadFileAsync(stream, carPhotoDto.file.FileName);
+
+            return Ok("File uploaded successfully.");
         }
 
 

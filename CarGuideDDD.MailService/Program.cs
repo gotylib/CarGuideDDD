@@ -1,5 +1,8 @@
 using CarGuideDDD.MailService.Services;
+using CarGuideDDD.MailService.Services.Interfaces;
+using CarGuideDDD.MailService.Services.Producers;
 using Confluent.Kafka;
+using MailKit;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Hosting;
@@ -11,14 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.WebHost.ConfigureKestrel(options =>
-//{
-//    options.ListenAnyIP(49152);
-//    options.ListenAnyIP(49153, listenOptions =>
-//    {
-//        listenOptions.UseHttps();
-//    });
-//});
+builder.Services.AddSingleton<IProducerHostedService, ProducerHostedService>();
+
+builder.Services.AddHostedService<ConsumerHostedService>();
+
+builder.Services.AddSingleton<IMailServices, MailServices>();
 
 var app = builder.Build();
 

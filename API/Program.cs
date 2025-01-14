@@ -6,19 +6,23 @@ using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services;
+using CarGuideDDD.Infrastructure.Services.Hosted_Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
-using CarGuideDDD.Infrastructure.Services.Producers;
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +35,7 @@ builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticService>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
+builder.Services.AddSingleton<IFileManagerService, FileManagerService>();
 builder.Services.AddSingleton<ProducerHostedService>();
 
 
@@ -58,6 +63,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
+
+builder.Services.AddQuartz();
+
+builder.Services.AddSingleton<IScheduler>(sp =>
+{
+    var schedulerFactory = new StdSchedulerFactory();
+    var scheduler = schedulerFactory.GetScheduler().Result;
+    scheduler.JobFactory = sp.GetService<IJobFactory>();
+    return scheduler;
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+builder.Services.AddSingleton<CheckAddPhotoToCarJob>();
+
+builder.Services.AddSingleton<JobScheduler>();
 
 
 builder.Logging.ClearProviders();

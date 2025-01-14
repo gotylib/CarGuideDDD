@@ -1,160 +1,125 @@
-﻿//using Confluent.Kafka;
-//using Newtonsoft.Json;
-//using CarGuideDDD.MailService.Objects;
-//using CarGuideDDD.MailService.Services.Producers;
-//using CarGuideDDD.MailService.Services.Interfaces;
+﻿using RabbitMQ.Client.Events;
+using RabbitMQ.Client;
+using System.Text;
+using Newtonsoft.Json;
+using CarGuideDDD.MailService.Objects;
+using CarGuideDDD.MailService.Services.Interfaces;
 
-//namespace CarGuideDDD.MailService.Services
-//{
-//    public enum TypeOfMessage
-//    {
-//        SendErrorMessageNoHaveCar,
-//        SendErrorMessageNoHaveManagers,
-//        SendInfoMessage,
-//        SendBuyMessage
-//    }
-    
-    
-//    public sealed class ConsumerHostedService(
-//        IConsumer<int, string> consumer,
-//        string topic,
-//        ILogger<ConsumerHostedService> logger,
-//        IMailServices mailServices,
-//        KafkaMessageProducer kafkaMessageProducer,
-//        RederectMessageProducer rederectMessageProducer,
-//        KafkaAdmin.KafkaAdmin kafkaAdmin)
-//        : BackgroundService
-//    {
-//        private readonly IConsumer<int, string> _consumer = consumer ?? throw new ArgumentNullException(nameof(consumer));
-//        private readonly string _topic = topic ?? throw new ArgumentNullException(nameof(topic));
-//        private readonly ILogger<ConsumerHostedService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-//        private readonly KafkaMessageProducer _kafkaMessageProducer = kafkaMessageProducer ?? throw new ArgumentNullException(nameof(kafkaMessageProducer));
-//        private readonly RederectMessageProducer _rederectMessageProducer =
-//            rederectMessageProducer ?? throw new ArgumentNullException(nameof(rederectMessageProducer));
+namespace CarGuideDDD.MailService.Services
+{
+    public enum TypeOfMessage
+    {
+        SendErrorMessageNoHaveCar,
+        SendErrorMessageNoHaveManagers,
+        SendInfoMessage,
+        SendBuyMessage,
+        SendReminderToAddCar
+    }
 
-//        private readonly KafkaAdmin.KafkaAdmin _kafkaAdmin = kafkaAdmin ?? throw new ArgumentNullException(nameof(kafkaAdmin));
 
-//        protected override Task ExecuteAsync(CancellationToken cancellationToken)
-//        {
-//            _logger.LogInformation("Consumer starting...");
-//            var consumeLoop = Task.Run(() => Consume(cancellationToken), cancellationToken);
-//            _logger.LogInformation("Consumer started.");
-//            return consumeLoop;
-//        }
+    public class ConsumerHostedService : BackgroundService
+    {
+        private IConnection _connection;
+        private IChannel _channel;
+        private IMailServices _mailServices;
+        private ILogger<ConsumerHostedService> _logger;
+        private IProducerHostedService _producerHostedService;
 
-//        public override async Task StopAsync(CancellationToken cancellationToken)
-//        {
-//            _logger.LogInformation("Consumer stopping...");
-//            await base.StopAsync(cancellationToken);
-//            _logger.LogInformation("Consumer stopped.");
-//        }
+        public ConsumerHostedService(IMailServices mailServices, ILogger<ConsumerHostedService> logger, IProducerHostedService producerHostedService)
+        {
+            _mailServices = mailServices;
+            _logger = logger;
+            _producerHostedService = producerHostedService;
+        }
 
-//        public override void Dispose()
-//        {
-//            _consumer?.Close();
-//            _consumer?.Dispose();
+        public static async Task<ConnectToRabbitMq> CreateAsync()
+        {
+            var factory = new ConnectionFactory { HostName = "rabbitmq", Port = 5672 };
+            var connection = await factory.CreateConnectionAsync();
+            var channel = await connection.CreateChannelAsync();
+            await channel.QueueDeclareAsync(queue: "MailMessages",
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+            return new ConnectToRabbitMq(connection, channel);
+        }
 
-//            base.Dispose();
-//        }
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            stoppingToken.ThrowIfCancellationRequested();
 
-//        private async Task Consume(CancellationToken cancellationToken)
-//        {
-//            _consumer.Subscribe(_topic);
+            var connect = await CreateAsync();
 
-//            while (!cancellationToken.IsCancellationRequested)
-//            {
-//                try
-//                {
-//                    _logger.LogInformation("Message consuming");
-//                    var result = _consumer.Consume(cancellationToken);
-//                    var jsonmessage = result.Message.Value;
-//                    var type = result.Message.Key;
-//                    var responce = JsonConvert.DeserializeObject<MailSendObj>(jsonmessage);
-//                    if (responce == null) throw new OperationCanceledException();
-                        
-//                    try
-//                    {
-//                        switch (type)
-//                        {
-//                            case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
-//                                mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
-//                                _consumer.Commit(result);
-//                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
-//                                break;
-//                            case (int)TypeOfMessage.SendErrorMessageNoHaveManagers:
-//                                mailServices.SendUserNotFountManagerMessage(responce.User);
-//                                _consumer.Commit(result);
-//                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
-//                                break;
-//                            case (int)TypeOfMessage.SendBuyMessage:
-//                                mailServices.SendBuyCarMessage(responce.User, responce.Manager, responce.Car);
-//                                _consumer.Commit(result);
-//                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
-//                                break;
-//                            case (int)TypeOfMessage.SendInfoMessage:
-//                                mailServices.SendInformCarMessage(responce.User, responce.Manager, responce.Car);
-//                                _consumer.Commit(result);
-//                                _logger.LogInformation("Message '{Message}' consumed.", result.Message.Value);
-//                                break;
-//                            default:
-//                                _logger.LogInformation("Message dont convert to object.", result.Message.Value);
-//                                await _kafkaMessageProducer.Message(result.Message.Key, result.Message.Value);
-//                                _consumer.Commit(result);
-//                                break;
-//                        }
-//                    }
-//                    catch(Exception ex)
-//                    {
-//                        //тут можно установить вместо 2 колличество партиций у нас их две.
-//                        if (responce.Score == 2)
-//                        {
-//                            await _kafkaMessageProducer.Message(result.Message.Key, result.Message.Value);
-//                            _consumer.Commit(result);
-//                            break;
-//                        }
-                        
-//                        var partitions = _kafkaAdmin.GetPartitions();
-        
-//                        // Находим текущую партицию
-//                        var currentPartition = result.Partition.Value; // Получаем текущую партицию из сообщения
+            _connection = connect.Connection;
+            _channel = connect.Channel;
 
-//                        // Ищем другую партицию для перенаправления
-//                        var otherPartitions = partitions.Where(p => p.PartitionId != currentPartition).ToList();
-                        
+            var consumer = new AsyncEventingBasicConsumer(_channel);
 
-//                        if (otherPartitions.Any())
-//                        {
-//                            // Выбираем случайную другую партицию
-//                            var targetPartition = otherPartitions[new Random().Next(otherPartitions.Count)];
+            consumer.ReceivedAsync += async (ch, ea) =>
+            {
+                var content = Encoding.UTF8.GetString(ea.Body.ToArray());
+                try
+                {
+                    var responce = JsonConvert.DeserializeObject<MailSendObj>(content);
+                    if (responce != null)
+                    {
+                        var type = responce.EventId;
+                        switch (type)
+                        {
+                            case (int)TypeOfMessage.SendErrorMessageNoHaveCar:
+                                _mailServices.SendUserNoHaveCarMessage(responce.User, responce.Car);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _logger.LogInformation("Message '{Message}' consumed.", content);
+                                break;
+                            case (int)TypeOfMessage.SendErrorMessageNoHaveManagers:
+                                _mailServices.SendUserNotFountManagerMessage(responce.User);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _logger.LogInformation("Message '{Message}' consumed.", content);
+                                break;
+                            case (int)TypeOfMessage.SendBuyMessage:
+                                _mailServices.SendBuyCarMessage(responce.User, responce.Manager, responce.Car);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _logger.LogInformation("Message '{Message}' consumed.", content);
+                                break;
+                            case (int)TypeOfMessage.SendInfoMessage:
+                                _mailServices.SendInformCarMessage(responce.User, responce.Manager, responce.Car);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _logger.LogInformation("Message '{Message}' consumed.", content);
+                                break;
+                            case (int)TypeOfMessage.SendReminderToAddCar:
+                                _mailServices.SendReminderToAddCar(responce.User);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _logger.LogInformation("Message '{Message}' consumed.", content);
+                                break;
+                            default:
+                                _logger.LogInformation("Message dont convert to object.", content);
+                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                                _producerHostedService.SendMessage(content);
+                                break;
+                        }
+                    }
+                    
+                    
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError("Massage dont processed", ex);
+                    _producerHostedService.SendMessage(content);
 
-//                            responce.Score++;
-//                            jsonmessage = JsonConvert.SerializeObject(responce);
+                }
+            };
 
-//                            await _rederectMessageProducer.Message(type, jsonmessage, targetPartition.PartitionId);
+            await _channel.BasicConsumeAsync("MailMessages", false, consumer);
 
-//                            // Отправляем сообщение в другую партицию
-//                            break;
-//                        }
-//                    }
-//                }
-//                catch (OperationCanceledException)
-//                {
-//                    break;
-//                }
-//                catch (ConsumeException ex)
-//                {
-//                    _logger.LogError(ex, "Message consuming failed.");
+            await Task.Delay(Timeout.Infinite, stoppingToken);
+        }
 
-//                    if (ex.Error.IsFatal)
-//                    {
-//                        break;
-//                    }
-//                }
-//                catch (Exception ex)
-//                {
-//                    _logger.LogError(ex, "Message consuming failed with unexpected error.");
-//                }
-//            }
-//        }
-//    }
-//}
+        public override async void Dispose()
+        {
+            await _channel.CloseAsync();
+            await _connection.CloseAsync();
+            base.Dispose();
+        }
+    }
+}
