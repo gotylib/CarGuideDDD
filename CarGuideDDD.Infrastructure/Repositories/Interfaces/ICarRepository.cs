@@ -11,5 +11,6 @@ namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<bool> UpdateQuantityAsync(int id, int quantity);
         Task<bool> SetAvailabilityAsync(int id, bool isAvailable);
+        public Task<bool> AddCarPhotoAsync(CarPhotoDto carPhotoDto, string guid);
     }
 }

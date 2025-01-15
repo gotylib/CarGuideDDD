@@ -87,7 +87,7 @@ namespace API.Controllers
 
             using (var stream = file.OpenReadStream())
             {
-                await _fileManagerService.UploadFileAsync(stream, file.FileName);
+                await _fileManagerService.UploadFileAsync(stream, file.FileName, Guid.NewGuid().ToString());
             }
 
             return Ok("File uploaded successfully.");

@@ -12,6 +12,6 @@ public interface IMailServices
 
     public bool SendInformCarMessage(User? user, User? manager, Car? car);
 
-    public bool SendReminderToAddCar(User? user);
+    public bool SendReminderToAddCar(List<string?> users);
 
 }

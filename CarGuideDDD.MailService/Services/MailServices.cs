@@ -112,16 +112,19 @@ public class MailServices : IMailServices
 
     }
 
-    public bool SendReminderToAddCar(User? user)
+    public bool SendReminderToAddCar(List<string?> users)
     {
-        if (user == null) return false;
+        if (users == null) return false;
         const string subject = "Напоминание";
         const string body = "Вы не добавили фото к машине, пожалуйста сделайте это в ближайшее время";
 
-        // Отправка сообщения пользователю
-        var dataUser = new Message() { MailRecipient = user.Email, Subject = subject, Body = body };
+        foreach (var user in users)
+        {
+            // Отправка сообщения пользователю
+            var dataUser = new Message() { MailRecipient = user, Subject = subject, Body = body };
 
-        MessageSender.SendMessage(dataUser);
+            MessageSender.SendMessage(dataUser);
+        }
 
         return true;
     }

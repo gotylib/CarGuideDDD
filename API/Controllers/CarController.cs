@@ -55,7 +55,14 @@ namespace API.Controllers
             }
             priorityCarDto.AddUserName = username;
             priorityCarDto.NameOfPhoto = "";
-            await _carService.AddCarAsync(priorityCarDto);
+            try
+            {
+                await _carService.AddCarAsync(priorityCarDto);
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             
             return Ok();
         }
@@ -70,10 +77,33 @@ namespace API.Controllers
             }
 
             using var stream = carPhotoDto.file.OpenReadStream();
-            var guid = Guid.NewGuid().ToString();  
+            var guid = $"{Guid.NewGuid()}.{carPhotoDto.file.FileName.Split('.')[1]}";
             await _fileManagerService.UploadFileAsync(stream, carPhotoDto.file.FileName, guid);
-            
+            try
+            {
+                await _carService.AddPhotoToCarAsync(carPhotoDto, guid);
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Ok("File uploaded successfully.");
+        }
+
+        [HttpPost("GetCarPhoto")]
+        public async Task<IActionResult> GetCarPhoto(string name)
+        {
+            // Получаем IFormFile
+            var file = await _fileManagerService.GetFileAsync(name);
+
+            if (file == null)
+            {
+                return NotFound(); // Если файл не найден
+            }
+
+            // Возвращаем файл в ответе
+            return File(file.OpenReadStream(), file.ContentType, file.FileName);
         }
 
 

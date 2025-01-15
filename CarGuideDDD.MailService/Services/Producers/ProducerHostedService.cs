@@ -19,20 +19,20 @@ namespace CarGuideDDD.MailService.Services.Producers
         public void Dispose() { }
 
 
-        public void SendMessage(object obj)
+        public void SendMessage(object obj, string queueName)
         {
             var message = JsonSerializer.Serialize(obj);
-            SendMessage(message);
+            SendMessage(message, queueName);
         }
 
-        public async void SendMessage(string message)
+        public async void SendMessage(string message, string queueName)
         {
             var factory = new ConnectionFactory() { HostName = "rabbitmq", Port = 5672 };
 
             using var connection = await factory.CreateConnectionAsync();
             using (var channel = await connection.CreateChannelAsync())
             {
-                await channel.QueueDeclareAsync(queue: "MailMessages.DLM",
+                await channel.QueueDeclareAsync(queue: queueName,
                     durable: false,
                     exclusive: false,
                     autoDelete: false,
@@ -41,7 +41,7 @@ namespace CarGuideDDD.MailService.Services.Producers
                 var body = Encoding.UTF8.GetBytes(message);
 
                 await channel.BasicPublishAsync(exchange: "",
-                    routingKey: "MailMessages.DLM",
+                    routingKey: queueName,
                     mandatory: false,
                     basicProperties: new BasicProperties(),
                     body: body);

@@ -2,8 +2,8 @@
 {
     public interface IProducerHostedService
     {
-        void SendMessage(object obj);
+        void SendMessage(object obj, string queueName);
 
-        void SendMessage(string message);
+        void SendMessage(string message, string queueName);
     }
 }

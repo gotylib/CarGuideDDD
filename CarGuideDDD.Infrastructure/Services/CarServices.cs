@@ -58,6 +58,17 @@ namespace CarGuideDDD.Infrastructure.Services
             await _carRepository.AddAsync(car);
         }
 
+        public async Task AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid)
+        {
+            if(carPhoto == null)
+            {
+                throw new ArgumentNullException(nameof(carPhoto), "Car cannot be null.");
+            }
+
+            await _carRepository.AddCarPhotoAsync(carPhoto, guid);
+
+        }  
+
         // Обновление существующего автомобиля
         public async Task UpdateCarAsync(int id, PriorityCarDto car)
         {
@@ -131,7 +142,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveManagers:
@@ -144,7 +155,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return resultAnswer;
                 }
                 case BuyCarActionResult.SendErrorMessageNoHaveCar:
@@ -158,7 +169,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return resultAnswer;
                 }
                 default:
@@ -187,7 +198,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessage);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return resultAnswer;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveManagers:
@@ -199,7 +210,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return true;
                 }
                 case InfoCarActionResult.SendErrorMessageNoHaveCar:
@@ -212,7 +223,7 @@ namespace CarGuideDDD.Infrastructure.Services
                         Score = 1
                     };
                     var send = JsonConvert.SerializeObject(sendMessaga);
-                    _producerHostedService.SendMessage(send);
+                    _producerHostedService.SendMessage(send, "MailMessages");
                     return true;
                 }
                 default:

@@ -87,15 +87,10 @@ namespace CarGuideDDD.MailService.Services
                                 await _channel.BasicAckAsync(ea.DeliveryTag, false);
                                 _logger.LogInformation("Message '{Message}' consumed.", content);
                                 break;
-                            case (int)TypeOfMessage.SendReminderToAddCar:
-                                _mailServices.SendReminderToAddCar(responce.User);
-                                await _channel.BasicAckAsync(ea.DeliveryTag, false);
-                                _logger.LogInformation("Message '{Message}' consumed.", content);
-                                break;
                             default:
                                 _logger.LogInformation("Message dont convert to object.", content);
                                 await _channel.BasicAckAsync(ea.DeliveryTag, false);
-                                _producerHostedService.SendMessage(content);
+                                _producerHostedService.SendMessage(content, "MailMessages.DLM");
                                 break;
                         }
                     }
@@ -105,7 +100,7 @@ namespace CarGuideDDD.MailService.Services
                 catch(Exception ex)
                 {
                     _logger.LogError("Massage dont processed", ex);
-                    _producerHostedService.SendMessage(content);
+                    _producerHostedService.SendMessage(content, "MailMessages.DLM");
 
                 }
             };
@@ -117,8 +112,6 @@ namespace CarGuideDDD.MailService.Services
 
         public override async void Dispose()
         {
-            await _channel.CloseAsync();
-            await _connection.CloseAsync();
             base.Dispose();
         }
     }

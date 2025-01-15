@@ -38,6 +38,14 @@ builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddSingleton<IFileManagerService, FileManagerService>();
 builder.Services.AddSingleton<ProducerHostedService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -64,30 +72,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddSingleton<IJobFactory, JobFactory>();
 
 builder.Services.AddQuartz(q =>
 {
-    q.UseMicrosoftDependencyInjectionJobFactory();
-
-    // Настройка вашего задания с параметрами
-    var jobKey = new JobKey("checkAddPhotoToCarJob");
+    var jobKey = new JobKey("CheckAddPhotoToCarJob");
     q.AddJob<CheckAddPhotoToCarJob>(opts => opts.WithIdentity(jobKey));
 
-    // Настройка триггера
     q.AddTrigger(opts => opts
-        .ForJob(jobKey)
-        .WithIdentity("checkAddPhotoToCarJob-trigger")
-        .StartNow()
-        .WithSimpleSchedule(x => x
-            .WithInterval(TimeSpan.FromMinutes(1))  // Пример интервала
-            .RepeatForever()));
-
+    .ForJob(jobKey)
+    .WithIdentity("CheckAddPhotoToCarJob-trigger")
+    .WithCronSchedule("0 * * ? * *"));
 });
 
-// Добавление сервисов
-builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
+builder.Services.AddQuartzHostedService(q=> q.WaitForJobsToComplete = true);
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
@@ -150,6 +147,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

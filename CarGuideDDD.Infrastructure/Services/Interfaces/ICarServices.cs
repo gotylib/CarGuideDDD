@@ -35,6 +35,9 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
 
             //Создать заявку на получение информации о машине
             Task<bool> InfoAsync(int id, string clientName);
+
+            //Добавление фото для машины
+            public Task AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid);
         }
     }
 }

@@ -4,6 +4,7 @@ using CarGuideDDD.Infrastructure.Services.Interfaces;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using Quartz.Impl.Triggers;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
@@ -20,20 +21,20 @@ namespace CarGuideDDD.Infrastructure.Services
         public void Dispose(){}
 
 
-        public void SendMessage(object obj)
+        public void SendMessage(object obj, string queueName)
         {
             var message = JsonSerializer.Serialize(obj);
-            SendMessage(message);
+            SendMessage(message, queueName);
         }
 
-        public async void SendMessage(string message)
+        public async void SendMessage(string message, string queueName)
         {
             var factory = new ConnectionFactory() { HostName = "rabbitmq", Port = 5672 };
 
             using var connection = await factory.CreateConnectionAsync();
             using (var channel = await connection.CreateChannelAsync())
             {
-                await channel.QueueDeclareAsync(queue: "MailMessages",
+                await channel.QueueDeclareAsync(queue: queueName,
                     durable: false,
                     exclusive: false,
                     autoDelete: false,
@@ -42,7 +43,7 @@ namespace CarGuideDDD.Infrastructure.Services
                 var body = Encoding.UTF8.GetBytes(message);
 
                 await channel.BasicPublishAsync(exchange: "",
-                    routingKey: "MailMessages",
+                    routingKey: queueName,
                     mandatory: false,
                     basicProperties: new BasicProperties(),
                     body: body);
@@ -51,3 +52,4 @@ namespace CarGuideDDD.Infrastructure.Services
         }
     }
 }
+

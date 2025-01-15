@@ -18,6 +18,8 @@ builder.Services.AddSingleton<IProducerHostedService, ProducerHostedService>();
 
 builder.Services.AddHostedService<ConsumerHostedService>();
 
+builder.Services.AddHostedService<ConsumerHostedServiceJob>();
+
 builder.Services.AddSingleton<IMailServices, MailServices>();
 
 var app = builder.Build();

@@ -15,6 +15,8 @@ namespace CarGuideDDD.Infrastructure.Data
         public DbSet<EntityCar> Cars { get; set; } = null!;
 
         public DbSet<EntityEndpointStatistics> EndpointStatistics { get; set; } = null!;
+
+        public DbSet<EntityCarWithoutPhoto> CarWithoutPhotos { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

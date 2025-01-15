@@ -2,6 +2,7 @@
 using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace CarGuideDDD.Infrastructure.Repositories
@@ -20,8 +21,49 @@ namespace CarGuideDDD.Infrastructure.Repositories
         {
 
             await _context.Cars.AddAsync(Maps.MapPriorityCarDtoToEntityCar(car));
+            if (car.NameOfPhoto.IsNullOrEmpty())
+            {
+                await _context.CarWithoutPhotos.AddAsync(Maps.MapPriorityCarDtoToEntityCarWithoutPhoto(car));
+            }
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> AddCarPhotoAsync(CarPhotoDto carPhotoDto, string guid)
+        {
+            // Найти существующую запись car
+            var car = _context.Cars.FirstOrDefault(car =>
+                car.Make == carPhotoDto.Make &&
+                car.Model == carPhotoDto.Model &&
+                car.Color == carPhotoDto.Color);
+
+            // Найти существующую запись carWithoutPhoto
+            var carWithoutPhoto = _context.CarWithoutPhotos.FirstOrDefault(car =>
+                car.Make == carPhotoDto.Make &&
+                car.Model == carPhotoDto.Model &&
+                car.Color == carPhotoDto.Color);
+
+            // Если car не найден, вернуть false
+            if (car == null)
+            {
+                return false;
+            }
+
+            // Обновить запись car
+            car.NameOfPhoto = guid;
+            _context.Cars.Update(car);
+
+            // Если carWithoutPhoto найден, удалить его
+            if (carWithoutPhoto != null)
+            {
+                _context.CarWithoutPhotos.Remove(carWithoutPhoto);
+            }
+
+            // Сохранить изменения в базе данных
+            _context.SaveChanges();
+
+            return true;
+
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -47,6 +89,8 @@ namespace CarGuideDDD.Infrastructure.Repositories
                     Make = car.Make,
                     Model = car.Model,
                     Color = car.Color,
+                    NameOfPhoto = car.NameOfPhoto,
+                    AddUserName = car.AddUserName,
                     StockCount = car.StockCount,
                     IsAvailable = car.IsAvailable
                 });
@@ -60,6 +104,8 @@ namespace CarGuideDDD.Infrastructure.Repositories
                             Make = car.Make,
                             Model = car.Model,
                             Color = car.Color,
+                            NameOfPhoto = car.NameOfPhoto,
+                            AddUserName = car.AddUserName,
                             StockCount = car.StockCount,
                             IsAvailable = car.IsAvailable
                         });

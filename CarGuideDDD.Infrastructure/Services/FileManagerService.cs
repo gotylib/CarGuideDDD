@@ -1,13 +1,11 @@
 ﻿
-
 using CarGuideDDD.Infrastructure.Services.Interfaces;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 using Minio;
 using Minio.ApiEndpoints;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
 using System.Reactive.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
@@ -36,21 +34,47 @@ namespace CarGuideDDD.Infrastructure.Services
                 _minioClient.MakeBucketAsync(makeBucketArgs).GetAwaiter().GetResult();
             }
         }
-       
 
-        public Task<Stream> GetFileAsync(string fileName)
+
+        public async Task<IFormFile> GetFileAsync(string fileName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var memoryStream = new MemoryStream();
+                GetObjectArgs getObjectArgs = new GetObjectArgs()
+                                          .WithBucket(bucketName)
+                                          .WithObject(fileName)
+                                          .WithCallbackStream((stream) =>
+                                          {
+                                              stream.CopyTo(memoryStream);
+                                          });
+
+                await _minioClient.GetObjectAsync(getObjectArgs);
+
+                memoryStream.Position = 0;
+                // Создаем IFormFile
+                var formFile = new FormFile(memoryStream, 0, memoryStream.Length, fileName, fileName)
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = $"application/{fileName.Split('.')[1]}"
+                };
+                return formFile;
+            }
+            
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task UploadFileAsync(Stream fileStream, string fileName, string guid)
         {
             try
             {
-                var type = fileName.Split('.')[0];
+                var type = $"{guid}.{fileName.Split('.')[1]}";
                 var putObjectArgs = new PutObjectArgs()
                     .WithBucket(bucketName)
-                    .WithObject(guid + "." +type)
+                    .WithObject(guid)
                     .WithStreamData(fileStream)
                     .WithObjectSize(fileStream.Length)
                     .WithContentType("image/jpeg");
