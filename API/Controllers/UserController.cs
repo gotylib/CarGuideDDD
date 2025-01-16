@@ -1,8 +1,10 @@
 ﻿using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.MapObjects;
+using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Controllers
 {
@@ -12,11 +14,13 @@ namespace API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IFileManagerService _fileManagerService;
+        private readonly IKeycloakAdminClientService _keycloakAdminClientService;
 
-        public UsersController(IUserService userService, IFileManagerService fileManagerService)
+        public UsersController(IUserService userService, IFileManagerService fileManagerService, IKeycloakAdminClientService keycloakAdminClientService)
         {
             _userService = userService;
             _fileManagerService = fileManagerService;
+            _keycloakAdminClientService = keycloakAdminClientService;
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
@@ -74,23 +78,37 @@ namespace API.Controllers
             return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
         }
 
-        //[HttpPost("File")]
-        //public async Task<IActionResult>
-
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadPhoto([FromForm] IFormFile file)
+        [Authorize(AuthenticationSchemes = "Keycloak")]
+        [HttpPost("StateRole")]
+        public async Task<IActionResult> StateRole(string secret)
         {
-            if (file == null || file.Length == 0)
+            // Извлечение JWT из заголовка авторизации
+            var authorizationHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
             {
-                return BadRequest("File is not selected or has no content.");
+                return Unauthorized();
             }
 
-            using (var stream = file.OpenReadStream())
+            var token = authorizationHeader.Substring(7); // Удаление "Bearer "
+
+            // Декодирование JWT и извлечение информации
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            if (string.IsNullOrEmpty(userId))
             {
-                await _fileManagerService.UploadFileAsync(stream, file.FileName, Guid.NewGuid().ToString());
+                return BadRequest("Username not found in JWT");
             }
 
-            return Ok("File uploaded successfully.");
+            // Получение userid по имени пользователя
+            //var userId = await _keycloakAdminClientService.GetUserIdByUsernameAsync(username);
+
+            // Добавление роли пользователю
+            var roleName = "Admin"; // Имя роли, которую вы хотите добавить
+            await _keycloakAdminClientService.AddRoleToUserAsync(userId, roleName);
+
+            return Ok("Role added successfully");
         }
 
         [HttpGet("list")]

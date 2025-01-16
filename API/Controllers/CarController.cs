@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [EnableQuery]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpGet("Get")]
         public IActionResult GetCars()
         {
