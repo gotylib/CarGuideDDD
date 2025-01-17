@@ -39,7 +39,7 @@ namespace API.Controllers
             return Ok(_carService.GetForAllCars());
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPost("CreateCar")]
         public async Task<IActionResult> CreateCar([FromBody] PriorityCarDto priorityCarDto)
         {
@@ -67,7 +67,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPost("AddCarPhoto")]
         public async Task<IActionResult> AddCarPhoto([FromForm] CarPhotoDto carPhotoDto)
         {
@@ -107,7 +107,7 @@ namespace API.Controllers
         }
 
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateCar([FromBody] PriorityCarDto priorityCarDto)
         {
@@ -123,7 +123,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCar([FromBody] IdDto idDte)
         {
@@ -138,7 +138,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPut("Quantity")]
         public async Task<IActionResult> UpdateCarQuantity([FromBody] QuantityDto quantityDto)
         {
@@ -153,7 +153,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager,Admin")]
+        [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPut("Availability")]
         public async Task<IActionResult> SetCarAvailability([FromBody] IsAvailableDto isAvailableDto)
         {

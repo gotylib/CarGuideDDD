@@ -23,21 +23,21 @@ namespace API.Controllers
             _keycloakAdminClientService = keycloakAdminClientService;
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
             return Ok( await _userService.GetAllUsersAsync());
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserDto user)
         {
             return await _userService.AddUserAsync(user);
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserDto updateUser)
         {
@@ -45,7 +45,7 @@ namespace API.Controllers
             return await _userService.UpdateUserAsync(updateUser);
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UsernameDto user)
         {

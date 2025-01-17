@@ -20,6 +20,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using NLog.Web;
 using Quartz;
 using Quartz.Impl;
@@ -71,38 +73,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<EntityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-// JSON с ключами
-string jsonWebKeySet = @"
-{
-    ""keys"": [
-        {
-            ""kid"": ""XealZKgd5k4s14KxRZ_brOMlsVY8h3Pb0fTosAKvjXo"",
-            ""kty"": ""RSA"",
-            ""alg"": ""RSA-OAEP"",
-            ""use"": ""enc"",
-            ""n"": ""0vvgnQj83NicRdVIOh7uIkOFKAprs0Nu0foWwBolKysXgAxNC0JfHqYjJ0-91tnMNkLNI3xHyC1w6iNGHY6_hq0boA9x31_-Ua7vWyc0vgr-FDT-8jG5Pwe6GPoC_vEsz9-c3Hi4z7PRZTW4TWhP9MabPuhRB5owasZKoqoqO0PTe06x4EohDWV7y3qDHI9OB8sNZqhkhs7kSS6KIjTH9u6d44nlb3X42fn8JxevJfL6giGfOBZXJawS5c1SC99E9J3uFCBh7R_hRNmqckINRqnglh97fl27fThMd4FooYRU1SMMy2KQNhHRvelb2rqx2LNanGTd7xKMM9oPEpAriQ"",
-            ""e"": ""AQAB"",
-            ""x5c"": [
-                ""MIIClTCCAX0CBgGUbodhOjANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDDANkZXYwHhcNMjUwMTE2MDk1MDUzWhcNMzUwMTE2MDk1MjMzWjAOMQwwCgYDVQQDDANkZXYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDS++CdCPzc2JxF1Ug6Hu4iQ4UoCmuzQ27R+hbAGiUrKxeADE0LQl8epiMnT73W2cw2Qs0jfEfILXDqI0Ydjr+GrRugD3HfX/5Rru9bJzS+Cv4UNP7yMbk/B7oY+gL+8SzP35zceLjPs9FlNbhNaE/0xps+6FEHmjBqxkqiqio7Q9N7TrHgSiENZXvLeoMcj04Hyw1mqGSGzuRJLooiNMf27p3jieVvdfjZ+fwnF68l8vqCIZ84FlclrBLlzVIL30T0ne4UIGHtH+FE2apyQg1GqeCWH3t+Xbt9OEx3gWihhFTVIwzLYpA2EdG96VvaurHYs1qcZN3vEowz2g8SkCuJAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAC8GU+15dZsDigJXtJYya42li5t4dzGEG36NiMPjcbHtxM7eD28NOiHkGOO/NYoayqVrXzNY8fAdXEfSiUKcmZUmciN9gNwxNbucE7lSVK0qIgzfCm7F0f8+VrHxkDbCrwWH64s5oHOSSaHSjZc5SB4mp2k+joy/eE20OBRanLb+kruHeFLnm2RIHYSmWdvoP+ZeVKyrNXEDm1GMFzJeTTBN8n1nmtT6zVRW0dSV2Ha0NnMwBRTKcSWF/sEwYfws6mHRgAGq6kQ3N5MIbQQkaMwC+JJXoS0M073dfaaK4C/rI6GIIHZYiYCbumQ+WE6ANVBG8B/ubS8Ri+eQHM36BSQ=""
-            ],
-            ""x5t"": ""BJZvCoTDVEghnmCTL8aQWRRKTI0"",
-            ""x5t#S256"": ""8pdIFR-mgOU1a_PZXNF9nwEEoZDPvEe3k6Mpneg_deo""
-        },
-        {
-            ""kid"": ""pK0rZ6UPYxbphCHGeRdHjWM9UZAT-Wea0D422ZuaL1w"",
-            ""kty"": ""RSA"",
-            ""alg"": ""RS256"",
-            ""use"": ""sig"",
-            ""n"": ""y_zV70NCXw_EEvE3iPWTFXAZXLldbideUtfrs1OCqcmg1aYHTnTVMfaNev9y5f23OiC997iTK__eCGQkLJ9vzON904PWrUY6neo2nWz4qVh8QDQUo-lSOtnNSeAqjHVsZLLQME92Vh3rdTOPv0RvXBXEk8Jn18twpphr_Dsi2oyxqaaqt-ovGzguwEcdjn9J-tOapid0F9EIxdUH5f4yKCBO5fGp7PLmJW7BbeP_gaGfpB_JGSteus7h3np8HN3gQlO_v5IyAdOD9fp7eQVd9P7oQYDDmlO5-8lRmfM2so3gcHdkG6gSjkhiu43oqRCysinHVeK5XXvScK3sqiA1yQ"",
-            ""e"": ""AQAB"",
-            ""x5c"": [
-                ""MIIClTCCAX0CBgGUbodglDANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDDANkZXYwHhcNMjUwMTE2MDk1MDUzWhcNMzUwMTE2MDk1MjMzWjAOMQwwCgYDVQQDDANkZXYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDL/NXvQ0JfD8QS8TeI9ZMVcBlcuV1uJ15S1+uzU4KpyaDVpgdOdNUx9o16/3Ll/bc6IL33uJMr/94IZCQsn2/M433Tg9atRjqd6jadbPipWHxANBSj6VI62c1J4CqMdWxkstAwT3ZWHet1M4+/RG9cFcSTwmfXy3CmmGv8OyLajLGppqq36i8bOC7ARx2Of0n605qmJ3QX0QjF1Qfl/jIoIE7l8ans8uYlbsFt4/+BoZ+kH8kZK166zuHeenwc3eBCU7+/kjIB04P1+nt5BV30/uhBgMOaU7n7yVGZ8zayjeBwd2QbqBKOSGK7jeipELKyKcdV4rlde9JwreyqIDXJAgMBAAEwDQYJKoZIhvcNAQELBQADggEBADooizPNsFZ53qe9XdecZ/i9FfUbdDpn9htzbTinc8Z9hAfTqxJkJTtLMFj6h/RiCdjOjGs0dQlhwcAo0MlioVTlrsOOvF2qaMtV1JD7eSEj3SSGlTMdzdnlOvGI8mw5Qro7kwpO/T/fsEP4zwKCMzHjfqZYReh4aSQ6fTN7lIkITSgdG+HRsnVcQZX1I92OKCMubZH6VUv/KH8NcIbUwDJBtZZ9Oy9Nw+CI/Aunf49B82Ykkccvq9HtyjNfD0OOE6UREAxFUiDRjTNHav/xW+/0keehQevadvqWOX/96U3o8avH8BzwUaB45ibJ0Ya9GI5wM1n2B0FVOw3Fb5zSi8E=""
-            ],
-            ""x5t"": ""yRlOEAqBN6pE5np2eXCUwQ8UO6k"",
-            ""x5t#S256"": ""i_BlyziljtIqQ6VCm6KIAd1dBSMCyfdQs4aOnrXQ_w8""
-        }
-    ]
-}";
+string jsonFilePath = "jwks.json"; // Укажите путь к вашему файлу JSON
+string jsonWebKeySet = System.IO.File.ReadAllText(jsonFilePath);
 // Загрузка ключей из JSON
 var signingKeys = GetSigningKeys(jsonWebKeySet);
 
@@ -155,7 +127,7 @@ builder.Services.AddAuthentication()
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKeys = signingKeys,
-            RoleClaimType = "realm_access/roles" // Убедитесь, что это соответствует вашему Keycloak токену
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" // Убедитесь, что это соответствует вашему Keycloak токену
         };
         o.Events = new JwtBearerEvents
         {
@@ -170,8 +142,22 @@ builder.Services.AddAuthentication()
                 var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
                 if (claimsIdentity != null)
                 {
-                    var roles = context.Principal.FindAll("realm_access/roles").Select(c => c.Value).ToArray();
-                    claimsIdentity.AddClaims(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+                    var realmAccessClaim = context.Principal.FindFirst("realm_access");
+                    if (realmAccessClaim != null)
+                    {
+                        var realmAccess = JsonConvert.DeserializeObject<Dictionary<string, object>>(realmAccessClaim.Value);
+                        if (realmAccess != null && realmAccess.TryGetValue("roles", out var rolesObj))
+                        {
+                            var roles = rolesObj as JArray;
+                            if (roles != null)
+                            {
+                                foreach (var role in roles)
+                                {
+                                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+                                }
+                            }
+                        }
+                    }
                 }
                 return Task.CompletedTask;
             }
@@ -269,6 +255,13 @@ builder.Services.AddAuthorization(options =>
         policy.RequireAuthenticatedUser()
                .RequireRole("Manager", "Admin")
                .AddAuthenticationSchemes("Bearer", "Keycloak"));
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireAuthenticatedUser()
+        .RequireRole("Admin")
+        .AddAuthenticationSchemes("Bearer", "Keycloak");
+                
+    });
 });
 
 builder.Services.AddControllers();
