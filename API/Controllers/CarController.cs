@@ -7,6 +7,7 @@ using CarGuideDDD.Infrastructure.Services.Hosted_Services;
 using Microsoft.IdentityModel.Tokens;
 using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
+using CarGuideDDD.Core.EntityObjects;
 
 namespace API.Controllers
 {
@@ -16,12 +17,14 @@ namespace API.Controllers
     {
         private readonly ICarService _carService;
         private readonly IFileManagerService _fileManagerService;
+        private readonly IColorService _colorService;
 
 
-        public CarsController(ICarService carService, IFileManagerService fileManagerService)
+        public CarsController(ICarService carService, IFileManagerService fileManagerService, IColorService colorService)
         {
             _carService = carService;
             _fileManagerService = fileManagerService;
+            _colorService = colorService;
         }
 
         [EnableQuery]
@@ -33,6 +36,7 @@ namespace API.Controllers
         }
 
         [EnableQuery]
+        [Authorize]
         [HttpGet("GetFofAll")]
         public IActionResult GetForAllCars()
         {
@@ -191,6 +195,36 @@ namespace API.Controllers
             var username = User.Identity.Name;
             var result = await _carService.BuyAsync(carId.Id, username);
             return Ok(result ? "Заявка сформирована" : "Не получилось создать заявку");
+        }
+
+
+
+        [Authorize(Policy = "Admin")]
+        [HttpPost("AddColor")]
+        public async Task<IActionResult> AddColor(ColorDto colorDto)
+        {
+            return await _colorService.AddColorAsync(colorDto);
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpDelete("DeleteColor")]
+        public async Task<IActionResult> DeleteColor(IdDto idDto)
+        {
+            return await _colorService.DeleteColorAsync(idDto);
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpPut("UpdateColor")]
+        public async Task<IActionResult> UpdateColor(ColorDto colorDto)
+        {
+            return await _colorService.UpdateColorAsync(colorDto);
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpGet("GetColors")]
+        public async Task<IActionResult> GetColors()
+        {
+            return await _colorService.GetColorAsync();
         }
     }
 }

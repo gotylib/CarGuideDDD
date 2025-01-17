@@ -17,7 +17,10 @@ namespace CarGuideDDD.Infrastructure.Data
         public DbSet<EntityEndpointStatistics> EndpointStatistics { get; set; } = null!;
 
         public DbSet<EntityCarWithoutPhoto> CarWithoutPhotos { get; set; } = null!;
-        
+
+        public DbSet<EntityColor> Colors { get; set; } = null!;
+
+        public DbSet<EntityBasket> Baskets { get; set; } = null!;    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

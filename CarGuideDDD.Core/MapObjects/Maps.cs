@@ -11,6 +11,7 @@ namespace CarGuideDDD.Core.MapObjects
     {
 
         public static partial PriorityCarDto EntityCarToMapPriorityCarDto(EntityCar? entityCar);
+
         public static partial EntityCar MapPriorityCarDtoToEntityCar(PriorityCarDto priorityCarDto);
 
 
@@ -46,6 +47,9 @@ namespace CarGuideDDD.Core.MapObjects
         public static partial MailUser MapEntityUserToMailUser(EntityUser entityUser);
         public static partial PriorityCarDto MapCarToPriorityCarDto(Car car);
 
+        public static partial EntityColor MapColorDtoToEntityColor(ColorDto colorDto);
+
+        public static partial ColorDto MapEntityColoroColorDto(EntityColor entityColor);
         public static partial EntityCarWithoutPhoto MapPriorityCarDtoToEntityCarWithoutPhoto(PriorityCarDto priorityCarDto);
         public static partial EndpointStatisticsDto MapEntityEndpointToEndpointDto(EntityEndpointStatistics entityEndpointStatistics);
 

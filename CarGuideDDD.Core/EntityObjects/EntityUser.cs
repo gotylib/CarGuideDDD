@@ -9,5 +9,7 @@ namespace CarGuideDDD.Core.EntityObjects
 
         public DateTime? RefreshTokenExpiration { get; set; }
 
+        public EntityBasket? Basket { get; set; }
+
     }
 }

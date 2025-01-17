@@ -1,4 +1,5 @@
 ﻿using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
@@ -19,8 +20,19 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         public async Task<bool> AddAsync(PriorityCarDto car)
         {
-
-            await _context.Cars.AddAsync(Maps.MapPriorityCarDtoToEntityCar(car));
+            var color = _context.Colors.FirstOrDefault(c => c.Color == car.Color);
+            if (color == null)
+            {
+                var addCar = Maps.MapPriorityCarDtoToEntityCar(car);
+                addCar.Color = new EntityColor() { Color = car.Color};
+                await _context.Cars.AddAsync(addCar);
+            }
+            else
+            {
+                var addCar = Maps.MapPriorityCarDtoToEntityCar(car);
+                addCar.Color = new EntityColor() { Color = color.Color, Id = color.Id };
+                await _context.Cars.AddAsync(addCar);
+            }
             if (car.NameOfPhoto.IsNullOrEmpty())
             {
                 await _context.CarWithoutPhotos.AddAsync(Maps.MapPriorityCarDtoToEntityCarWithoutPhoto(car));
@@ -35,7 +47,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
             var car = _context.Cars.FirstOrDefault(car =>
                 car.Make == carPhotoDto.Make &&
                 car.Model == carPhotoDto.Model &&
-                car.Color == carPhotoDto.Color);
+                car.Color.Color == carPhotoDto.Color);
 
             // Найти существующую запись carWithoutPhoto
             var carWithoutPhoto = _context.CarWithoutPhotos.FirstOrDefault(car =>
@@ -68,9 +80,9 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var car = await GetByIdAsync(id);
-            _context.Entry(Maps.MapPriorityCarDtoToEntityCar(car)).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
-            _context.Cars.Remove(Maps.MapPriorityCarDtoToEntityCar(car));
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null) { return false; }
+            _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
             return true;
 
@@ -88,7 +100,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
                     Id = car.Id,
                     Make = car.Make,
                     Model = car.Model,
-                    Color = car.Color,
+                    Color = car.Color.Color,
                     NameOfPhoto = car.NameOfPhoto,
                     AddUserName = car.AddUserName,
                     StockCount = car.StockCount,
@@ -103,7 +115,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
                             Id = car.Id,
                             Make = car.Make,
                             Model = car.Model,
-                            Color = car.Color,
+                            Color = car.Color.Color,
                             NameOfPhoto = car.NameOfPhoto,
                             AddUserName = car.AddUserName,
                             StockCount = car.StockCount,
@@ -133,9 +145,11 @@ namespace CarGuideDDD.Infrastructure.Repositories
         public async Task<bool> UpdateAsync(int id, PriorityCarDto car)
         {
             var updateCar = await _context.Cars.FindAsync(id);
+
             if (updateCar == null) return false;
+
             updateCar.Make = car.Make;
-            updateCar.Color = car.Color;
+            updateCar.Color = _context.Colors.FirstOrDefault(c => c.Color == car.Color) ?? null;
             updateCar.Model = car.Model;
             updateCar.IsAvailable = car.IsAvailable;
             updateCar.StockCount = car.StockCount;

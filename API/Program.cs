@@ -8,14 +8,10 @@ using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Hosted_Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
-using Confluent.Kafka;
-using Confluent.Kafka.Admin;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -24,13 +20,9 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using NLog.Web;
 using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
-using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +33,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticService>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddScoped<IColorService, ColorServie>();
+builder.Services.AddScoped<IColorRepository, ColorRepository>();
 builder.Services.AddScoped<IKeycloakAdminClientService, KeycloakAdminClientService>(provider =>
 {
     var configuration = provider.GetRequiredService<IConfiguration>();
