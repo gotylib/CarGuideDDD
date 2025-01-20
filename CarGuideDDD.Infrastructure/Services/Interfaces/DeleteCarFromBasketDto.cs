@@ -1,10 +1,11 @@
 ﻿
 
+using CarGuideDDD.Core.DtObjects;
+
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
-    public class DeleteCarFromBasketDto
+    public class DeleteCarFromBasketDto : CDUBasketDto
     {
         public int CarId { get; set; }  
-        public string? UserName { get; set; }
     }
 }

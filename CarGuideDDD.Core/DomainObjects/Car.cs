@@ -1,4 +1,5 @@
 ﻿using CarGuideDDD.Core.DomainObjects.ResultObjects;
+using CarGuideDDD.Core.DtObjects;
 
 namespace CarGuideDDD.Core.DomainObjects
 {
@@ -21,6 +22,21 @@ namespace CarGuideDDD.Core.DomainObjects
         SendErrorMessageNoHaveCar,
         SendErrorMessageNoHaveManagers,
         SendInfoMessage,
+    }
+
+    public enum RoleBasketGet
+    {
+        None,
+        User,
+        Manager,
+        Admin,
+    }
+
+    public enum RoleBasketCDU
+    {
+        Manager,
+        NonAdmin,
+        Default
     }
 
 
@@ -85,5 +101,39 @@ namespace CarGuideDDD.Core.DomainObjects
 
         }
         
+        public static RoleBasketGet GetBasket (List<string> roles, string name)
+        {
+            if (roles.Contains("Manager"))
+            {
+                return RoleBasketGet.Manager;
+            }
+
+            if (roles.Contains("Admin"))
+            {
+                return RoleBasketGet.Admin;
+            }
+
+            if (roles.Contains("User"))
+            {
+                return RoleBasketGet.User;
+            }
+
+            return RoleBasketGet.None;
+        }
+
+        public static RoleBasketCDU CDUToBasket(CDUBasketDto addCarToBasketDto, List<string> roles, string name)
+        {
+            if (roles.Contains("Manager"))
+            {
+                return RoleBasketCDU.Manager;
+            }
+
+            if(!roles.Contains("Admin") || addCarToBasketDto.UserName != name)
+            {
+                return RoleBasketCDU.NonAdmin;
+            }
+
+            return RoleBasketCDU.Default;
+        }
     }
 }
