@@ -27,7 +27,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
                 var user = await _context.Users
                     .Include(u => u.Basket)
                     .ThenInclude(b => b.Cars)
-                    .FirstOrDefaultAsync(u => u.UserName == addCarToBasketDto.Username);
+                    .FirstOrDefaultAsync(u => u.UserName == addCarToBasketDto.UserName);
 
                 if (user == null) { return false; }
 
