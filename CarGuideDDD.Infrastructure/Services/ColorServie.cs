@@ -1,5 +1,4 @@
 ﻿using CarGuideDDD.Core.DtObjects;
-using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +49,7 @@ namespace CarGuideDDD.Infrastructure.Services
             
             return result.IsSuccessful
                 ? new OkObjectResult(result.Value)
-                : new BadRequestObjectResult(result.Value);
+                : new BadRequestObjectResult(result.Error);
         }
 
         public async Task<IActionResult> UpdateColorAsync(ColorDto colorDto)

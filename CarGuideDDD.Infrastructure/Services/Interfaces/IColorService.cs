@@ -2,7 +2,6 @@
 
 using CarGuideDDD.Core.AnswerObjects;
 using CarGuideDDD.Core.DtObjects;
-using CarGuideDDD.Core.EntityObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces

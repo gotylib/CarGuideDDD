@@ -35,6 +35,8 @@ builder.Services.AddScoped<IStatisticsService, StatisticService>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IColorService, ColorServie>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IKeycloakAdminClientService, KeycloakAdminClientService>(provider =>
 {
     var configuration = provider.GetRequiredService<IConfiguration>();
@@ -183,6 +185,7 @@ builder.Services.AddControllers().AddOData(opt => opt
     .Expand()
     .SetMaxTop(20)
     .Count()
+    .EnableQueryFeatures()
     );
 
 
@@ -256,6 +259,14 @@ builder.Services.AddAuthorization(options =>
         .AddAuthenticationSchemes("Bearer", "Keycloak");
                 
     });
+    options.AddPolicy("UserOrAdmin", policy =>
+        policy.RequireAuthenticatedUser()
+              .RequireRole("Admin", "User")
+              .AddAuthenticationSchemes("Bearer", "Keycloak"));
+    options.AddPolicy("All", policy =>
+        policy.RequireAuthenticatedUser()
+              .RequireRole("Admin", "User", "Manager")
+              .AddAuthenticationSchemes("Bearer", "Keycloak"));
 });
 
 builder.Services.AddControllers();

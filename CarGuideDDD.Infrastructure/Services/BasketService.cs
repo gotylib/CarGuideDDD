@@ -12,24 +12,88 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             _repository = repository;
         }
-        public Task<IActionResult> AddCarToBasket(AddCarToBasketDto addCarToBasketDto)
+        public async Task<IActionResult> AddCarToBasket(AddCarToBasketDto addCarToBasketDto, List<string> roles, string name)
         {
-            throw new NotImplementedException();
+            if (roles.Contains("Manager")) { return new BadRequestObjectResult("Менеджерам эта функция не доступна"); }
+
+            if (roles.Contains("Admin") == false || addCarToBasketDto.Username != name)
+            {
+                return new BadRequestObjectResult("Вы не админ по этому не можете менять корзины других пользователей");
+            }
+
+            if(await _repository.AddCarToBasket(addCarToBasketDto))
+            {
+                return new OkObjectResult("Машина была добавлена");
+            }
+
+            return new StatusCodeResult(500);
         }
 
-        public Task<IActionResult> DeleteCarFromBasket(DeleteCarFromBasketDto deleteCarFromBasketDto)
+        public async Task<IActionResult> DeleteCarFromBasket(DeleteCarFromBasketDto deleteCarFromBasketDto, List<string> roles, string name)
         {
-            throw new NotImplementedException();
+            if (roles.Contains("Manager"))
+            {
+                return new BadRequestObjectResult("Менеджерам эта функция не доступна");
+            }
+
+            if (!roles.Contains("Admin") || deleteCarFromBasketDto.UserName != name)
+            {
+                return new BadRequestObjectResult("Вы не админ, поэтому не можете удалять машины из корзин других пользователей");
+            }
+
+            if (await _repository.DeleteCar(deleteCarFromBasketDto))
+            {
+                return new OkObjectResult("Машина была удалена из корзины");
+            }
+
+            return new StatusCodeResult(500);
         }
 
-        public Task<IActionResult> GetCarFromBasker()
+        public async Task<IActionResult> GetCarFromBasker(List<string> roles, string name)
         {
-            throw new NotImplementedException();
+            if (roles.Contains("Manager"))
+            {
+                return new BadRequestObjectResult("Менеджерам эта функция не доступна");
+            }
+
+            if (roles.Contains("Admin"))
+            {
+                var result = await _repository.GetAllBaskets();
+
+                return result.IsSuccessful
+                    ? new OkObjectResult(result.Value)
+                    : new BadRequestObjectResult(result.Error);
+            }
+            else
+            {
+                var result = await _repository.GetBasket(name);
+
+                return result.IsSuccessful
+                    ? new OkObjectResult(result.Value)
+                    : new BadRequestObjectResult(result.Error);
+            }
+            
+            
         }
 
-        public Task<IActionResult> UpdateColorToCarFromBasket(UpdateColorDto updateColorDto)
+        public async Task<IActionResult> UpdateColorToCarFromBasket(UpdateColorDto updateColorDto, List<string> roles, string name)
         {
-            throw new NotImplementedException();
+            if (roles.Contains("Manager"))
+            {
+                return new BadRequestObjectResult("Менеджерам эта функция не доступна");
+            }
+
+            if (!roles.Contains("Admin") || updateColorDto.UserName != name)
+            {
+                return new BadRequestObjectResult("Вы не админ, поэтому не можете изменять корзины других пользователей");
+            }
+
+            if (await _repository.UpdateCarColor(updateColorDto))
+            {
+                return new OkObjectResult("Цвет машины был обновлен");
+            }
+
+            return new StatusCodeResult(500);
         }
     }
 }

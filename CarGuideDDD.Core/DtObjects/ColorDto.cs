@@ -1,6 +1,4 @@
-﻿
-
-namespace CarGuideDDD.Core.EntityObjects
+﻿namespace CarGuideDDD.Core.DtObjects
 {
     public class ColorDto
     {

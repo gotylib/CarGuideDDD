@@ -2,7 +2,6 @@
 
 using CarGuideDDD.Core.AnswerObjects;
 using CarGuideDDD.Core.DtObjects;
-using CarGuideDDD.Core.EntityObjects;
 
 namespace CarGuideDDD.Infrastructure.Repositories.Interfaces
 {

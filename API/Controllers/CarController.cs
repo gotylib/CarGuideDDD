@@ -3,11 +3,11 @@ using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
-using CarGuideDDD.Infrastructure.Services.Hosted_Services;
 using Microsoft.IdentityModel.Tokens;
-using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
-using CarGuideDDD.Core.EntityObjects;
+using System.Security.Claims;
+using CarGuideDDD.Infrastructure.Services;
+using API.ODataSettings;
 
 namespace API.Controllers
 {
@@ -18,13 +18,15 @@ namespace API.Controllers
         private readonly ICarService _carService;
         private readonly IFileManagerService _fileManagerService;
         private readonly IColorService _colorService;
+        private readonly IBasketService _basketService;
 
 
-        public CarsController(ICarService carService, IFileManagerService fileManagerService, IColorService colorService)
+        public CarsController(ICarService carService, IFileManagerService fileManagerService, IColorService colorService, IBasketService basketService)
         {
             _carService = carService;
             _fileManagerService = fileManagerService;
             _colorService = colorService;
+            _basketService = basketService;
         }
 
         [EnableQuery]
@@ -36,9 +38,10 @@ namespace API.Controllers
         }
 
         [EnableQuery]
-        [Authorize]
-        [HttpGet("GetFofAll")]
-        public IActionResult GetForAllCars()
+        [DisableFilter("AddUserName")]
+        [Authorize(Policy = "All")]
+        [HttpGet("GetForAll")]
+        public IActionResult GetForAll()
         {
             return Ok(_carService.GetForAllCars());
         }
@@ -226,5 +229,86 @@ namespace API.Controllers
         {
             return await _colorService.GetColorAsync();
         }
+
+        [Authorize(Policy = "UserOrAdmin")]
+        [HttpPost("AddCarToBasket")]
+        public async Task<IActionResult> AddCarToBasket([FromBody] AddCarToBasketDto addCarToBasketDto)
+        {
+            // Получение утверждений текущего пользователя
+            var claims = HttpContext.User.Claims;
+
+            // Извлечение ролей из утверждений
+            var roles = claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            // Извлечение имени пользователя из утверждений
+            var username = claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            return await _basketService.AddCarToBasket(addCarToBasketDto, roles, username);
+        }
+
+        [Authorize(Policy = "UserOrAdmin")]
+        [HttpDelete("DeleteCarFromBasket")]
+        public async Task<IActionResult> DeleteCarFromBasket([FromBody] DeleteCarFromBasketDto deleteCarFromBasketDto)
+        {
+            // Получение утверждений текущего пользователя
+            var claims = HttpContext.User.Claims;
+
+            // Извлечение ролей из утверждений
+            var roles = claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            // Извлечение имени пользователя из утверждений
+            var username = claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            return await _basketService.DeleteCarFromBasket(deleteCarFromBasketDto, roles, username);
+        }
+
+        [Authorize(Policy = "UserOrAdmin")]
+        [HttpGet("GetBasket")]
+        public async Task<IActionResult> GetBasket()
+        {
+            // Получение утверждений текущего пользователя
+            var claims = HttpContext.User.Claims;
+
+            // Извлечение ролей из утверждений
+            var roles = claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            // Извлечение имени пользователя из утверждений
+            var username = claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            return await _basketService.GetCarFromBasker(roles, username);
+        }
+
+        [Authorize(Policy = "UserOrAdmin")]
+        [HttpPut("UpdateColorToCarFromBasket")]
+        public async Task<IActionResult> UpdateColorToCarFromBasket([FromBody] UpdateColorDto updateColorDto)
+        {
+            // Получение утверждений текущего пользователя
+            var claims = HttpContext.User.Claims;
+
+            // Извлечение ролей из утверждений
+            var roles = claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            // Извлечение имени пользователя из утверждений
+            var username = claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            return await _basketService.UpdateColorToCarFromBasket(updateColorDto, roles, username);
+        }
+
     }
 }

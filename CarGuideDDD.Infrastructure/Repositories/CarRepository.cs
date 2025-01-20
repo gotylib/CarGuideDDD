@@ -3,6 +3,7 @@ using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Core.MapObjects;
 using CarGuideDDD.Infrastructure.Data;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -44,13 +45,13 @@ namespace CarGuideDDD.Infrastructure.Repositories
         public async Task<bool> AddCarPhotoAsync(CarPhotoDto carPhotoDto, string guid)
         {
             // Найти существующую запись car
-            var car = _context.Cars.FirstOrDefault(car =>
+            var car = await _context.Cars.FirstOrDefaultAsync(car =>
                 car.Make == carPhotoDto.Make &&
                 car.Model == carPhotoDto.Model &&
                 car.Color.Color == carPhotoDto.Color);
 
             // Найти существующую запись carWithoutPhoto
-            var carWithoutPhoto = _context.CarWithoutPhotos.FirstOrDefault(car =>
+            var carWithoutPhoto = await _context.CarWithoutPhotos.FirstOrDefaultAsync(car =>
                 car.Make == carPhotoDto.Make &&
                 car.Model == carPhotoDto.Model &&
                 car.Color == carPhotoDto.Color);
@@ -72,7 +73,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
             }
 
             // Сохранить изменения в базе данных
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return true;
 
@@ -117,7 +118,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
                             Model = car.Model,
                             Color = car.Color.Color,
                             NameOfPhoto = car.NameOfPhoto,
-                            AddUserName = car.AddUserName,
+                            AddUserName = null,
                             StockCount = car.StockCount,
                             IsAvailable = car.IsAvailable
                         });
