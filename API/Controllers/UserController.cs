@@ -56,7 +56,13 @@ namespace API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            return await _userService.Register(model);
+            var result = await _userService.Register(model);
+            if(result.QrCodeStream == null)
+            {
+                return result.ActionResults;
+            }
+            return File(result.QrCodeStream.ToArray(), "image/png", "qrcode.png");
+            
         }
 
         [HttpPost("Login")]

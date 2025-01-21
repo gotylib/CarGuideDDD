@@ -11,5 +11,7 @@ namespace CarGuideDDD.Core.EntityObjects
 
         public EntityBasket? Basket { get; set; }
 
+        public string? SecretCode2FA { get; set;}
+
     }
 }

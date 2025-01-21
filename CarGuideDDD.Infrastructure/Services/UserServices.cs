@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
+using OtpNet;
+using CommunityToolkit.HighPerformance.Helpers;
+using QRCoder;
+using CarGuideDDD.Core.Token;
+
 
 
 
@@ -46,7 +51,8 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             if (user == null)throw new ArgumentNullException(nameof(user), "User cannot be null.");
             
-            var result = await _userRepository.AddAsync(user);
+            var result = await _userRepository.AddAsync(user, GenerateSecretKeyFor2FA());
+
             
             if (result.Succeeded) return new OkResult();
             
@@ -91,16 +97,17 @@ namespace CarGuideDDD.Infrastructure.Services
 
         }
 
-        public async Task<IActionResult> Register(RegisterDto model)
+        public async Task<RegisterQrResult> Register(RegisterDto model)
         {
-            if (model.Password == null) return new BadRequestObjectResult(new { massege = "Пароль не указан" });
+            if (model.Password == null) return new RegisterQrResult() {ActionResults = new BadRequestObjectResult( "Пароль не указан" ), QrCodeStream = null};
             var user = new EntityUser { UserName = model.Username, Email = model.Email };
+            user.SecretCode2FA = GenerateSecretKeyFor2FA();
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded) return new BadRequestObjectResult(result.Errors);
+            if (!result.Succeeded) return new RegisterQrResult() { ActionResults = new BadRequestObjectResult(result.Errors), QrCodeStream = null };
             await _userManager.AddToRoleAsync(user, "User");
 
-            if (model.SecretCode == null) return new OkResult();
+            if (model.SecretCode == null) return new RegisterQrResult() { ActionResults = new OkResult(), QrCodeStream = null };
             switch (model.SecretCode)
             {
                 case "Admin":
@@ -110,7 +117,8 @@ namespace CarGuideDDD.Infrastructure.Services
                     await _userManager.AddToRoleAsync(user, "Manager");
                     break;
             }
-            return new OkResult();
+
+            return new RegisterQrResult() { ActionResults = null, QrCodeStream = GenerateQrCode(user.SecretCode2FA, user.UserName, AuthOptions.Issuer) };
 
         }
 
@@ -154,6 +162,25 @@ namespace CarGuideDDD.Infrastructure.Services
             return new OkObjectResult(new { AccessToken = newAccessToken, RefreshToken = newRefreshToken.Token });
         }
 
+        public MemoryStream GenerateQrCode(string secretKey, string username, string issuer)
+        {
+            string uri = $"otpauth://totp/{issuer}:{username}?secret={secretKey}&issuer={issuer}";
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(uri, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrCodeData);
+            
+            byte[] qrCodeImage = qrCode.GetGraphic(20);
+            return new MemoryStream(qrCodeImage);
+
+        }
+
+        private string GenerateSecretKeyFor2FA()
+        {
+            var key = KeyGeneration.GenerateRandomKey(20);
+
+            return Base32Encoding.ToString(key);
+            
+        }
 
 
     }

@@ -17,9 +17,11 @@ namespace CarGuideDDD.Infrastructure.Repositories
         {
             _userManager = userManager;
         }
-        public async Task<IdentityResult> AddAsync(UserDto user)
+        public async Task<IdentityResult> AddAsync(UserDto user, string code)
         {
-            return await _userManager.CreateAsync(Maps.MapUserDtoToEntityUser(user), user.Password ?? "default");
+            var entityUser = Maps.MapUserDtoToEntityUser(user);
+            entityUser.SecretCode2FA = code;
+            return await _userManager.CreateAsync(entityUser, user.Password ?? "default");
         }
 
         public async Task<IdentityResult> DeleteAsync(string name)
@@ -38,6 +40,11 @@ namespace CarGuideDDD.Infrastructure.Repositories
         {
             return (await _userManager.Users.ToListAsync())
                 .Select(Maps.MapEntityUseToUserDto);
+
+        }
+
+        public async Task<string> Get2FACod()
+        {
 
         }
 
