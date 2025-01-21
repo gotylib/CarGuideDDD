@@ -9,6 +9,7 @@ using OtpNet;
 using CommunityToolkit.HighPerformance.Helpers;
 using QRCoder;
 using CarGuideDDD.Core.Token;
+using CarGuideDDD.Core.AnswerObjects;
 
 
 
@@ -47,67 +48,65 @@ namespace CarGuideDDD.Infrastructure.Services
         }
 
         // Добавление нового пользователя
-        public async Task<IActionResult> AddUserAsync(UserDto user)
+        public async Task<ServiceResult> AddUserAsync(UserDto user)
         {
             if (user == null)throw new ArgumentNullException(nameof(user), "User cannot be null.");
             
             var result = await _userRepository.AddAsync(user, GenerateSecretKeyFor2FA());
 
             
-            if (result.Succeeded) return new OkResult();
+            if (result.Succeeded) return ServiceResult.Ok();
             
-            return new BadRequestObjectResult(result.Errors);
+            return ServiceResult.BadRequest(result.Errors.ToString());
 
         }
 
         // Обновление существующего пользователя
-        public async Task<IActionResult> UpdateUserAsync(UserDto user)
+        public async Task<ServiceResult> UpdateUserAsync(UserDto user)
         {
             if (user == null)throw new ArgumentNullException(nameof(user), "User cannot be null.");
             
             var existingUser = await _userRepository.UpdateAsync(user);
             
-            if (existingUser.Succeeded) return new OkResult();
+            if (existingUser.Succeeded) return ServiceResult.Ok();
             
-            return new BadRequestObjectResult(existingUser.Errors);
+            return ServiceResult.BadRequest(existingUser.Errors.ToString());
             
         }
 
         // Удаление пользователя
-        public async Task<IActionResult> DeleteUserAsync(string name)
+        public async Task<ServiceResult> DeleteUserAsync(string name)
         {
             var result = await _userRepository.DeleteAsync(name);
             
-            if (result.Succeeded) return new OkResult();
+            if (result.Succeeded) return ServiceResult.Ok();
 
-            return new BadRequestObjectResult(result.Errors);
+            return ServiceResult.BadRequest(result.Errors.ToString());
         }
 
-        public async Task<IActionResult> RegisterOfLogin(RegisterDto model)
+        public async Task<RegisterQrResult> RegisterOfLogin(RegisterDto model)
         {
-            if (model.Username == null) return new BadRequestResult();
+            if (model.Username == null) return new RegisterQrResult(){ ActionResults = ServiceResult.BadRequest("User is null"), QrCodeStream = null};
             
             var user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user != null) return new RegisterQrResult() { ActionResults = await Login(Maps.MapRegisterDtoToLoginDto(model)), QrCodeStream = null };
             
-            if (user != null) return await Login(Maps.MapRegisterDtoToLoginDto(model));
-            
-            await Register(model);
-            
-            return await Login(Maps.MapRegisterDtoToLoginDto(model));
+            return await Register(model);
 
         }
 
         public async Task<RegisterQrResult> Register(RegisterDto model)
         {
-            if (model.Password == null) return new RegisterQrResult() {ActionResults = new BadRequestObjectResult( "Пароль не указан" ), QrCodeStream = null};
+            if (model.Password == null) return new RegisterQrResult() {ActionResults = ServiceResult.BadRequest( "Пароль не указан" ), QrCodeStream = null};
             var user = new EntityUser { UserName = model.Username, Email = model.Email };
             user.SecretCode2FA = GenerateSecretKeyFor2FA();
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded) return new RegisterQrResult() { ActionResults = new BadRequestObjectResult(result.Errors), QrCodeStream = null };
+            if (!result.Succeeded) return new RegisterQrResult() { ActionResults = ServiceResult.BadRequest(result.Errors.ToString()), QrCodeStream = null };
             await _userManager.AddToRoleAsync(user, "User");
 
-            if (model.SecretCode == null) return new RegisterQrResult() { ActionResults = new OkResult(), QrCodeStream = null };
+            if (model.SecretCode == null) return new RegisterQrResult() { ActionResults = null, QrCodeStream = GenerateQrCode(user.SecretCode2FA, user.UserName, AuthOptions.Issuer) };
             switch (model.SecretCode)
             {
                 case "Admin":
@@ -122,35 +121,48 @@ namespace CarGuideDDD.Infrastructure.Services
 
         }
 
-        public async Task<IActionResult> Login(LoginDto model)
+        public async Task<ServiceResult> Login(LoginDto model)
         {
-            if (model.Name == null)  return new BadRequestObjectResult(new { message = "Имя не указано." });
+            if (model.Name == null)  return ServiceResult.BadRequest( "Имя не указано.");
 
-            if (model.Password == null) return new BadRequestObjectResult(new {message = "Пароль не указан."});
+            if (model.Password == null) return ServiceResult.BadRequest("Пароль не указан.");
             
             var user = await _userManager.FindByNameAsync(model.Name);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                return new UnauthorizedResult();
+                return ServiceResult.BadRequest("Not Authorize",401);
             }
 
-            var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = refreshToken.Token; // Обновление токена в базе данных
+            user.CodeFor2FA = Guid.NewGuid();
             await _userManager.UpdateAsync(user);
-
-            return new OkObjectResult(new { AccessToken = accessToken, RefreshToken = refreshToken.Token });
+            return ServiceResult.Ok(user.CodeFor2FA.ToString());
         }
 
-        public async Task<IActionResult> RefreshToken(RefreshTokenDto model)
+        public async Task<ServiceResult> Validate2FACode(string name, string code, string code2FA)
         {
-            if (string.IsNullOrEmpty(model.Token)) return new BadRequestObjectResult("Refresh token is required.");
+            var user = await _userManager.FindByNameAsync(name);
+            if (code2FA != user.CodeFor2FA.ToString()) return ServiceResult.BadRequest("Code not valid");
+ 
+            var otp = new Totp(Base32Encoding.ToBytes((await _userManager.FindByNameAsync(name)).SecretCode2FA));
+            if(otp.VerifyTotp(code, out long timeStepMatched))
+            {
+                var accessToken = _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken.Token; // Обновление токена в базе данных
+                await _userManager.UpdateAsync(user);
+                return ServiceResult.Ok($"AccessToken = {accessToken}, RefreshToken = {refreshToken.Token}");
+            }
+            return ServiceResult.BadRequest("Code not valid");
+        }
+        public async Task<ServiceResult> RefreshToken(RefreshTokenDto model)
+        {
+            if (string.IsNullOrEmpty(model.Token)) return ServiceResult.BadRequest("Refresh token is required.");
 
 
             var user = _userManager.Users.FirstOrDefault(u => u.RefreshToken == model.Token);
 
-            if (user == null || user.RefreshTokenExpiration < DateTime.UtcNow) return new UnauthorizedResult();
+            if (user == null || user.RefreshTokenExpiration < DateTime.UtcNow) return ServiceResult.BadRequest("Not Authorize", 401);
             
             var newAccessToken = _tokenService.GenerateAccessToken(user);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
@@ -159,7 +171,7 @@ namespace CarGuideDDD.Infrastructure.Services
             user.RefreshTokenExpiration = newRefreshToken.Expiration;
             await _userManager.UpdateAsync(user);
 
-            return new OkObjectResult(new { AccessToken = newAccessToken, RefreshToken = newRefreshToken.Token });
+            return ServiceResult.Ok($"AccessToken = {newAccessToken}, RefreshToken = {newRefreshToken.Token} ");
         }
 
         public MemoryStream GenerateQrCode(string secretKey, string username, string issuer)

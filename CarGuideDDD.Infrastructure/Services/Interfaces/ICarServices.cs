@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
@@ -28,7 +29,7 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
             Task UpdateCarQuantityAsync(int id, int quantity);
 
             // Сделать автомобиль недоступным
-            Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable);
+            Task<ServiceResult> SetCarAvailabilityAsync(int id, bool inAvailable);
 
             //Создать заявку на покупку машины
             Task<bool> BuyAsync(int id, string clientName);

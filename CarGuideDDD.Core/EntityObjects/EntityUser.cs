@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CarGuideDDD.Core.EntityObjects.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarGuideDDD.Core.EntityObjects
 {
-    public class EntityUser : IdentityUser
+    public class EntityUser : IdentityUser, IEntity
     {
         public string? Password { get; set; }
         public string? RefreshToken { get; set; }
@@ -12,6 +13,8 @@ namespace CarGuideDDD.Core.EntityObjects
         public EntityBasket? Basket { get; set; }
 
         public string? SecretCode2FA { get; set;}
+
+        public Guid? CodeFor2FA { get; set; }
 
     }
 }

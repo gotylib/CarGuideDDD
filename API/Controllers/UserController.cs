@@ -4,7 +4,9 @@ using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -34,7 +36,21 @@ namespace API.Controllers
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserDto user)
         {
-            return await _userService.AddUserAsync(user);
+            var result = await _userService.AddUserAsync(user);
+            if (result.Success)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? Ok()
+                    : Ok(result.Message);
+            }
+            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? BadRequest()
+                    : BadRequest(result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
 
         [Authorize(Policy = "Admin")]
@@ -42,15 +58,46 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateUser([FromBody] UserDto updateUser)
         {
 
-            return await _userService.UpdateUserAsync(updateUser);
+            var result = await _userService.UpdateUserAsync(updateUser);
+            if (result.Success)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? Ok()
+                    : Ok(result.Message);
+            }
+            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? BadRequest()
+                    : BadRequest(result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
 
         [Authorize(Policy = "Admin")]
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UsernameDto user)
         {
-            if (user.Name != null) return await _userService.DeleteUserAsync(user.Name);
-            return new BadRequestObjectResult(new {massage = "Пользователь не обнаружен"});
+            if (user.Name != null) 
+            {
+                var result = await _userService.DeleteUserAsync(user.Name);
+                if (result.Success)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(result.Message);
+                }
+                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(result.Message);
+                }
+
+                return StatusCode(result.StatusCode);
+            } 
+            return BadRequest("Пользователь не обнаружен");
         }
 
         [HttpPost("Register")]
@@ -59,7 +106,21 @@ namespace API.Controllers
             var result = await _userService.Register(model);
             if(result.QrCodeStream == null)
             {
-                return result.ActionResults;
+                var actionResult =  result.ActionResults;
+                if (actionResult.Success)
+                {
+                    return actionResult.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(actionResult.Message);
+                }
+                if (actionResult.StatusCode >= 400 && actionResult.StatusCode < 500)
+                {
+                    return actionResult.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(actionResult.Message);
+                }
+
+                return StatusCode(actionResult.StatusCode);
             }
             return File(result.QrCodeStream.ToArray(), "image/png", "qrcode.png");
             
@@ -68,20 +129,89 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            return await _userService.Login(model);
+            var result = await _userService.Login(model);
+            if (result.Success)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? Ok()
+                    : Ok(result.Message);
+            }
+            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? BadRequest()
+                    : BadRequest(result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
 
         [HttpPut("RefreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
         {
-            return await _userService.RefreshToken(model);
+            var result = await _userService.RefreshToken(model);
+            if (result.Success)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? Ok()
+                    : Ok(result.Message);
+            }
+            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? BadRequest()
+                    : BadRequest(result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
 
 
         [HttpPost("RegisterOrLogin")]
         public async Task<IActionResult> RegisterOrLogin([FromBody] UserDto userDto)
         {
-            return await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
+            var result = await _userService.RegisterOfLogin(Maps.MapUserDtoToRegistaerDto(userDto));
+            if (result.QrCodeStream == null)
+            {
+                var actionResult = result.ActionResults;
+                if (actionResult.Success)
+                {
+                    return actionResult.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(actionResult.Message);
+                }
+                if (actionResult.StatusCode >= 400 && actionResult.StatusCode < 500)
+                {
+                    return actionResult.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(actionResult.Message);
+                }
+
+                return StatusCode(actionResult.StatusCode);
+            }
+            return File(result.QrCodeStream.ToArray(), "image/png", "qrcode.png");
+        }
+
+        [HttpGet("Auth2FA")]
+        public async Task<IActionResult> Auth2FA(string code, string code2FA,string name)
+        {
+
+            var result = await _userService.Validate2FACode(name, code, code2FA);
+
+            if (result.Success)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? Ok()
+                    : Ok(result.Message);
+            }
+            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            {
+                return result.Message.IsNullOrEmpty()
+                    ? BadRequest()
+                    : BadRequest(result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
 
         [Authorize(AuthenticationSchemes = "Keycloak")]

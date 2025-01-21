@@ -8,6 +8,7 @@ using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Core.MailSendObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
+using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
@@ -104,7 +105,7 @@ namespace CarGuideDDD.Infrastructure.Services
         { await _carRepository.UpdateQuantityAsync(id, quantity); }
 
         // Сделать автомобиль недоступным
-        public async Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable)
+        public async Task<ServiceResult> SetCarAvailabilityAsync(int id, bool inAvailable)
         {
             var car = await _carRepository.GetByIdAsync(id);
 
@@ -114,11 +115,11 @@ namespace CarGuideDDD.Infrastructure.Services
             {
                 case AvailabilityActionResult.Success:
                     await _carRepository.SetAvailabilityAsync(id, inAvailable);
-                    return new OkResult();
+                    return ServiceResult.Ok();
                 case AvailabilityActionResult.InvalidStockCount:
-                    return new BadRequestObjectResult("Машину можно сделать недоступной, только если их нет на складе");
+                    return ServiceResult.BadRequest("Машину можно сделать недоступной, только если их нет на складе");
                 default:
-                    return new StatusCodeResult(500);
+                    return ServiceResult.ServerError();
             }
         }
 

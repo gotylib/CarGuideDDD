@@ -43,10 +43,7 @@ namespace CarGuideDDD.Infrastructure.Repositories
 
         }
 
-        public async Task<string> Get2FACod()
-        {
 
-        }
 
 
         public async Task<UserDto?> GetByNameAsync(string name)

@@ -9,12 +9,12 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
     public interface IColorService
     {
         //Добавление цвета
-        Task<IActionResult> AddColorAsync(ColorDto color);
+        Task<ServiceResult> AddColorAsync(ColorDto color);
         //Редактирование цвета
-        Task<IActionResult> UpdateColorAsync(ColorDto colorDto);
+        Task<ServiceResult> UpdateColorAsync(ColorDto colorDto);
         //Удаление цвета
-        Task<IActionResult> DeleteColorAsync(IdDto id);
+        Task<ServiceResult> DeleteColorAsync(IdDto id);
 
-        Task<IActionResult> GetColorAsync();
+        Task<ServiceResultGet<ColorDto, Exception, VoidDto>> GetColorAsync();
     }
 }
