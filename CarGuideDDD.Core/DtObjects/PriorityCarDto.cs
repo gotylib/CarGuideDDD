@@ -1,6 +1,8 @@
-﻿namespace CarGuideDDD.Core.DtObjects
+﻿using CarGuideDDD.Core.EntityObjects.Interfaces;
+
+namespace CarGuideDDD.Core.DtObjects
 {
-    public class PriorityCarDto
+    public class PriorityCarDto : IEntity
     {
         public int Id { get; init; }
         public string? Make { get; init; }

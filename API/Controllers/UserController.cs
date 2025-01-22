@@ -1,12 +1,10 @@
 ﻿using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.MapObjects;
-using CarGuideDDD.Infrastructure.Services;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -29,7 +27,16 @@ namespace API.Controllers
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
-            return Ok( await _userService.GetAllUsersAsync());
+            var result = await _userService.GetAllUsersAsync();
+            if (result.Success)
+            {
+                return Ok(result.Results);
+            }
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Message);
+            }
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
@@ -39,64 +46,51 @@ namespace API.Controllers
             var result = await _userService.AddUserAsync(user);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UserDto updateUser)
         {
-
             var result = await _userService.UpdateUserAsync(updateUser);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromBody] UsernameDto user)
         {
-            if (user.Name != null) 
+            if (user.Name != null)
             {
                 var result = await _userService.DeleteUserAsync(user.Name);
                 if (result.Success)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(result.Message);
+                    return Ok(result.Result);
                 }
-                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                if (result.ErrorCode == Errors.BadRequest)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(result.Message);
+                    return BadRequest(result.Error?.Message);
                 }
 
-                return StatusCode(result.StatusCode);
-            } 
+                return StatusCode((int)result.ErrorCode);
+            }
             return BadRequest("Пользователь не обнаружен");
         }
 
@@ -104,26 +98,21 @@ namespace API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             var result = await _userService.Register(model);
-            if(result.QrCodeStream == null)
+            if (result.QrCodeStream == null)
             {
-                var actionResult =  result.ActionResults;
+                var actionResult = result.ActionResults;
                 if (actionResult.Success)
                 {
-                    return actionResult.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(actionResult.Message);
+                    return Ok(actionResult.Result);
                 }
-                if (actionResult.StatusCode >= 400 && actionResult.StatusCode < 500)
+                if (actionResult.ErrorCode == Errors.BadRequest)
                 {
-                    return actionResult.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(actionResult.Message);
+                    return BadRequest(actionResult.Error?.Message);
                 }
 
-                return StatusCode(actionResult.StatusCode);
+                return StatusCode((int)actionResult.ErrorCode);
             }
             return File(result.QrCodeStream.ToArray(), "image/png", "qrcode.png");
-            
         }
 
         [HttpPost("Login")]
@@ -132,18 +121,14 @@ namespace API.Controllers
             var result = await _userService.Login(model);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [HttpPut("RefreshToken")]
@@ -152,20 +137,15 @@ namespace API.Controllers
             var result = await _userService.RefreshToken(model);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
-
 
         [HttpPost("RegisterOrLogin")]
         public async Task<IActionResult> RegisterOrLogin([FromBody] UserDto userDto)
@@ -176,42 +156,32 @@ namespace API.Controllers
                 var actionResult = result.ActionResults;
                 if (actionResult.Success)
                 {
-                    return actionResult.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(actionResult.Message);
+                    return Ok(actionResult.Result);
                 }
-                if (actionResult.StatusCode >= 400 && actionResult.StatusCode < 500)
+                if (actionResult.ErrorCode == Errors.BadRequest)
                 {
-                    return actionResult.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(actionResult.Message);
+                    return BadRequest(actionResult.Error?.Message);
                 }
 
-                return StatusCode(actionResult.StatusCode);
+                return StatusCode((int)actionResult.ErrorCode);
             }
             return File(result.QrCodeStream.ToArray(), "image/png", "qrcode.png");
         }
 
         [HttpGet("Auth2FA")]
-        public async Task<IActionResult> Auth2FA(string code, string code2FA,string name)
+        public async Task<IActionResult> Auth2FA(string code, string code2FA, string name)
         {
-
             var result = await _userService.Validate2FACode(name, code, code2FA);
-
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(AuthenticationSchemes = "Keycloak")]
@@ -254,4 +224,5 @@ namespace API.Controllers
             return Ok(fileNames);
         }
     }
+
 }

@@ -52,11 +52,11 @@ namespace CarGuideDDD.Core.DomainObjects
         public DateTime AddTime { get; set; }
         public string AddUserName { get; set; }
 
-        public ServiceResult Create(DateTime addTime, string make, string model, string color, int stockCount, bool isAvailable, string addUserName = "", string nameOfPhoto = "", List<string> roles = null)
+        public bool Create(DateTime addTime, string make, string model, string color, int stockCount, bool isAvailable, string addUserName = "", string nameOfPhoto = "", List<string> roles = null)
         {
             if (string.IsNullOrEmpty(addUserName) || !IsInRole(roles))
             {
-                return ServiceResult.BadRequest("Invalid user or role.");
+                return false;
             }
 
             Make = make;
@@ -68,14 +68,14 @@ namespace CarGuideDDD.Core.DomainObjects
             AddTime = addTime;
             NameOfPhoto = nameOfPhoto;
 
-            return ServiceResult.Ok();
+            return true; ;
         }
 
-        public ServiceResult Update(DateTime addTime, string make, string model, string color, int stockCount, bool isAvailable, string addUserName = "", string nameOfPhoto = "", List<string> roles = null)
+        public bool Update(DateTime addTime, string make, string model, string color, int stockCount, bool isAvailable, string addUserName = "", string nameOfPhoto = "", List<string> roles = null)
         {
             if (string.IsNullOrEmpty(addUserName) || !IsInRole(roles))
             {
-                return ServiceResult.BadRequest("Invalid user or role.");
+                return false;
             }
 
             Make = make;
@@ -87,18 +87,18 @@ namespace CarGuideDDD.Core.DomainObjects
             AddTime = addTime;
             NameOfPhoto = nameOfPhoto;
 
-            return ServiceResult.Ok();
+            return true;
         }
 
-        public ServiceResult Delete(List<string> roles = null)
+        public bool Delete(List<string> roles = null)
         {
             if (!IsInRole(roles))
             {
-                return ServiceResult.BadRequest("Invalid role.");
+                return false;
             }
 
             // Логика удаления
-            return ServiceResult.Ok();
+            return true;
         }
         public AvailabilityActionResult SetCarAvailability()
         {
@@ -140,41 +140,6 @@ namespace CarGuideDDD.Core.DomainObjects
             var manager = managers[random.Next(managers.Count)];
             return new InfoCarResult(client,InfoCarActionResult.SendInfoMessage) {Manager = manager};
 
-        }
-        
-        public static RoleBasketGet GetBasket (List<string> roles, string name)
-        {
-            if (roles.Contains("Manager"))
-            {
-                return RoleBasketGet.Manager;
-            }
-
-            if (roles.Contains("Admin"))
-            {
-                return RoleBasketGet.Admin;
-            }
-
-            if (roles.Contains("User"))
-            {
-                return RoleBasketGet.User;
-            }
-
-            return RoleBasketGet.None;
-        }
-
-        public static RoleBasketCDU CDUToBasket(CDUBasketDto addCarToBasketDto, List<string> roles, string name)
-        {
-            if (roles.Contains("Manager"))
-            {
-                return RoleBasketCDU.Manager;
-            }
-
-            if(!roles.Contains("Admin") || addCarToBasketDto.UserName != name)
-            {
-                return RoleBasketCDU.NonAdmin;
-            }
-
-            return RoleBasketCDU.Default;
         }
 
         private bool IsInRole(List<string> roles)

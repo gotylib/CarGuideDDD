@@ -1,15 +1,17 @@
 ﻿
-
 using CarGuideDDD.Core.AnswerObjects;
-using Microsoft.AspNetCore.Mvc;
+using CarGuideDDD.Core.EntityObjects.Interfaces;
+
 
 namespace CarGuideDDD.Core.DtObjects
 {
-    public class RegisterQrResult
+    public class RegisterQrResult<T, E, R>
+        where T : IEntity
+        where E : Exception
+        where R : IEntity
     {
-        public ServiceResult? ActionResults {  get; set; }
+        public ServiceResult<T, E, R>? ActionResults { get; set; }
         public MemoryStream? QrCodeStream { get; set; }
-
-
     }
+
 }

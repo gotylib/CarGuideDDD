@@ -4,6 +4,7 @@ using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
+using CarGuideDDD.Infrastructure.Services.Сhecks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGuideDDD.Infrastructure.Services
@@ -15,86 +16,93 @@ namespace CarGuideDDD.Infrastructure.Services
         {
             _repository = repository;
         }
-        public async Task<ServiceResult> AddCarToBasket(AddCarToBasketDto addCarToBasketDto, List<string> roles, string name)
+        public async Task<ServiceResult<VoidDto,Exception,AddCarToBasketDto>> AddCarToBasket(AddCarToBasketDto addCarToBasketDto, List<string> roles, string name)
         {
-            
-            switch (Car.CDUToBasket(addCarToBasketDto, roles, name))
+            if (RolesCheck.IsManager(roles))
             {
-                case RoleBasketCDU.Manager:
-                    return ServiceResult.BadRequest("Менеджерам эта функция не доступна",403);
-                case RoleBasketCDU.NonAdmin:
-                    return ServiceResult.BadRequest("Вы не админ по этому не можете менять корзины других пользователей", 403);
-                case RoleBasketCDU.Default:
-                    if (await _repository.AddCarToBasket(addCarToBasketDto))
-                    {
-                        return ServiceResult.Ok("Машина была добавлена");
-                    }
-                    break;
+                return ServiceResult<VoidDto,Exception,AddCarToBasketDto>.BadRequest();
+            }
+            if (!RolesCheck.IsAdmin(roles) && addCarToBasketDto.UserName != name)
+            {
+                ServiceResult<VoidDto,Exception,AddCarToBasketDto>.BadRequest();
+            }
+            if (RolesCheck.IsUser(roles))
+            {
+                if (await _repository.AddCarToBasket(addCarToBasketDto))
+                {
+                    return ServiceResult<VoidDto,Exception,AddCarToBasketDto>.SimpleResult(addCarToBasketDto);
+                }
             }
 
-
-
-            return ServiceResult.ServerError();
+            return  ServiceResult<VoidDto,Exception,AddCarToBasketDto>.ServerError();
         }
 
-        public async Task<ServiceResult> DeleteCarFromBasket(DeleteCarFromBasketDto deleteCarFromBasketDto, List<string> roles, string name)
+        public async Task<ServiceResult<VoidDto,Exception, DeleteCarFromBasketDto>> DeleteCarFromBasket(DeleteCarFromBasketDto deleteCarFromBasketDto, List<string> roles, string name)
         {
-            switch (Car.CDUToBasket(deleteCarFromBasketDto, roles, name))
+            if (RolesCheck.IsManager(roles))
             {
-                case RoleBasketCDU.Manager:
-                    return ServiceResult.BadRequest("Менеджерам эта функция не доступна",403);
-                case RoleBasketCDU.NonAdmin:
-                    return ServiceResult.BadRequest("Вы не админ по этому не можете менять корзины других пользователей", 403);
-                case RoleBasketCDU.Default:
-                    if (await _repository.DeleteCar(deleteCarFromBasketDto))
-                    {
-                        return ServiceResult.Ok("Машина была удалена из корзины");
-                    }
-                    break;
+                ServiceResult<VoidDto, Exception, DeleteCarFromBasketDto>.BadRequest();
+            }
+            if(!RolesCheck.IsAdmin(roles) && deleteCarFromBasketDto.UserName != name)
+            {
+                ServiceResult<VoidDto, Exception, DeleteCarFromBasketDto>.BadRequest();
+            }
+            if (RolesCheck.IsUser(roles))
+            {
+                if (await _repository.DeleteCar(deleteCarFromBasketDto))
+                {
+                    return ServiceResult<VoidDto, Exception, DeleteCarFromBasketDto>.Ok();
+                }
             }
 
-            return ServiceResult.ServerError();
+            return  ServiceResult<VoidDto,Exception,DeleteCarFromBasketDto>.ServerError();
         }
 
-        public async Task<ServiceResultGet<EntityUser,Exception,EntityBasket>> GetCarFromBasker(List<string> roles, string name)
+        public async Task<ServiceResult<EntityUser,Exception,EntityBasket>> GetCarFromBasker(List<string> roles, string name)
         {
-            switch(Car.GetBasket(roles, name))
+            if (RolesCheck.IsManager(roles))
             {
-                case RoleBasketGet.Manager:
-                    return ServiceResultGet<EntityUser, Exception, EntityBasket>.BadRequest("Менеджерам эта функция не доступна",403);
-                case RoleBasketGet.Admin:
-                    var resultAdmin = await _repository.GetAllBaskets();
-
-                    return resultAdmin.IsSuccessful
-                        ? ServiceResultGet < EntityUser, Exception, EntityBasket>.IEnumerableResult(resultAdmin.Value)
-                        : ServiceResultGet<EntityUser, Exception, EntityBasket>.ErrorResult(resultAdmin.Error);
-                case RoleBasketGet.User:
-                    var result = await _repository.GetBasket(name);
-
-                    return result.IsSuccessful
-                        ? ServiceResultGet<EntityUser, Exception, EntityBasket>.SimpleResult(result.Value)
-                        : ServiceResultGet<EntityUser, Exception, EntityBasket>.ErrorResult(result.Error); ;
+                return ServiceResult<EntityUser, Exception, EntityBasket>.BadRequest();
             }
-            return ServiceResultGet<EntityUser, Exception, EntityBasket>.ServerError();
+            if (RolesCheck.IsAdmin(roles))
+            {
+                var resultAdmin = await _repository.GetAllBaskets();
+
+                return resultAdmin.IsSuccessful
+                    ? ServiceResult<EntityUser, Exception, EntityBasket>.IEnumerableResult(resultAdmin.Value)
+                    : ServiceResult<EntityUser, Exception, EntityBasket>.ErrorResult(resultAdmin.Error);
+            }
+            if (RolesCheck.IsUser(roles))
+            {
+                var result = await _repository.GetBasket(name);
+
+                return result.IsSuccessful
+                    ? ServiceResult<EntityUser, Exception, EntityBasket>.SimpleResult(result.Value)
+                    : ServiceResult<EntityUser, Exception, EntityBasket>.ErrorResult(result.Error);
+            }
+            return ServiceResult<EntityUser, Exception, EntityBasket>.ServerError();
         }
 
-        public async Task<ServiceResult> UpdateColorToCarFromBasket(UpdateColorDto updateColorDto, List<string> roles, string name)
+        public async Task<ServiceResult<VoidDto,Exception, UpdateColorDto>> UpdateColorToCarFromBasket(UpdateColorDto updateColorDto, List<string> roles, string name)
         {
-            switch (Car.CDUToBasket(updateColorDto, roles, name))
-            {
-                case RoleBasketCDU.Manager:
-                    return ServiceResult.BadRequest("Менеджерам эта функция не доступна",403);
-                case RoleBasketCDU.NonAdmin:
-                    return ServiceResult.BadRequest("Вы не админ по этому не можете менять корзины других пользователей", 403);
-                case RoleBasketCDU.Default:
-                    if (await _repository.UpdateCarColor(updateColorDto))
-                    {
-                        return ServiceResult.Ok("Цвет машины был обновлен");
-                    }
-                    break;
-            }
 
-            return ServiceResult.ServerError();
+            if (RolesCheck.IsManager(roles))
+            {
+                return ServiceResult<VoidDto, Exception, UpdateColorDto>.BadRequest();
+            }
+            if (!RolesCheck.IsAdmin(roles) || updateColorDto.UserName != name)
+            {
+                return ServiceResult<VoidDto, Exception, UpdateColorDto>.BadRequest();
+            }
+            if (RolesCheck.IsUser(roles))
+            {
+                if (await _repository.UpdateCarColor(updateColorDto))
+                {
+                    return ServiceResult<VoidDto, Exception, UpdateColorDto>.SimpleResult(updateColorDto);
+                }
+                
+            }
+            return ServiceResult<VoidDto, Exception, UpdateColorDto>.ServerError();
         }
     }
 }

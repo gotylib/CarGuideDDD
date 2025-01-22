@@ -1,6 +1,8 @@
-﻿namespace CarGuideDDD.Core.DtObjects
+﻿using CarGuideDDD.Core.EntityObjects.Interfaces;
+
+namespace CarGuideDDD.Core.DtObjects
 {
-    public class UserDto
+    public class UserDto : IEntity
     {
         public string? Username { get; set; }
         public string? Email { get; set; }

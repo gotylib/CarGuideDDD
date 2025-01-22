@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using CarGuideDDD.Core.DtObjects;
+﻿using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
@@ -8,24 +6,34 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
     public interface IUserService
     {
         // Получение всех пользователей
-        Task<IEnumerable<UserDto?>> GetAllUsersAsync();
+        Task<ServiceResult<UserDto, Exception, VoidDto>> GetAllUsersAsync();
 
         // Получение пользователя по имени
-        Task<UserDto> GetUserByNameAsync(string name);
+        Task<ServiceResult<VoidDto, Exception, UserDto>> GetUserByNameAsync(string name);
 
         // Добавление нового пользователя
-        Task<ServiceResult> AddUserAsync(UserDto user);
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> AddUserAsync(UserDto user);
 
         // Обновление существующего пользователя
-        Task<ServiceResult> UpdateUserAsync(UserDto user);
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> UpdateUserAsync(UserDto user);
 
         // Удаление пользователя
-        Task<ServiceResult> DeleteUserAsync(string name);
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> DeleteUserAsync(string name);
 
-        Task<RegisterQrResult> RegisterOfLogin(RegisterDto model);
-        Task<RegisterQrResult> Register(RegisterDto model);
-        Task<ServiceResult> Login(LoginDto model);
-        Task<ServiceResult> RefreshToken(RefreshTokenDto model);
-        Task<ServiceResult> Validate2FACode(string name, string code, string code2FA);
+        // Регистрация или вход
+        Task<RegisterQrResult<VoidDto, Exception, GuidDto>> RegisterOfLogin(RegisterDto model);
+
+        // Регистрация
+        Task<RegisterQrResult<VoidDto, Exception, GuidDto>> Register(RegisterDto model);
+
+        // Вход
+        Task<ServiceResult<VoidDto, Exception, GuidDto>> Login(LoginDto model);
+
+        // Обновление токена
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> RefreshToken(RefreshTokenDto model);
+
+        // Валидация 2FA кода
+        Task<ServiceResult<VoidDto, Exception, TokenDto>> Validate2FACode(string name, string code, string code2FA);
     }
+
 }

@@ -1,20 +1,22 @@
 ﻿
-
 using CarGuideDDD.Core.AnswerObjects;
 using CarGuideDDD.Core.DtObjects;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
     public interface IColorService
     {
-        //Добавление цвета
-        Task<ServiceResult> AddColorAsync(ColorDto color);
-        //Редактирование цвета
-        Task<ServiceResult> UpdateColorAsync(ColorDto colorDto);
-        //Удаление цвета
-        Task<ServiceResult> DeleteColorAsync(IdDto id);
+        // Добавление цвета
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> AddColorAsync(ColorDto color);
 
-        Task<ServiceResultGet<ColorDto, Exception, VoidDto>> GetColorAsync();
+        // Редактирование цвета
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> UpdateColorAsync(ColorDto colorDto);
+
+        // Удаление цвета
+        Task<ServiceResult<VoidDto, Exception, VoidDto>> DeleteColorAsync(IdDto id);
+
+        // Получение всех цветов
+        Task<ServiceResult<ColorDto, Exception, VoidDto>> GetColorAsync();
     }
 }
