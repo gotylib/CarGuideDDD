@@ -64,7 +64,27 @@ namespace API.Controllers
             priorityCarDto.NameOfPhoto = "";
             try
             {
-                await _carService.AddCarAsync(priorityCarDto);
+                // Получение утверждений текущего пользователя
+                var claims = HttpContext.User.Claims;
+
+                // Извлечение ролей из утверждений
+                var roles = claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList(); 
+                var result = await _carService.AddCarAsync(priorityCarDto, roles);
+                if (result.Success)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(result.Message);
+                }
+                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(result.Message);
+                }
             }
             catch(ArgumentNullException ex)
             {
@@ -121,7 +141,28 @@ namespace API.Controllers
 
             try
             {
-                await _carService.UpdateCarAsync(priorityCarDto.Id, priorityCarDto);
+                // Получение утверждений текущего пользователя
+                var claims = HttpContext.User.Claims;
+
+                // Извлечение ролей из утверждений
+                var roles = claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
+
+                var result = await _carService.UpdateCarAsync(priorityCarDto.Id, priorityCarDto, roles);
+                if (result.Success)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(result.Message);
+                }
+                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(result.Message);
+                }
                 return NoContent();
             }
             catch (ArgumentException)
@@ -136,7 +177,29 @@ namespace API.Controllers
         {
             try
             {
-                await _carService.DeleteCarAsync(idDte.Id);
+                // Получение утверждений текущего пользователя
+                var claims = HttpContext.User.Claims;
+
+                // Извлечение ролей из утверждений
+                var roles = claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
+
+                var result = await _carService.DeleteCarAsync(idDte.Id, roles);
+                if (result.Success)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? Ok()
+                        : Ok(result.Message);
+                }
+                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                {
+                    return result.Message.IsNullOrEmpty()
+                        ? BadRequest()
+                        : BadRequest(result.Message);
+                }
+
                 return NoContent();
             }
             catch (KeyNotFoundException)
