@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
@@ -13,17 +14,18 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
         Task<UserDto> GetUserByNameAsync(string name);
 
         // Добавление нового пользователя
-        Task<IActionResult> AddUserAsync(UserDto user);
+        Task<ServiceResult> AddUserAsync(UserDto user);
 
         // Обновление существующего пользователя
-        Task<IActionResult> UpdateUserAsync(UserDto user);
+        Task<ServiceResult> UpdateUserAsync(UserDto user);
 
         // Удаление пользователя
-        Task<IActionResult> DeleteUserAsync(string name);
+        Task<ServiceResult> DeleteUserAsync(string name);
 
-        Task<IActionResult> RegisterOfLogin(RegisterDto model);
-        Task<IActionResult> Register(RegisterDto model);
-        Task<IActionResult> Login(LoginDto model);
-        Task<IActionResult> RefreshToken(RefreshTokenDto model);
+        Task<RegisterQrResult> RegisterOfLogin(RegisterDto model);
+        Task<RegisterQrResult> Register(RegisterDto model);
+        Task<ServiceResult> Login(LoginDto model);
+        Task<ServiceResult> RefreshToken(RefreshTokenDto model);
+        Task<ServiceResult> Validate2FACode(string name, string code, string code2FA);
     }
 }

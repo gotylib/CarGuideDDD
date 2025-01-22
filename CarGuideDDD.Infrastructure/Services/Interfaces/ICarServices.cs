@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarGuideDDD.Core.DtObjects;
+using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services.Interfaces
 {
@@ -16,19 +17,19 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
             Task<PriorityCarDto> GetCarByIdAsync(int id);
 
             // Добавление нового автомобиля
-            Task AddCarAsync(PriorityCarDto car);
+            Task<ServiceResult> AddCarAsync(PriorityCarDto car, List<string> roles);
 
             // Обновление существующего автомобиля
-            Task UpdateCarAsync(int id, PriorityCarDto car);
+            Task<ServiceResult> UpdateCarAsync(int id, PriorityCarDto car, List<string> roles);
 
             // Удаление автомобиля
-            Task DeleteCarAsync(int id);
+            Task<ServiceResult> DeleteCarAsync(int id, List<string> roles);
 
             // Изменение количества автомобилей
             Task UpdateCarQuantityAsync(int id, int quantity);
 
             // Сделать автомобиль недоступным
-            Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable);
+            Task<ServiceResult> SetCarAvailabilityAsync(int id, bool inAvailable);
 
             //Создать заявку на покупку машины
             Task<bool> BuyAsync(int id, string clientName);
@@ -37,7 +38,7 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
             Task<bool> InfoAsync(int id, string clientName);
 
             //Добавление фото для машины
-            public Task AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid);
+            public Task<ServiceResult> AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid);
         }
     }
 }

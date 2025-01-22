@@ -37,12 +37,6 @@ services:
     depends_on:
       - db
 
-  bot:
-    container_name: bot
-    build:
-      context: .
-      dockerfile: CarGuideDDD.TelegramBot/Dockerfile
-
   mail:
     container_name: mail
     build:

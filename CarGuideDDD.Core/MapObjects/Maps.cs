@@ -57,7 +57,7 @@ namespace CarGuideDDD.Core.MapObjects
         public static Car MapPriorityCarDtoToCar(PriorityCarDto priorityCarDto)
         {
             var newCar = new Car();
-            newCar.Create(priorityCarDto.Make ?? "default", priorityCarDto.Model ?? "default", priorityCarDto.Color ?? "default", priorityCarDto.StockCount, priorityCarDto.IsAvailable, priorityCarDto.AddUserName ?? "default" , priorityCarDto.AddTime);
+            newCar.Create(priorityCarDto.AddTime, priorityCarDto.Make ?? "default", priorityCarDto.Model ?? "default", priorityCarDto.Color ?? "default", priorityCarDto.StockCount, priorityCarDto.IsAvailable, priorityCarDto.AddUserName ?? "default");
             return newCar;
 
         }

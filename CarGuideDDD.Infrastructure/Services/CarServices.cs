@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc;
 using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Core.MapObjects;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +7,7 @@ using CarGuideDDD.Core.EntityObjects;
 using CarGuideDDD.Core.MailSendObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
+using CarGuideDDD.Core.AnswerObjects;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
@@ -48,54 +48,77 @@ namespace CarGuideDDD.Infrastructure.Services
         }
 
         // Добавление нового автомобиля
-        public async Task AddCarAsync(PriorityCarDto car)
+        public async Task<ServiceResult> AddCarAsync(PriorityCarDto car, List<string> roles)
         {
-            if(car == null)
+            if (car == null)
             {
-                throw new ArgumentNullException(nameof(car), "Car cannot be null.");
+                return ServiceResult.BadRequest("Car cannot be null.");
+            }
+
+            var carEntity = new Car();
+            var createResult = carEntity.Create(DateTime.UtcNow, car.Make, car.Model, car.Color, car.StockCount, car.IsAvailable, car.AddUserName, car.NameOfPhoto, roles);
+            if (!createResult.Success)
+            {
+                return createResult;
             }
 
             await _carRepository.AddAsync(car);
+            return ServiceResult.Ok();
         }
 
-        public async Task AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid)
+        public async Task<ServiceResult> AddPhotoToCarAsync(CarPhotoDto carPhoto, string guid)
         {
-            if(carPhoto == null)
+            if (carPhoto == null)
             {
-                throw new ArgumentNullException(nameof(carPhoto), "Car cannot be null.");
+                return ServiceResult.BadRequest("Car cannot be null.");
             }
 
             await _carRepository.AddCarPhotoAsync(carPhoto, guid);
-
-        }  
+            return ServiceResult.Ok();
+        }
 
         // Обновление существующего автомобиля
-        public async Task UpdateCarAsync(int id, PriorityCarDto car)
+        public async Task<ServiceResult> UpdateCarAsync(int id, PriorityCarDto car, List<string> roles)
         {
-            if(car == null)
+            if (car == null)
             {
-                throw new ArgumentNullException(nameof(car), "Car cannot be null.");
+                return ServiceResult.BadRequest("Car cannot be null.");
             }
 
             var existingCar = await _carRepository.GetByIdAsync(id);
-            if(existingCar == null)
+            if (existingCar == null)
             {
-                throw new KeyNotFoundException($"Car with ID {car.Id} not found.");
+                return ServiceResult.BadRequest($"Car with ID {car.Id} not found.", 404);
+            }
+
+            var domainCar = new Car();
+            var updateResult = domainCar.Update(DateTime.UtcNow, car.Make, car.Model, car.Color, car.StockCount, car.IsAvailable, car.AddUserName, car.NameOfPhoto, roles);
+            if (!updateResult.Success)
+            {
+                return updateResult;
             }
 
             await _carRepository.UpdateAsync(id, car);
+            return ServiceResult.Ok();
         }
 
         // Удаление автомобиля
-        public async Task DeleteCarAsync(int id)
+        public async Task<ServiceResult> DeleteCarAsync(int id, List<string> roles)
         {
             var existingCar = await _carRepository.GetByIdAsync(id);
-            if(existingCar == null)
+            if (existingCar == null)
             {
-                throw new KeyNotFoundException($"Car with ID {id} not found.");
+                return ServiceResult.BadRequest($"Car with ID {id} not found.", 404);
+            }
+            var domainCar = new Car();
+            var deleteResult = domainCar.Delete(roles);
+            if (!deleteResult.Success)
+            {
+                return deleteResult;
             }
 
             await _carRepository.DeleteAsync(id);
+            return ServiceResult.Ok();
         }
 
         // Изминение колличества автомобилей
@@ -104,7 +127,7 @@ namespace CarGuideDDD.Infrastructure.Services
         { await _carRepository.UpdateQuantityAsync(id, quantity); }
 
         // Сделать автомобиль недоступным
-        public async Task<IActionResult> SetCarAvailabilityAsync(int id, bool inAvailable)
+        public async Task<ServiceResult> SetCarAvailabilityAsync(int id, bool inAvailable)
         {
             var car = await _carRepository.GetByIdAsync(id);
 
@@ -114,11 +137,11 @@ namespace CarGuideDDD.Infrastructure.Services
             {
                 case AvailabilityActionResult.Success:
                     await _carRepository.SetAvailabilityAsync(id, inAvailable);
-                    return new OkResult();
+                    return ServiceResult.Ok();
                 case AvailabilityActionResult.InvalidStockCount:
-                    return new BadRequestObjectResult("Машину можно сделать недоступной, только если их нет на складе");
+                    return ServiceResult.BadRequest("Машину можно сделать недоступной, только если их нет на складе");
                 default:
-                    return new StatusCodeResult(500);
+                    return ServiceResult.ServerError();
             }
         }
 

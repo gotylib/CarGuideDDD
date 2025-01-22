@@ -1,4 +1,5 @@
-﻿using CarGuideDDD.Core.DtObjects;
+﻿using CarGuideDDD.Core.AnswerObjects;
+using CarGuideDDD.Core.DtObjects;
 using CarGuideDDD.Infrastructure.Repositories.Interfaces;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -18,51 +19,51 @@ namespace CarGuideDDD.Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task<IActionResult> AddColorAsync(ColorDto colorDto)
+        public async Task<ServiceResult> AddColorAsync(ColorDto colorDto)
         {
-            if(colorDto == null || colorDto.Color.IsNullOrEmpty())
+            if (colorDto == null || colorDto.Color.IsNullOrEmpty())
             {
-                return new BadRequestObjectResult("Объект задан неправильно");
+                return ServiceResult.BadRequest("Объект задан неправильно");
             }
 
             return await _colorRepository.AddAsync(colorDto) 
-                ? new OkObjectResult("Цвет был добавлен")
-                : new StatusCodeResult(500);
+                ? ServiceResult.Ok("Цвет был добавлен")
+                : ServiceResult.ServerError();
         }
 
-        public async Task<IActionResult> DeleteColorAsync(IdDto id)
+        public async Task<ServiceResult> DeleteColorAsync(IdDto id)
         {
             if (id.Id == 0)
             {
-                return new BadRequestObjectResult("Id задан не правильно"); ;
+                return ServiceResult.BadRequest("Id задан не правильно"); ;
             }
 
             return await _colorRepository.DeleteAsync(id)
-                ? new OkObjectResult("Цвет был удалён")
-                : new StatusCodeResult(500);
+                ? ServiceResult.Ok("Цвет был удалён")
+                : ServiceResult.ServerError();
         }
 
-        public async Task<IActionResult> GetColorAsync()
+        public async Task<ServiceResultGet<ColorDto,Exception,VoidDto>> GetColorAsync()
         {
 
             var result = await _colorRepository.GetAllAsync();
             
             return result.IsSuccessful
-                ? new OkObjectResult(result.Value)
-                : new BadRequestObjectResult(result.Error);
+                ? ServiceResultGet<ColorDto, Exception, VoidDto>.IEnumerableResult(result.Value)
+                : ServiceResultGet<ColorDto, Exception, VoidDto>.ErrorResult(result.Error);
         }
 
-        public async Task<IActionResult> UpdateColorAsync(ColorDto colorDto)
+        public async Task<ServiceResult> UpdateColorAsync(ColorDto colorDto)
         {
             if (colorDto == null || colorDto.Color.IsNullOrEmpty())
             {
 
-                return new BadRequestObjectResult("Объект задан неправильно");
+                return ServiceResult.BadRequest("Объект задан неправильно");
             }
 
             return await _colorRepository.UpdateAsync(colorDto)
-                ? new OkObjectResult("Цвет был обновлён")
-                : new StatusCodeResult(500);
+                ? ServiceResult.Ok("Цвет был обновлён")
+                : ServiceResult.ServerError();
 
         }
     }
