@@ -22,7 +22,7 @@ using NLog.Web;
 using Quartz;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

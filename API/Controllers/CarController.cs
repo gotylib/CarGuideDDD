@@ -2,7 +2,6 @@
 using CarGuideDDD.Core.DtObjects;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.Authorization;
-using static CarGuideDDD.Infrastructure.Services.Interfaces.ICarServices;
 using Microsoft.IdentityModel.Tokens;
 using CarGuideDDD.Infrastructure.Services.Interfaces;
 using System.Security.Claims;
@@ -19,7 +18,6 @@ namespace API.Controllers
         private readonly IFileManagerService _fileManagerService;
         private readonly IColorService _colorService;
         private readonly IBasketService _basketService;
-
 
         public CarsController(ICarService carService, IFileManagerService fileManagerService, IColorService colorService, IBasketService basketService)
         {
@@ -50,11 +48,11 @@ namespace API.Controllers
         [HttpPost("CreateCar")]
         public async Task<IActionResult> CreateCar([FromBody] PriorityCarDto priorityCarDto)
         {
-            if (priorityCarDto.Make.IsNullOrEmpty() || priorityCarDto.Model.IsNullOrEmpty() || priorityCarDto.Color.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(priorityCarDto.Make) || string.IsNullOrEmpty(priorityCarDto.Model) || string.IsNullOrEmpty(priorityCarDto.Color))
             {
                 return BadRequest();
             }
-            priorityCarDto.AddTime = (DateTime.Now).ToUniversalTime();
+            priorityCarDto.AddTime = DateTime.UtcNow;
             var username = User.Identity?.Name;
             if (username == null)
             {
@@ -71,26 +69,22 @@ namespace API.Controllers
                 var roles = claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value)
-                    .ToList(); 
+                    .ToList();
                 var result = await _carService.AddCarAsync(priorityCarDto, roles);
                 if (result.Success)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(result.Message);
+                    return Ok(result.Result);
                 }
-                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                if (result.ErrorCode == Errors.BadRequest)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(result.Message);
+                    return BadRequest(result.Error?.Message);
                 }
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
             return Ok();
         }
 
@@ -98,7 +92,7 @@ namespace API.Controllers
         [HttpPost("AddCarPhoto")]
         public async Task<IActionResult> AddCarPhoto([FromForm] CarPhotoDto carPhotoDto)
         {
-            if (carPhotoDto.file == null || carPhotoDto.file.Length == 0 || carPhotoDto.Make.IsNullOrEmpty() || carPhotoDto.Model.IsNullOrEmpty() || carPhotoDto.Color.IsNullOrEmpty())
+            if (carPhotoDto.file == null || carPhotoDto.file.Length == 0 || string.IsNullOrEmpty(carPhotoDto.Make) || string.IsNullOrEmpty(carPhotoDto.Model) || string.IsNullOrEmpty(carPhotoDto.Color))
             {
                 return BadRequest("Don't have information");
             }
@@ -108,9 +102,17 @@ namespace API.Controllers
             await _fileManagerService.UploadFileAsync(stream, carPhotoDto.file.FileName, guid);
             try
             {
-                await _carService.AddPhotoToCarAsync(carPhotoDto, guid);
+                var result = await _carService.AddPhotoToCarAsync(carPhotoDto, guid);
+                if (result.Success)
+                {
+                    return Ok(result.Result);
+                }
+                if (result.ErrorCode == Errors.BadRequest)
+                {
+                    return BadRequest(result.Error?.Message);
+                }
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -133,12 +135,10 @@ namespace API.Controllers
             return File(file.OpenReadStream(), file.ContentType, file.FileName);
         }
 
-
         [Authorize(Policy = "ManagerOrAdmin")]
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateCar([FromBody] PriorityCarDto priorityCarDto)
         {
-
             try
             {
                 // Получение утверждений текущего пользователя
@@ -153,15 +153,11 @@ namespace API.Controllers
                 var result = await _carService.UpdateCarAsync(priorityCarDto.Id, priorityCarDto, roles);
                 if (result.Success)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(result.Message);
+                    return Ok(result.Result);
                 }
-                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                if (result.ErrorCode == Errors.BadRequest)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(result.Message);
+                    return BadRequest(result.Error?.Message);
                 }
                 return NoContent();
             }
@@ -173,7 +169,7 @@ namespace API.Controllers
 
         [Authorize(Policy = "ManagerOrAdmin")]
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteCar([FromBody] IdDto idDte)
+        public async Task<IActionResult> DeleteCar([FromBody] IdDto idDto)
         {
             try
             {
@@ -186,18 +182,14 @@ namespace API.Controllers
                     .Select(c => c.Value)
                     .ToList();
 
-                var result = await _carService.DeleteCarAsync(idDte.Id, roles);
+                var result = await _carService.DeleteCarAsync(idDto.Id, roles);
                 if (result.Success)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(result.Message);
+                    return Ok(result.Result);
                 }
-                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                if (result.ErrorCode == Errors.BadRequest)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(result.Message);
+                    return BadRequest(result.Error?.Message);
                 }
 
                 return NoContent();
@@ -232,18 +224,14 @@ namespace API.Controllers
                 var result = await _carService.SetCarAvailabilityAsync(isAvailableDto.Id, isAvailableDto.IsAvailable);
                 if (result.Success)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? Ok()
-                        : Ok(result.Message);
+                    return Ok(result.Result);
                 }
-                if (result.StatusCode >= 400 && result.StatusCode < 500)
+                if (result.ErrorCode == Errors.BadRequest)
                 {
-                    return result.Message.IsNullOrEmpty()
-                        ? BadRequest()
-                        : BadRequest(result.Message);
+                    return BadRequest(result.Error?.Message);
                 }
 
-                return StatusCode(result.StatusCode);
+                return StatusCode((int)result.ErrorCode);
             }
             catch (KeyNotFoundException)
             {
@@ -255,16 +243,15 @@ namespace API.Controllers
         [HttpPost("InformateCar")]
         public async Task<IActionResult> InformateCar([FromBody] IdDto carId)
         {
-
             var username = User.Identity?.Name;
 
-            if(username == null)
+            if (username == null)
             {
                 return BadRequest("Проблемы с нахождением пользователя");
-            } 
+            }
 
-            var result = await _carService.InfoAsync(carId.Id,username);
-            return Ok(result ? "Заявка сформирована" : "Не получилось создать заявку");
+            var result = await _carService.InfoAsync(carId.Id, username);
+            return Ok(result.Result.Value ? "Заявка сформирована" : "Не получилось создать заявку");
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -273,31 +260,24 @@ namespace API.Controllers
         {
             var username = User.Identity.Name;
             var result = await _carService.BuyAsync(carId.Id, username);
-            return Ok(result ? "Заявка сформирована" : "Не получилось создать заявку");
+            return Ok(result.Result.Value ? "Заявка сформирована" : "Не получилось создать заявку");
         }
-
-
 
         [Authorize(Policy = "Admin")]
         [HttpPost("AddColor")]
         public async Task<IActionResult> AddColor(ColorDto colorDto)
         {
-            var result =  await _colorService.AddColorAsync(colorDto);
+            var result = await _colorService.AddColorAsync(colorDto);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if(result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
-
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
@@ -307,18 +287,14 @@ namespace API.Controllers
             var result = await _colorService.DeleteColorAsync(idDto);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
@@ -328,18 +304,14 @@ namespace API.Controllers
             var result = await _colorService.UpdateColorAsync(colorDto);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "Admin")]
@@ -350,17 +322,17 @@ namespace API.Controllers
 
             if (result.Success)
             {
-                if(result.Results == null)
+                if (result.Results == null)
                 {
                     return Ok(result.Result);
                 }
                 return Ok(result.Results);
             }
-            if(result.Error != null)
+            if (result.Error != null)
             {
                 return BadRequest(result.Error);
             }
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "UserOrAdmin")]
@@ -383,18 +355,14 @@ namespace API.Controllers
             var result = await _basketService.AddCarToBasket(addCarToBasketDto, roles, username);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "UserOrAdmin")]
@@ -417,18 +385,14 @@ namespace API.Controllers
             var result = await _basketService.DeleteCarFromBasket(deleteCarFromBasketDto, roles, username);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "UserOrAdmin")]
@@ -461,7 +425,7 @@ namespace API.Controllers
             {
                 return BadRequest(result.Error);
             }
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
 
         [Authorize(Policy = "UserOrAdmin")]
@@ -484,19 +448,15 @@ namespace API.Controllers
             var result = await _basketService.UpdateColorToCarFromBasket(updateColorDto, roles, username);
             if (result.Success)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? Ok()
-                    : Ok(result.Message);
+                return Ok(result.Result);
             }
-            if (result.StatusCode >= 400 && result.StatusCode < 500)
+            if (result.ErrorCode == Errors.BadRequest)
             {
-                return result.Message.IsNullOrEmpty()
-                    ? BadRequest()
-                    : BadRequest(result.Message);
+                return BadRequest(result.Error?.Message);
             }
 
-            return StatusCode(result.StatusCode);
+            return StatusCode((int)result.ErrorCode);
         }
-
     }
+
 }

@@ -8,10 +8,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CarGuideDDD.Infrastructure.Services
 {
+
     public class ColorServie : IColorService
     {
-        IColorRepository _colorRepository;
-        ILogger<ColorServie> _logger;
+        private readonly IColorRepository _colorRepository;
+        private readonly ILogger<ColorServie> _logger;
 
         public ColorServie(IColorRepository colorRepository, ILogger<ColorServie> logger)
         {
@@ -19,52 +20,52 @@ namespace CarGuideDDD.Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task<ServiceResult> AddColorAsync(ColorDto colorDto)
+        public async Task<ServiceResult<VoidDto, Exception, VoidDto>> AddColorAsync(ColorDto colorDto)
         {
-            if (colorDto == null || colorDto.Color.IsNullOrEmpty())
+            if (colorDto == null || string.IsNullOrEmpty(colorDto.Color))
             {
-                return ServiceResult.BadRequest("Объект задан неправильно");
+                return ServiceResult<VoidDto, Exception, VoidDto>.BadRequest();
             }
 
-            return await _colorRepository.AddAsync(colorDto) 
-                ? ServiceResult.Ok("Цвет был добавлен")
-                : ServiceResult.ServerError();
+            var success = await _colorRepository.AddAsync(colorDto);
+            return success
+                ? ServiceResult<VoidDto, Exception, VoidDto>.Ok()
+                : ServiceResult<VoidDto, Exception, VoidDto>.ServerError();
         }
 
-        public async Task<ServiceResult> DeleteColorAsync(IdDto id)
+        public async Task<ServiceResult<VoidDto, Exception, VoidDto>> DeleteColorAsync(IdDto id)
         {
             if (id.Id == 0)
             {
-                return ServiceResult.BadRequest("Id задан не правильно"); ;
+                return ServiceResult<VoidDto, Exception, VoidDto>.BadRequest();
             }
 
-            return await _colorRepository.DeleteAsync(id)
-                ? ServiceResult.Ok("Цвет был удалён")
-                : ServiceResult.ServerError();
+            var success = await _colorRepository.DeleteAsync(id);
+            return success
+                ? ServiceResult<VoidDto, Exception, VoidDto>.Ok()
+                : ServiceResult<VoidDto, Exception, VoidDto>.ServerError();
         }
 
-        public async Task<ServiceResultGet<ColorDto,Exception,VoidDto>> GetColorAsync()
+        public async Task<ServiceResult<ColorDto, Exception, VoidDto>> GetColorAsync()
         {
-
             var result = await _colorRepository.GetAllAsync();
-            
+
             return result.IsSuccessful
-                ? ServiceResultGet<ColorDto, Exception, VoidDto>.IEnumerableResult(result.Value)
-                : ServiceResultGet<ColorDto, Exception, VoidDto>.ErrorResult(result.Error);
+                ? ServiceResult<ColorDto, Exception, VoidDto>.IEnumerableResult(result.Value)
+                : ServiceResult<ColorDto, Exception, VoidDto>.ErrorResult(result.Error);
         }
 
-        public async Task<ServiceResult> UpdateColorAsync(ColorDto colorDto)
+        public async Task<ServiceResult<VoidDto, Exception, VoidDto>> UpdateColorAsync(ColorDto colorDto)
         {
-            if (colorDto == null || colorDto.Color.IsNullOrEmpty())
+            if (colorDto == null || string.IsNullOrEmpty(colorDto.Color))
             {
-
-                return ServiceResult.BadRequest("Объект задан неправильно");
+                return ServiceResult<VoidDto, Exception, VoidDto>.BadRequest();
             }
 
-            return await _colorRepository.UpdateAsync(colorDto)
-                ? ServiceResult.Ok("Цвет был обновлён")
-                : ServiceResult.ServerError();
-
+            var success = await _colorRepository.UpdateAsync(colorDto);
+            return success
+                ? ServiceResult<VoidDto, Exception, VoidDto>.Ok()
+                : ServiceResult<VoidDto, Exception, VoidDto>.ServerError();
         }
     }
 }

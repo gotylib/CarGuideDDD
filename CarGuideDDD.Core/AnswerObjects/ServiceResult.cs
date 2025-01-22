@@ -1,34 +1,65 @@
-﻿
+﻿using CarGuideDDD.Core.EntityObjects.Interfaces;
+
+public enum Errors
+{
+    InvalidUserOrRole,
+    CarNotFound,
+    InvalidRole,
+    ServerError,
+    BadRequest
+}
+
 
 namespace CarGuideDDD.Core.AnswerObjects
 {
-    public class ServiceResult
+    public class ServiceResult<T, E, R>
+        where T : IEntity
+        where E : Exception
+        where R : IEntity
     {
+        public IEnumerable<T> Results { get; set; }
+        public E Error { get; set; }
+        public R Result { get; set; }
         public bool Success { get; set; }
-        public string? Message { get; set; }
+        public Errors? ErrorCode { get; set; }
 
-        public int StatusCode { get; set; }
-
-        public ServiceResult(bool success = true, string message = null, int statusCode = 200)
-        { 
+        public ServiceResult(IEnumerable<T> results = null, E error = null, R result = default, bool success = true, Errors? errorCode = null)
+        {
+            Results = results;
+            Error = error;
+            Result = result;
             Success = success;
-            Message = message;
-            StatusCode = statusCode;
+            ErrorCode = errorCode;
         }
 
-        public static ServiceResult Ok(string message = null)
+        public static ServiceResult<T, E, R> IEnumerableResult(IEnumerable<T> results)
         {
-            return new ServiceResult(true, message);
+            return new ServiceResult<T, E, R>(results);
         }
 
-        public static ServiceResult BadRequest(string message, int statusCode = 400)
+        public static ServiceResult<T, E, R> SimpleResult(R result)
         {
-            return new ServiceResult(false, message, statusCode);
+            return new ServiceResult<T, E, R>(null, null, result);
         }
 
-        public static ServiceResult ServerError(string message = null)
+        public static ServiceResult<T, E, R> ErrorResult(E error)
         {
-            return new ServiceResult(false, message,500);
+            return new ServiceResult<T, E, R>(null, error, default, false);
+        }
+
+        public static ServiceResult<T, E, R> ServerError()
+        {
+            return new ServiceResult<T, E, R>(null, null, default, false, Errors.ServerError);
+        }
+
+        public static ServiceResult<T, E, R> BadRequest()
+        {
+            return new ServiceResult<T, E, R>(null, null, default, false, Errors.BadRequest);
+        }
+
+        public static ServiceResult<T, E, R> Ok()
+        {
+            return new ServiceResult<T, E, R>(null, null, default, true);
         }
 
     }
