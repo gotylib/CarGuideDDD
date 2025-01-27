@@ -288,7 +288,6 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthentication();
