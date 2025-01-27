@@ -220,18 +220,18 @@ namespace CarGuideDDD.Infrastructure.Services
             return ServiceResult<VoidDto, Exception, TokenDto>.BadRequest();
         }
 
-        public async Task<ServiceResult<VoidDto, Exception, VoidDto>> RefreshToken(RefreshTokenDto model)
+        public async Task<ServiceResult<VoidDto, Exception, RefreshTokenDto>> RefreshToken(RefreshTokenDto model)
         {
             if (string.IsNullOrEmpty(model.Token))
             {
-                return ServiceResult<VoidDto, Exception, VoidDto>.BadRequest();
+                return ServiceResult<VoidDto, Exception, RefreshTokenDto>.BadRequest();
             }
 
             var user = _userManager.Users.FirstOrDefault(u => u.RefreshToken == model.Token);
 
             if (user == null || user.RefreshTokenExpiration < DateTime.UtcNow)
             {
-                return ServiceResult<VoidDto, Exception, VoidDto>.BadRequest();
+                return ServiceResult<VoidDto, Exception, RefreshTokenDto>.BadRequest();
             }
 
             var newAccessToken = _tokenService.GenerateAccessToken(user);
@@ -241,7 +241,7 @@ namespace CarGuideDDD.Infrastructure.Services
             user.RefreshTokenExpiration = newRefreshToken.Expiration;
             await _userManager.UpdateAsync(user);
 
-            return ServiceResult<VoidDto, Exception, VoidDto>.Ok();
+            return ServiceResult<VoidDto, Exception, RefreshTokenDto>.SimpleResult(new RefreshTokenDto {Expiration = DateTime.Now, Token = user.RefreshToken });
         }
 
         public MemoryStream GenerateQrCode(string secretKey, string username, string issuer)

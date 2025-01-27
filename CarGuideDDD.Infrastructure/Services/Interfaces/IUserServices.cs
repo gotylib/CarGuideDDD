@@ -30,7 +30,7 @@ namespace CarGuideDDD.Infrastructure.Services.Interfaces
         Task<ServiceResult<VoidDto, Exception, GuidDto>> Login(LoginDto model);
 
         // Обновление токена
-        Task<ServiceResult<VoidDto, Exception, VoidDto>> RefreshToken(RefreshTokenDto model);
+        Task<ServiceResult<VoidDto, Exception, RefreshTokenDto>> RefreshToken(RefreshTokenDto model);
 
         // Валидация 2FA кода
         Task<ServiceResult<VoidDto, Exception, TokenDto>> Validate2FACode(string name, string code, string code2FA);
